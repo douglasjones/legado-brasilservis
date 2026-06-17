@@ -1,0 +1,201 @@
+{% set area = 'compra_estoque' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v={{ JSversion }}"></script>
+
+    <script src="/assets/js/local/compra_solicitacao_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/compras_solicitacao_orcamentos_res_form.js?v=14"></script>
+
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+{% endblock %}
+{% block title %}
+    Solicitação de Compras
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container col" >
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                
+                <div class="row ">
+                    <div>
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;">
+                                <div class="card-header" style="background-color: #F7F7F7">
+                                    <div class="card-title col-sm-4">
+                                        <h5 style= "color:#FF5403"  >Solicitação de Compras</h5>
+                                    </div>
+                                    <div class='col-sm-8' align="Right">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="cmdCancelar">Voltar</button>
+                                        &nbsp;
+                                        <button type="button" class="btn btn-primary btn-sm" id="cmdEnviarSolicitacaoCompra">Gerar Solicitação de Compras</button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <input type="hidden" id="compra_solicitacao_pk" name="compra_solicitacao_pk" value={{compra_solicitacao_pk}}>
+                                    <input type="hidden" id="usuario_aprovacao_pk" name="usuario_aprovacao_pk" value={{usuario_aprovacao_pk}}/>
+                                    <input type='hidden' class='form-control form-control-sm'  id='dt_aprovacao' name='dt_aprovacao' value="">
+                                    <input type='hidden' class='form-control form-control-sm'  id='obs_aprovacao' name='obs_aprovacao' value="">
+                                        <div class='row'>
+                                            <div class='col-md-1'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ds_compra_solicitacao'>Identificação Solicitação de Compra:&nbsp;</label>
+                                                <input type='text' class='form-control form-control-sm' id='ds_compra_solicitacao' name='ds_compra_solicitacao' required >                
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='dt_solicitacao'> Dt da Solicitação:&nbsp;</label>
+                                                <input class='form-control form-control-sm'  type='text' id='dt_solicitacao' name='dt_solicitacao' />
+                                            </div>            
+                                        </div>
+                                        <div class='row' id="alert_ds_compra_solicitacao" style="display:none">
+                                            <div class='col-md-1'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <strong style="color: red">Por favor, informe a identificação da solicitação de compra!</strong>
+                                            </div>
+                                        </div>
+                                        <div class='row' id="alert_dt_solicitacao" style="display:none">
+                                            <div class='col-md-5'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <strong style="color: red">Por favor, informe a data da solicitação de compra!</strong>
+                                            </div>
+                                        </div>
+
+                                        <div class='row'>
+                                            <div class='col-md-1'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='tipos_operacao_pk'>Empresa:&nbsp;</label>
+                                                <select class='form-control form-control-sm'  id='empresas_pk' name='empresas_pk' />
+                                                    <option value=""></option>
+                                                </select> 
+                                            </div>
+                                        </div> 
+                                        <div class='row' id="alert_empresas_pk" style="display:none">
+                                            <div class='col-md-1'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <strong style="color: red">Por favor, informe a empresa da solicitação de compra!</strong>
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-md-1'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='solicitante_pk'>Solicitante:&nbsp;</label>
+                                                <select class="form-control form-control-sm "  id='solicitante_pk' name='solicitante_pk' />
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='solicitante_pk'>Aprovadores:&nbsp;</label>
+                                                <select class="form-control form-control-sm "  id='combo_usuario_aprovacao_pk' name='combo_usuario_aprovacao_pk' />
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div> 
+                                        <div class='row' id="alert_solicitante_pk" style="display:none">
+                                            <div class='col-md-1'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <strong style="color: red">Por favor, informe o solicitante da solicitação de compra!</strong>
+                                            </div>
+                                        </div>
+                                        <div class='row' id="alert_usuario_aprovacao_pk" style="display:none">
+                                            <div class='col-md-5'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <strong style="color: red">Por favor, selecione o Aprovador da solicitaçao de compra!</strong>
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-md-1'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='tipo_grupo_centro_custo_pk'> Grupo de Centro de Custos:&nbsp;</label>
+                                                <select class='form-control form-control-sm'  id='tipo_grupo_centro_custo_pk' name='tipo_grupo_centro_custo_pk' />
+                                                    <option value=""></option>
+                                                    <option value="1">Leads (Clientes)</option>
+                                                    <option value="2">Colaboradores</option>
+                                                    <!--<option value="3">Fornecedores</option>-->
+                                                    <option value="4">Centro de Custo</option>
+                                                </select>
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='grupo_lancamento_centrocusto_pk'>Centro de Custo:&nbsp;</label>
+                                                <select class='form-control form-control-sm'  id='grupo_lancamento_centrocusto_pk' name='grupo_lancamento_centrocusto_pk' />
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-md-1'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='obs_solicitacao'> Observação da Solicitação:&nbsp;</label>
+                                                <textarea id="obs_solicitacao" class='form-control form-control-sm' name="obs_solicitacao" rows="3" cols="60"></textarea>
+                                            </div>
+                                        </div>        
+                                        <p>
+                                          <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                        <p>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                {% include ("compra_solicitacao/compras_solicitacao_orcamentos_res_form.twig") %}
+                                            </div>
+                                        </div>    
+                                        <div class='row' id="div_aprovacao" style="display:none">
+                                            <div class="col-md-12" align="center" >
+                                                <h5>Aprove um dos orçamento(s)</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" align="Right">
+                                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                            <br>
+                                            <button type="button" class="btn btn-secondary btn-sm" id="cmdCancelar2">Voltar</button>
+                                            &nbsp;
+                                            <button type="button" class="btn btn-primary btn-sm" id="cmdEnviarSolicitacaoCompra2">Gerar Solicitação de Compras</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

@@ -1,0 +1,145 @@
+<div class="container">
+    <div class="modal fade bd-example-modal-lg" id="janela_produto" >
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 style= "color:#FF5403"  >Cadastro Produto</h6>
+                    <div align="right">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="fecharModalProduto()">Fechar</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="fcEnviarProduto()" id="cmdEnviarProduto">Enviar</button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form id="form_janela_produto" class="form">
+                        <div class="card-body">
+                            <input type='hidden' class='form-control form-control-sm'  id='acao' name='acao'>
+                            <input type='hidden' class='form-control form-control-sm'  id='produto_compra_pk' name='produto_compra_pk'>
+                            <div class='row'>
+                                <div class='col-md-2'>
+                                    &nbsp;
+                                </div>
+                                <div class='col-md-6'>
+                                    <label for='processos_pk'>Categoria:&nbsp;</label>
+                                    <select class='form-control form-control-sm' style='width: 50%'  id='categorias_ins_prod_pk' name='categorias_ins_prod_pk'/>
+                                    <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!----------------------ALERT------------------>
+                            <div class='row' id="alert_categoria_prod" style="display:none">
+                                <div class='col-md-2'>
+                                    &nbsp;
+                                </div>
+                                <div class='col-md-6'>
+                                    <strong style="color: red">Por favor, informe Categoria</strong>
+                                </div>
+                            </div>
+                            <div class='row'>
+                                <div class='col-md-2'>
+                                    &nbsp;
+                                </div>
+                                <div class='col-md-6'>
+                                    <label for='processos_pk'>Produtos:&nbsp;</label>
+                                    <select class='form-control form-control-sm'  id='produtos_ins_prod_pk' name='produtos_ins_prod_pk'/>
+                                    <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!----------------------ALERT------------------>
+                            <div class='row' id="alert_produto_prod" style="display:none">
+                                <div class='col-md-2'>
+                                    &nbsp;
+                                </div>
+                                <div class='col-md-6'>
+                                    <strong style="color: red">Por favor, informe Produto</strong>
+                                </div>
+                            </div>
+                            <div class='row'>
+                                <div class='col-md-2'>
+                                    &nbsp;
+                                </div>
+                                <div class='col-md-4'>
+                                    <label for='processos_pk'>Valor Unitário:&nbsp;</label>
+                                    <input type="text" class='form-control form-control-sm'  id='vl_item_produto' name='vl_item_produto'/>
+                                </div>
+                            </div>
+                            <!----------------------ALERT------------------>
+                            <div class='row' id="alert_vl_prod" style="display:none">
+                                <div class='col-md-2'>
+                                    &nbsp;
+                                </div>
+                                <div class='col-md-4'>
+                                    <strong style="color: red">Por favor, informe Valor Unitário</strong>
+                                </div>
+                            </div>
+                            <div class='row'>
+                                <div class='col-md-2'>
+                                    &nbsp;
+                                </div>
+                                <div class='col-md-2'>
+                                    <label for='processos_pk'>Quantidade:&nbsp;</label>
+                                    <input type="text" class='form-control form-control-sm'  id='qtde_produto' name='qtde_produto'/>
+                                </div>
+                            </div>
+                            <!----------------------ALERT------------------>
+                            <div class='row' id="alert_qtde_prod" style="display:none">
+                                <div class='col-md-2'>
+                                    &nbsp;
+                                </div>
+                                <div class='col-md-4'>
+                                    <strong style="color: red">Por favor, informe Quantidade</strong>
+                                </div>
+                            </div>
+                            <div class='row'>
+                                <div class='col-md-2'>
+                                    &nbsp;
+                                </div>
+                                <div class='col-md-4'>
+                                    <label for='processos_pk'>Lançar no Estoque:&nbsp;</label>
+                                    <input type='checkbox'  id="ic_entrega" name="ic_entrega"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div align="right">
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="fecharModalProduto()">Fechar</button>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="fcEnviarProduto()" id="cmdEnviarProduto">Enviar</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="modal fade bd-example-modal-lg"  id="janela_produto">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" >
+                        <div class="card-header py-3">
+                            <div class="row">
+                                <div class='col-md-6' align="left">
+                                    <h6 class="font-weight-bold text-primary">Cadastro Produto</h6>
+                                </div>
+                                <div class='col-md-6' align="right">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                    <button type="button" class="btn btn-primary" id="cmdEnviarProduto">Enviar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="button" class="btn btn-primary" id="cmdEnviarProduto"  name="cmdEnviarProduto">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

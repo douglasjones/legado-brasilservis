@@ -1,0 +1,65 @@
+services:
+  brasil-php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: brasil-php
+    platform: linux/amd64
+    working_dir: /var/www/html
+    environment:
+      DB_HOST: brasil-mysql
+      DB_USER: gepros1com_brasilservis
+      DB_PASSWORD: gepros15082008
+      DB_NAME: gepros1com_brasilservis
+    volumes:
+      - ../app:/var/www/html
+    networks:
+      - brasil-net
+
+  brasil-nginx:
+    image: nginx:1.24-alpine
+    container_name: brasil-nginx
+    platform: linux/amd64
+    ports:
+      - "8083:80"
+    volumes:
+      - ../app:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - brasil-php
+    networks:
+      - brasil-net
+
+  brasil-mysql:
+    image: mysql:5.7
+    container_name: brasil-mysql
+    platform: linux/amd64
+    command:
+      - --sql-mode=
+      - --default-time-zone=America/Sao_Paulo
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "SENHA"
+      MYSQL_DATABASE: "gepros1com_brasilservis"
+      MYSQL_USER: "gepros1com_brasilservis"
+      MYSQL_PASSWORD: "gepros15082008"
+      TZ: "America/Sao_Paulo"
+    volumes:
+      - brasil_mysql_data:/var/lib/mysql
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin --no-defaults ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks:
+      - brasil-net
+
+networks:
+  brasil-net:
+    driver: bridge
+
+volumes:
+  brasil_mysql_data:

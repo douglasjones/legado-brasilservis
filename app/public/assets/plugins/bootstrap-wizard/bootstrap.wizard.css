@@ -1,0 +1,114 @@
+/* wizard */
+
+.card-wizard .nav-tabs .nav-item .nav-link.active {
+    background-color: #1CC277 !important;
+}
+
+.card-wizard .nav-tabs .nav-item .nav-link {
+    border-radius: 0 !important;
+}
+
+.nav-pills > li {
+    float: left;
+    margin: 0 !important;
+    border-radius: 0 !important;;
+}
+
+.nav-pills > li > a {
+    border-radius: 0px
+}
+
+.nav-pills > li + li {
+    margin-left: 0px
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+    color: #fff;
+    background-color: #337ab7
+}
+
+.list-group-item.active > .badge, .nav-pills > .active > a > .badge {
+    color: #337ab7;
+    background-color: #fff
+}
+
+.list-group-item > .badge {
+    float: right
+}
+
+.list-group-item > .badge + .badge {
+    margin-right: 5px
+}
+
+.nav-pills > li > a > .badge {
+    margin-left: 3px
+}
+
+.card-wizard .nav-pills > li > a {
+    text-align: center;
+    border: none;
+    background-color: #bbb9b9;
+    color: #FFFFFF;
+    text-transform: uppercase;
+}
+
+.nav-pills > li > a {
+    border: 1px solid #23CCEF;
+    border-radius: 0;
+    color: #23CCEF;
+    margin-left: -1px;
+}
+
+.nav > li > a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+
+.nav-pills > li.active, .nav-pills > li.active:hover, .nav-pills > li.active:focus {
+    background-color: #e6e7e7;
+    color: #555;
+    /* height: 45px; */
+    width: 100%;
+    padding: 0px 0px;
+    font-weight: 700;
+    border-radius: 0;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    background-color: #6bb9f0 !important;
+    color: #FFFFFF;
+}
+
+.card-wizard .nav-pills {
+    margin: 0 !important;
+}
+
+.card-wizard .nav-pills > li > a:hover, .card-wizard .nav-pills > li > a:focus {
+    background-color: #9A9A9A;
+    outline: 0 !important;
+}
+
+.card-wizard .nav-pills > li:first-child > a, .card-wizard .nav-pills > li:last-child > a {
+    border-radius: 0;
+}
+
+.card-wizard .btn-finish {
+    display: none;
+}
+
+.card-wizard .header {
+    margin-top: 15px;
+    padding-top: 15px;
+    padding-bottom: 0px;
+}
+
+.card-wizard .footer {
+    padding-bottom: 15px;
+}
+
+.card.card-wizard {
+    border: none !important;
+}
+
+/*end wizard*/

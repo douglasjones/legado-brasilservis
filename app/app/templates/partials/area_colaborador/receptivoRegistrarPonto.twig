@@ -1,0 +1,508 @@
+{% extends "theme/base.login.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="/assets/js/local/area_colaborador.js?v=14"></script>
+    <!-- CUSTOM JS -->
+    <script src="/assets/js/global/utils.js"></script>
+    <script src="/assets/js/global/bestflow.js"></script>
+    <script src="/assets/face-api/dist/face-api.js"></script>
+
+    <script src="https://cdn.rawgit.com/eduardolundgren/tracking.js/v1.1.3/build/tracking-min.js"></script>
+    <script src="https://cdn.rawgit.com/eduardolundgren/tracking.js/v1.1.3/build/data/face-min.js"></script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const webcamVideo = document.getElementById("webcamVideoPonto");
+            const webcamCanvas = document.getElementById("webcamCanvasPonto");
+
+            const webcamContext = webcamCanvas.getContext("2d");
+
+            const webcamTracker = new tracking.ObjectTracker("face");
+
+            webcamTracker.setInitialScale(4);
+            webcamTracker.setStepSize(2);
+            webcamTracker.setEdgesDensity(0.1);
+
+            tracking.track("#webcamCanvasPonto", webcamTracker);
+
+
+            // Inicie o rastreamento da webcam assim que a página estiver pronta
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    webcamVideo.srcObject = stream;
+                })
+                .catch(function (error) {
+                    console.error("Erro ao acessar a câmera:", error);
+                });
+
+
+
+            const captureWebcamButton = document.getElementById("captureWebcamPonto");
+            captureWebcamButton.addEventListener("click", function () {
+                captureWebcam();
+
+            });
+            function captureWebcam() {
+                webcamContext.drawImage(webcamVideo, 0, 0, webcamCanvas.width, webcamCanvas.height);
+                const photoDataUrl = webcamCanvas.toDataURL("image/png");
+
+                handleClick(photoDataUrl);
+
+                utilsJS.loading("Carregando seus dados. Isso pode levar um tempo.");
+
+            }
+
+
+
+        });
+
+        // Função que será chamada ao clicar no botão
+        function handleClick(photoDataUrl) {
+
+            const [extensão, imagemBase64_1] = photoDataUrl.split(',');
+
+
+            // Chamar a função assíncrona ao clicar no botão
+            compararImagens(imagemBase64_1);
+        }
+
+        // Função para comparar duas imagens
+        async function compararImagens(imagemBase64_1) {
+
+            // Carregar os modelos
+            await faceapi.nets.tinyFaceDetector.loadFromUri('https://webponto.gepros6.com.br/weights/');
+
+            await faceapi.nets.faceLandmark68Net.loadFromUri('https://webponto.gepros6.com.br/weights/');
+            await faceapi.nets.faceRecognitionNet.loadFromUri('https://webponto.gepros6.com.br/weights/');
+
+            await faceapi.nets.ssdMobilenetv1.loadFromUri('https://webponto.gepros6.com.br/weights/'); // Carregar modelo SsdMobilenetv1
+
+
+            // Decodificar as strings base64 em imagens
+            // Decodificar as strings base64 em imagens
+            const imagem1 = await faceapi.fetchImage(`data:image/jpeg;base64, ${imagemBase64_1}`);
+            var consulta = 0;
+            var imagemBase64_2 = "";
+            var ds_pin = "";
+            var colaborador_pk = "";
+            var qtdeRegistros = parseInt($("#qtdeRegistros").val());
+            // Reload datable
+            if (qtdeRegistros > 0) {
+                for (i = 0; i < qtdeRegistros; i++) {
+                    imagemBase64_2 = ($('input[name="base64Banco[' + i + ']"]').val());
+                    ds_pin = ($('input[name="ds_pin[' + i + ']"]').val());
+                    colaborador_pk = ($('input[name="colaborador_pk[' + i + ']"]').val());
+
+                    const imagem2 = await faceapi.fetchImage(`data:image/jpeg;base64, ` + imagemBase64_2);
+                    // Detectar rostos nas imagens usando o modelo SsdMobilenetv1
+                    const faces1 = await faceapi.detectAllFaces(imagem1).withFaceLandmarks().withFaceDescriptors();
+                    const faces2 = await faceapi.detectAllFaces(imagem2).withFaceLandmarks().withFaceDescriptors();
+                    if (faces1.length > 0 && faces2.length > 0) {
+                        // Comparar os descritores faciais
+                        const descritores1 = faces1[0].descriptor;
+                        const descritores2 = faces2[0].descriptor;
+
+                        // Comparar os descritores faciais e calcular a distância euclidiana
+                        const distancia = faceapi.euclideanDistance(descritores1, descritores2);
+                        // Exemplo de limiar para decidir se são a mesma pessoa
+                        const limiar = 0.4;
+
+                        if (distancia < limiar) {
+                            utilsJS.toastNotify(true, "Localizamos suas informações, redirecionando para bater ponto.");
+                            utilsJS.loaded();
+                            consulta = 1;
+
+                            formdataPonto.append("id_empresa", ds_pin);
+                            formdataPonto.append("id_colaborador", colaborador_pk);
+                            //formdataPonto.append("base64",imagemBase64_1);
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '/api/area_colaborador/pegarInfoColaborador',
+                                data: formdataPonto,
+                                processData: false,
+                                contentType: false,
+                                complete: function (response) {
+                                    try {
+                                        var log = JSON.parse(response.responseText);
+                                        if (log.status == true) {
+                                            //PARTE PARA BATER O PONTO
+                                            $("#segundo_balao").css('display', 'inline');
+                                            $("#bater_ponto").css('display', 'inline');
+
+                                            //DADOS BASE64 INPUT TYPE HIDDEN
+
+                                            $("#base64Foto").val(imagemBase64_1);
+                                            $("#ds_pin_ponto").val(log.data.arrColaborador['ds_pin']);
+                                            $("#id_colaborador_ponto").val(log.data.arrColaborador['colaborador_pk']);
+
+                                            //DADOS COLABORADOR
+                                            $("#txt_colaborador_pk").text(log.data.arrColaborador['colaborador_pk']);
+                                            $("#txt_pin").text(log.data.arrColaborador['ds_pin']);
+                                            $("#txt_ds_colaborador").text(log.data.arrColaborador['ds_colaborador']);
+                                            $("#txt_ds_rg").text(log.data.arrColaborador['ds_rg']);
+                                            $("#txt_ds_cpf").text(log.data.arrColaborador['ds_cpf']);
+                                            $("#txt_ds_razao_social").text(log.data.arrColaborador['ds_razao_social']);
+                                            $("#txt_ds_cnpj").text(log.data.arrColaborador['ds_cpf_cnpj']);
+
+                                            //DADOS PARA MONTAR COMBO LEAD
+                                            var html = "<option value=''>Selecione um Lead</option>";
+                                            $.each(log.data.arrLead, function (k, v) {
+                                                html += "<option value='" + v['leads_pk'] + "'>" + v['ds_lead'] + "</option>";
+                                            });
+                                            $("select[name=leads_pk]").html(html);
+
+
+                                            //PARTE DA CAPTURA DA FOTO HTML
+                                            $("#primeiro_balao").css('display', 'none');
+                                            $("#capturar_foto").css('display', 'none');
+                                        } else {
+                                            utilsJS.toastNotify(false, log.message);
+                                            setTimeout(function () {
+                                                sendPost("area_colaborador", "receptivo", {});
+                                            }, 2000);
+                                        }
+
+
+                                    } catch (e) {
+                                        utilsJS.toastNotify(false, 'Falhou a requisição para salvar o registro');
+                                        utilsJS.loaded();
+                                    }
+                                }
+                            });
+                            break;
+                        }
+                    } else {
+                        utilsJS.toastNotify(false, "Não localizamos nenhum rosto na imagem");
+                        utilsJS.loaded();
+                        setTimeout(function () {
+                            sendPost("area_colaborador", "receptivo", {});
+                        }, 2000);
+                    }
+                }
+                if (consulta == 0) {
+                    utilsJS.toastNotify(false, "Não encontramos seus dados. Por favor preencher com Empresa e colaborador!");
+                    utilsJS.loaded();
+                    //DADOS BASE64 INPUT TYPE HIDDEN
+
+                    $("#base64Foto").val(imagemBase64_1);
+                    $("#capturar_foto").css('display', 'none');
+                    $("#primeiro_balao").css('display', 'none');
+                    $("#segundo_balao").css('display', 'none');
+                    $("#terceiro_balao").css('display', 'inline');
+                    $("#exibir_ponto_manual").css('display','inline');
+
+
+
+                    /*setTimeout(function () {
+                        sendPost("area_colaborador", "receptivo", {});
+                    }, 2000);*/
+                }
+            } else {
+                utilsJS.toastNotify(false, "Não existe colaborador liberado para barter ponto.");
+                utilsJS.loaded();
+
+                $("#base64Foto").val(imagemBase64_1);
+                $("#capturar_foto").css('display', 'none');
+                $("#primeiro_balao").css('display', 'none');
+                $("#segundo_balao").css('display', 'none');
+                $("#terceiro_balao").css('display', 'inline');
+                $("#exibir_ponto_manual").css('display','inline');
+
+            }
+            return false;
+        }
+
+        function buscarColaboradorManual(){
+
+            var id_empresa = $("#id_empresa_manual").val();
+            var id_colaborador = $("#id_colaborador_manual").val();
+
+            if(id_empresa==""){
+                utilsJS.sweetMensagem(false,"Informe o Id Empresa.");
+                return false;
+            }
+            if(id_colaborador==""){
+                utilsJS.sweetMensagem(false,"Informe o Id Colaborador.");
+                return false;
+            }
+
+            var ds_pin = id_empresa+"-"+id_colaborador;
+
+            formdataPonto.append("id_empresa", ds_pin);
+            formdataPonto.append("id_colaborador", id_colaborador);
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/area_colaborador/pegarInfoColaborador',
+                data: formdataPonto,
+                processData: false,
+                contentType: false,
+                complete: function (response) {
+                    try {
+                        var log = JSON.parse(response.responseText);
+                        if (log.status == true) {
+                            //PARTE PARA BATER O PONTO
+                            $("#segundo_balao").css('display', 'inline');
+                            $("#bater_ponto").css('display', 'inline');
+
+
+                            $("#ds_pin_ponto").val(log.data.arrColaborador['ds_pin']);
+                            $("#id_colaborador_ponto").val(log.data.arrColaborador['colaborador_pk']);
+
+                            //DADOS COLABORADOR
+                            $("#txt_colaborador_pk").text(log.data.arrColaborador['colaborador_pk']);
+                            $("#txt_pin").text(log.data.arrColaborador['ds_pin']);
+                            $("#txt_ds_colaborador").text(log.data.arrColaborador['ds_colaborador']);
+                            $("#txt_ds_rg").text(log.data.arrColaborador['ds_rg']);
+                            $("#txt_ds_cpf").text(log.data.arrColaborador['ds_cpf']);
+                            $("#txt_ds_razao_social").text(log.data.arrColaborador['ds_razao_social']);
+                            $("#txt_ds_cnpj").text(log.data.arrColaborador['ds_cpf_cnpj']);
+
+                            //DADOS PARA MONTAR COMBO LEAD
+                            var html = "<option value=''>Selecione um Lead</option>";
+                            $.each(log.data.arrLead, function (k, v) {
+                                html += "<option value='" + v['leads_pk'] + "'>" + v['ds_lead'] + "</option>";
+                            });
+                            $("select[name=leads_pk]").html(html);
+
+
+                            //PARTE DA CAPTURA DA FOTO HTML
+                            $("#primeiro_balao").css('display', 'none');
+                            $("#terceiro_balao").css('display', 'none');
+                            $("#capturar_foto").css('display', 'none');
+                            $("#exibir_ponto_manual").css('display', 'none');
+                        } else {
+                            utilsJS.toastNotify(false, log.message);
+                            setTimeout(function () {
+                                sendPost("area_colaborador", "receptivo", {});
+                            }, 2000);
+                        }
+
+
+                    } catch (e) {
+                        utilsJS.toastNotify(false, 'Falhou a requisição para salvar o registro');
+                        utilsJS.loaded();
+                    }
+                }
+            });
+        }
+    </script>
+{% endblock %}
+{% block title %}
+    Bater Ponto
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link rel="preload" href="/assets/img/logo/logo-white.png" as="image">
+    <link rel="stylesheet" href="/assets/plugins/preloader/preloader.css">
+
+    <!-- FONTS  -->
+    <link rel="stylesheet" href="/assets/fonts/Poppins/poppins.css">
+
+    <!-- GLOBAL CSS -->
+    <link rel="stylesheet" href="/assets/plugins/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/assets/plugins/muze-template/app.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+    <style>
+        #overflowTest {
+            background: #cccccc;
+            border-radius: 20px;
+            color: black;
+            padding: 20px;
+            width: 80%;
+            height: 100px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+        }
+        .balao{background:#cccccc; font-size: 10px; padding:20px; position:relative; top:20px; left:20px; width:100%; float:right;  }
+        .balao:before{ content:''; position: absolute; width:20px; height:20px; left:-10px; top:25px; background:#cccccc; -webkit-transform:rotate(45deg); }
+    </style>
+{% endblock %}
+{% block content %}
+    <main class="content_wrapper" >
+        <div class="container">
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div  tabindex="-1" role="dialog" aria-labelledby="modal-set-ramalLabel" >
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-12" style="padding: 15px;background-color: #F7F7F7">
+                                <div class="card-body" style="text-align: center">
+                                    <div class='row'>
+                                        <div class='col-md-2'>
+                                        </div>
+                                        <div class='col-md-8'>
+                                            <img width="300px" src="https://server.gpros.com.br/comercial/logos/logoOficial.png" >
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                    <!----PEGA TODOS OS BASE64---->
+                                    <input type="hidden" id="qtdeRegistros" value="{{ arrDadosBase64|length }}">
+                                    {% set looping = 0 %}
+                                    {% for itens in arrDadosBase64 %}
+                                        <input type="hidden" name="base64Banco[{{ looping }}]" value="{{ itens.img_colaborador_cadastro }}">
+                                        <input type="hidden" name="ds_pin[{{ looping }}]" value="{{ itens.ds_pin }}">
+                                        <input type="hidden" name="colaborador_pk[{{ looping }}]" value="{{ itens.colaborador_pk }}">
+                                        {%set looping =  looping + 1%}
+                                    {% endfor %}
+                                    <!-------------------------->
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            &nbsp;
+                                        </div>
+                                        <div class="col-md-8" >
+                                            <h5 style="color:#ff9a66 ">Identificação por facial</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="contato-itens row">
+                                            <div class="col-4">
+                                                <img alt="" src="/assets/img/passos.png" style="width: 100px;text-align: center">
+                                            </div>
+                                            <div class="col-8">
+                                                <div class="balao" id="primeiro_balao"><b>Posicione seu rosto no quadro abaixo.</b> </div>
+                                                <div class="balao" id="segundo_balao" style="display: none"><b>Agora Basta Selecionar seu ponto.</b> </div>
+                                                <div class="balao" id="terceiro_balao" style="display: none"><b>Preencha manualmente seus dados!.</b> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <div id="capturar_foto">
+                                        <div class="col-md-12">
+                                            <div class="contato-itens row">
+                                                <div class="col-md-2">
+
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <button  style="width:70%;background-color: #14074f;color: #ff9a66" class="btn" id="captureWebcamPonto">Capturar Rosto da Webcam</button><br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <video id="webcamVideoPonto" style="width: 50px;height: 300px;background-color: white;" autoplay playsinline></video>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <canvas id="webcamCanvasPonto" style="width: 550px;height: 450px;display: none"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="exibir_ponto_manual" style="display: none">
+                                        <div class="col-md-12">
+                                            <div class="contato-itens row">
+                                                <div class="col-3">
+
+                                                </div>
+                                                <div class="col-4">
+                                                    <input type="text" style="border-color:black" class='form-control form-control-sm' id="id_empresa_manual" placeholder="ID Empresa">
+                                                </div>
+                                                <div class="col-4">
+                                                    <input type="text" style="border-color:black" class='form-control form-control-sm' id="id_colaborador_manual" placeholder="ID Colaborador">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="col-md-12">
+                                            <div class="contato-itens row">
+                                                <div class="col-4">
+
+                                                </div>
+                                                <div class="col-6">
+                                                    <button  style="background-color: #14074f;color: #ff9a66" type="button" class="btn" id="buscarColaboradorManual" onclick="buscarColaboradorManual()"><b>Buscar</b></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="bater_ponto" style="display: none">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="hidden" id="base64Foto">
+                                                <input type="hidden" id="ds_pin_ponto">
+                                                <input type="hidden" id="id_colaborador_ponto">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div id="overflowTest" style="text-align: left">
+                                                        <span>
+                                                            <b>
+                                                                <font color="#14074f"><b>ID:</b></font><span id="txt_colaborador_pk"></span><br>
+                                                                <font color="#14074f"><b>Pin:</b></font> <span id="txt_pin"></span><br>
+                                                                <font color="#14074f"><b>Nome:</b></font> <span id="txt_ds_colaborador"></span><br>
+                                                                <font color="#14074f"><b>RG:</b></font> <span id="txt_ds_rg"></span><br>
+                                                                <font color="#14074f"><b>CPF:</b></font> <span id="txt_ds_cpf"></span><br>
+                                                                <font color="#14074f"><b>Razão Social:</b></font> <span id="txt_ds_razao_social"></span><br>
+                                                                <font color="#14074f"><b>CNPJ:</b></font> <span id="txt_ds_cnpj"></span><br>
+                                                            </b>
+                                                        </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-4">
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select style="width:100%;background-color: #14074f;color: #ff9a66" class="form-control form-control-lg" name="leads_pk" id="leads_pk"></select>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="col-md-12">
+                                            <div class="contato-itens row">
+                                                <div class="col-3">
+                                                    <i class="bi bi-smartwatch" style="cursor:pointer;font-size: 45px;color: #ff9a66" onclick="fcSalvarPonto(1)"></i><br>
+                                                    <span style="cursor:pointer;font-size: 12px;color: #14074f;"><b>Entrada Expediente</b></span>
+                                                </div>
+                                                <div class="col-3">
+                                                    <i class="bi bi-clock-history" style="cursor:pointer;font-size: 45px;color: #ff9a66" onclick="fcSalvarPonto(3)"></i><br>
+                                                    <span style="cursor:pointer;font-size: 12px;color: #14074f;"><b>Saida Intervalo</b></span>
+                                                </div>
+                                                <div class="col-3" style="text-align: center">
+                                                    <i class="bi bi-arrow-counterclockwise" style="cursor:pointer;font-size: 45px;color: #ff9a66" onclick="fcSalvarPonto(4)"></i><br>
+                                                    <span style="text-align: right;cursor:pointer;font-size: 12px;color: #14074f;"><b>Retorno Intervalo</b></span>
+                                                </div>
+                                                <div class="col-3" style="text-align: center">
+                                                    <i class="bi bi-box-arrow-in-down" style="cursor:pointer;font-size: 45px;color: #ff9a66" onclick="fcSalvarPonto(2)"></i><br>
+                                                    <span style="text-align: right;cursor:pointer;font-size: 12px;color: #14074f;"><b>Retorno Intervalo</b></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

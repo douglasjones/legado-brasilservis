@@ -1,0 +1,65 @@
+<div class="header border-bottom border-gray-200 header-fixed" style="background-color: #14074f">
+    <div class="px-0">
+        <div class="header-body px-0 py-3">
+            <nav class="navbar navbar-expand-sm bg navbar-dark" style="background-color: #14074f">
+                <div class="container-fluid">
+                    <div style="width: 110px">
+                        <a class="navbar-brand" href="#">
+                            <img src="https://gepros.com.br/comercial/condominios/img/logo_branco.png" alt="Logotipo" >
+                            <img src="https://gepros.com.br/comercial/condominios/img/logo_branco.png" alt="Logotipo" class="white-logo">
+                        </a>
+                    </div>
+
+                    <button class="navbar-toggler " style="background-color: #433875" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"  style="color: orange"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="navbar-nav">
+                            <li class="nav-item " id="exibir_comercial" style="display: none">
+                                <a class="nav-link" href="/menu/comercial">
+                                    <span class="ms-2" {% if area|lower  == 'comercial' %} style="font-size: 15px;color: yellow" {% else %}style="font-size: 15px;color: white"{% endif %}>|&nbsp;Comercial</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" id="exibir_operacional" style="display: none">
+                                <a class="nav-link" href="/menu/operacional">
+                                    <span class="ms-2" {% if area|lower  == 'operacional' %} style="font-size: 15px;color: yellow" {% else %}style="font-size: 15px;color: white"{% endif %}>|&nbsp;&nbsp;Operacional</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" id="exibir_compra_estoque" style="display: none">
+                                <a class="nav-link" href="/menu/compra_estoque">
+                                    <span class="ms-2" {% if area|lower  == 'compra_estoque' %} style="font-size: 15px;color: yellow" {% else %}style="font-size: 15px;color: white"{% endif %}>|&nbsp;&nbsp;Compras - Estoque</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" id="exibir_rh" style="display: none">
+                                <a class="nav-link" href="/menu/rh">
+                                    <span class="ms-2" {% if area|lower  == 'rh' %} style="font-size: 15px;color: yellow" {% else %}style="font-size: 15px;color: white"{% endif %}>|&nbsp;&nbsp;RH</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" id="exibir_financeiro" style="display: none">
+                                <a class="nav-link" href="/menu/financeiro">
+                                    <span class="ms-2" {% if area|lower  == 'financeiro' %} style="font-size: 15px;color: yellow" {% else %}style="font-size: 15px;color: white"{% endif %}>|&nbsp;&nbsp;Financeiro</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" id="exibir_relatorio" style="display: none">
+                                <a class="nav-link" href="/menu/relatorio">
+                                    <span class="ms-2" {% if area|lower  == 'relatorios' %} style="font-size: 15px;color: yellow" {% else %}style="font-size: 15px;color: white"{% endif %}>|&nbsp;&nbsp;Relatórios</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" id="exibir_adm" style="display: none">
+                                <a class="nav-link" href="/menu/administracao">
+                                    <span class="ms-2" {% if area|lower  == 'administracao' %} style="font-size: 15px;color: yellow" {% else %}style="font-size: 15px;color: white"{% endif %}>|&nbsp;&nbsp;Administração</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" id="exibir_cpainel" {% if session['session_user']['par1']!=1 %}style="display: none" {% endif %}>
+                                <a class="nav-link" href="/menu/cpainel">
+                                    <span class="ms-2" {% if area|lower  == 'cpanel' %} style="font-size: 15px;color: yellow" {% else %}style="font-size: 15px;color: white"{% endif %}>|&nbsp;&nbsp;CPainel</span>
+                                </a>
+                            </li>
+                            {% include '/structure/partials/menu.profile.twig' %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>

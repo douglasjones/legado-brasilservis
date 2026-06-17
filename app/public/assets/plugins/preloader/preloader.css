@@ -1,0 +1,32 @@
+.pre-loading-screen {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: #fee7f0;
+    background: linear-gradient(#6a4ee7, #14074f);
+}
+
+.loader-screen {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: #dddddd;
+    background: url("/assets/img/logo/logo-white.png") no-repeat center center;
+    background-size: 200px;
+
+}
+
+
+
+
+
+
+
+
+

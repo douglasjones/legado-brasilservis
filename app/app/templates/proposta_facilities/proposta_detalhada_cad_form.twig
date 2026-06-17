@@ -1,0 +1,290 @@
+{% set area = 'comercial' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/js/local/proposta_detalhada_cad_form.js?v=14"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v={{ JSversion }}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+{% endblock %}
+{% block title %}
+    Seleção Proposta
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container col" >
+            <div class="container">
+                <br>
+                <div class="row">
+                    <div class="col-lg">
+                        <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;">
+                            <div class="card-header" style="background-color: #F7F7F7">
+                                <div class="card-title col-sm-4">
+                                    <h5 style= "color:#FF5403"  >Propostas Detalhada</h5>
+                                </div>
+                                <div class='col-sm-8' align="Right">
+                                    <button type="button" class="btn btn-secondary btn-sm" id="cmdVoltar">Voltar</button>
+                                    <button type="button" class="btn btn-primary btn-sm" id="cmdSalvaProposta">Salvar</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form method="post">
+                                    <!--INFORMAÇÕES TRAZIDAS DA CONTROLLER E COLOCANDO EM VARIAVEIS HIDDEN-->
+                                    <input type="hidden" id="pk" value="{{ pk }}">
+                                    <input type="hidden" id="ic_versao" value="{{ ic_versao }}">
+                                    <input type="hidden" id="ic_abertura" value="{{ ic_abertura }}">
+                                    <input type="hidden" id="leads_pk" value="{{ leads_pk }}">
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-6'>
+                                            <h4>Itens Proposta</h4>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <div class='col-md-1' align='rigth'>
+                                            <b>%</b>
+                                        </div>
+                                        &nbsp;&nbsp;
+                                        <div class='col-md-2' align='rigth'>
+                                            <b>Totais de Seleções</b>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-10'>
+                                            <hr style='border: solid 1px black'>
+                                        </div>
+                                    </div>
+
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-6'>
+                                            <label for='leads_pk'><b>Leads:&nbsp;</b></label>
+                                        </div>
+                                        %<div class='col-md-1' align='rigth'>
+                                            <input type='text' class='form-control form-control-sm'>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;<div class='col-md-2' align='rigth'>
+                                            <select class='form-control form-control-sm'  id='leads_pk_proposta_detalhada' name='leads_pk_proposta_detalhada'>
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-6'>
+                                            <label for='ic_tipo_proposta'><b>Tipo de Propostas:&nbsp;</b></label>
+                                        </div>
+                                        %<div class='col-md-1' align='rigth'>
+                                            <input type='text' class='form-control form-control-sm'>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;<div class='col-md-2' align='rigth'>
+                                            <select class='form-control form-control-sm'  id='ic_tipo_proposta' name='ic_tipo_proposta'>
+                                                <option value=""></option>
+                                                <option value="1">Mão de Obra</option>
+                                                <option value="2">Mão de Obra e equipamentos</option>
+                                                <option value="3">Mão de Obra e produtos</option>
+                                                <option value="4">Mão de Obra, equipamentos e Produtos</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-6'>
+                                            <label for='produtos_servicos_pk_proposta'><b>Serviço a ser Prestado:&nbsp;</b></label>
+                                        </div>
+                                        %<div class='col-md-1' align='rigth'>
+                                            <input type='text' class='form-control form-control-sm'>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;<div class='col-md-2' align='rigth'>
+                                            <select class='form-control form-control-sm'  id='produtos_servicos_pk_proposta' name='produtos_servicos_pk_proposta'>
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-6'>
+                                            <label for='ds_qtde_efetivo'><b>Quantidade a Contratar:&nbsp;</b></label>
+                                        </div>
+                                        %<div class='col-md-1' align='rigth'>
+                                            <input type='text' class='form-control form-control-sm'>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;<div class='col-md-2' align='rigth'>
+                                            <input class='form-control form-control-sm'  id='ds_qtde_efetivo' name='ds_qtde_efetivo'>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-6'>
+                                            <label for='ds_qtde_hr_semanais'><b>Quantidade de Horas Semanais:&nbsp;</b></label>
+                                        </div>
+                                        %<div class='col-md-1' align='rigth'>
+                                            <input type='text' class='form-control form-control-sm'>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;<div class='col-md-2' align='rigth'>
+                                            <input class='form-control form-control-sm'  id='ds_qtde_hr_semanais' name='ds_qtde_hr_semanais'>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-6'>
+                                            <label for='ic_escala'><b>Frequência Semanal (Escala):&nbsp;</b></label>
+                                        </div>
+                                        %<div class='col-md-1' align='rigth'>
+                                            <input type='text' class='form-control form-control-sm'>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;<div class='col-md-2' align='rigth'>
+                                            <select class='form-control form-control-sm'  id='ic_escala' name='ic_escala'>
+                                                <option value=''></option>
+                                                <option value='1D'>1D</option>
+                                                <option value='2D'>2D</option>
+                                                <option value='3D'>3D</option>
+                                                <option value='4D'>4D</option>
+                                                <option value='4x1'>4x1</option>
+                                                <option value='4x2'>4x2</option>
+                                                <option value='5x1'>5x1</option>
+                                                <option value='5x2'>5x2</option>
+                                                <option value='6X1'>6X1</option>
+                                                <option value='12x36'>12x36</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-6'>
+                                            <label for='convencao_coletiva_pk'><b>Convenção Coletiva do Trabalho:&nbsp;</b></label>
+                                        </div>
+                                        %<div class='col-md-1' align='rigth'>
+                                            <input type='text' class='form-control form-control-sm'>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;<div class='col-md-2' align='rigth'>
+                                            <select class='form-control form-control-sm'  id='convencao_coletiva_pk' name='convencao_coletiva_pk'>
+                                                <option value=""></option>
+                                                <option value="1">Item 1</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-6'>
+                                            <label for='dt_base_categoria'><b>Data Base da Categoria:&nbsp;</b></label>
+                                        </div>
+                                        %<div class='col-md-1' align='rigth'>
+                                            <input type='text' class='form-control form-control-sm'>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;<div class='col-md-2' align='rigth'>
+                                            <input class='form-control form-control-sm'  id='dt_base_categoria' name='dt_base_categoria'>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-6'>
+                                            <label for='ds_num_registro_mte'><b>Número do Registro do MTE:&nbsp;</b></label>
+                                        </div>
+                                        %<div class='col-md-1' align='rigth'>
+                                            <input type='text' class='form-control form-control-sm'>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;<div class='col-md-2' align='rigth'>
+                                            <input class='form-control form-control-sm'  id='ds_num_registro_mte' name='ds_num_registro_mte'>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-6'>
+                                            <label for='vl_salario_piso_categoria'><b>Valor Salário(Piso CAT - normativo de categoria):&nbsp;</b></label>
+                                        </div>
+                                        %<div class='col-md-1' align='rigth'>
+                                            <input type='text' class='form-control form-control-sm'>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;<div class='col-md-2' align='rigth'>
+                                            <input class='form-control form-control-sm'  id='vl_salario_piso_categoria' name='vl_salario_piso_categoria'>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div id='itens'>
+
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-10'>
+                                            <h4>Totais Valores Mensais</h4>
+                                            <hr style='border: solid 1px black'>
+                                        </div>
+                                    </div>
+                                    <div id='totais_itens'>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-1'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-6'>
+                                            <label for='vl_salario_piso_categoria'><b>Valor Total Proposta:&nbsp;</b></label>
+                                        </div>
+                                        %<div class='col-md-1' align='rigth'>
+                                            <input type='text' id='vl_total_percentual_proposta' name='vl_total_percentual_proposta' class='form-control form-control-sm'>
+                                        </div>
+                                        R$<div class='col-md-2' align='rigth'>
+                                            <input type='text' class='form-control form-control-sm'  id='vl_total_proposta' name='vl_total_proposta'>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="card-footer py-3">
+                                <div class="row">
+                                    <div class='col-sm-12' align="right">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="cmdVoltar">Voltar</button>
+                                        <button type="button" class="btn btn-primary btn-sm" id="cmdSalvaProposta">Salvar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

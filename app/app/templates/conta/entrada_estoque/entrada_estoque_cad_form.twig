@@ -1,0 +1,176 @@
+{% set area = 'compra_estoque' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/js/local/entrada_estoque_cad_form.js?v=14"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v={{ JSversion }}"></script>
+
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+{% endblock %}
+{% block title %}
+    Estoque
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href='{{ base_url() }}/assets/css/pages/settings-selectables.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container col" >
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                
+                <div class="row ">
+                    <div>
+                        <form id="form" class="form" onsubmit="return false;">
+                            <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                                <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;">
+                                    <div class="card-header" style="background-color: #F7F7F7">
+                                        <div class="card-title col-sm-4">
+                                            <h5 style= "color:#FF5403"  >Entrada de Estoque</h5>
+                                        </div>
+                                        <div class='col-sm-8' align="Right">
+                                            <button type="button" class="btn btn-secondary btn-sm" id="cmdCancelar">Voltar</button>
+                                            &nbsp;
+                                            <button type="submit" class="btn btn-primary btn-sm" id="cmdEnviar">Salvar</button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <hr>
+                                        <input type="hidden" id='pk' name='pk' value='{{ pk }}'>
+                                        <div class="tab_content">
+                                            <div class='row'>
+                                                <div class='col-md-4'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='categorias_pk'>Categoria:&nbsp;</label>
+                                                    <select class='form-control form-control-sm chzn-select'  id='categorias_produto_pk' name='categorias_produto_pk'/>
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class='row'>
+                                                <div class='col-md-4'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='fornecedor_pk'>Fornecedor:&nbsp;</label>         
+                                                    <select class='form-control form-control-sm chzn-select'  id='fornecedor_pk' name='fornecedor_pk'/>
+                                                        <option></option>
+                                                    </select>    
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class='row'>
+                                                <div class='col-md-4'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='produtos_pk'>Produto:&nbsp;</label>         
+                                                    <select class='form-control form-control-sm chzn-select'  id='produtos_pk' name='produto_pk'/>
+                                                        <option></option>
+                                                    </select>    
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class='row'>
+                                                <div class='col-md-4'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='produtos_pk'>Valor Unitário:&nbsp;</label> 
+                                                    <input type="text" class='form-control form-control-sm' id="vl_unitario" name="vl_unitario"/>    
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class='row'>
+                                                <div class='col-md-4'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-2'>
+                                                    <label for='qtde'>Quantidade:&nbsp;</label>
+                                                    <input type="text" class='form-control form-control-sm' id="qtde" name="qtde" maxlength="5" placeholder=" "/>               
+                                                    <input type="hidden" id="qtde_registro" name="qtde_registro"/>               
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class='row'>
+                                                <div class='col-md-4'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-2'>
+                                                    <label for='ds_senha'>Listar Itens:</label>&nbsp;&nbsp;&nbsp;<input type="checkbox" id="ic_listar_itens" name="ic_listar_itens" />      
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class='row'>
+                                                <div class='col-md-4'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='ds_n_ordem'>N Ordem:&nbsp;</label>
+                                                    <input type="text" class='form-control form-control-sm' id="ds_n_ordem" name="ds_n_ordem" maxlength="50" placeholder=" "/>               
+                                                </div>
+                                            </div>
+                                            <div class='row'>
+                                                <div class='col-md-4'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='obs_entrada_estoque'>Observação:&nbsp;</label>
+                                                    <textarea  class=" form-control form-control-file" id="obs_entrada_estoque" name="obs_entrada_estoque"></textarea>
+                                                </div>
+                                            </div>
+                                            <p>
+                                            <div id="exibir_grid_produto_itens" style="display:none">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <table class="table table-bordered " style="width:100%" id="tblProdutoItens">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="width:2%">Cód.</th>
+                                                                    <th>Nº de Serie</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="hover">
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" align="Right">
+                                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                            <br>
+                                            <button type="button" class="btn btn-secondary btn-sm" id="cmdCancelar2">Voltar</button>
+                                            &nbsp;
+                                            <button type="submit" class="btn btn-primary btn-sm" id="cmdEnviar">Salvar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

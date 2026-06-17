@@ -1,0 +1,201 @@
+{% block JSfiles %}
+    <script src="/assets/js/local/financeiro_grid_despesa.js?v=14"></script>
+{% endblock %}
+<div class="row">
+    <div class="col-md-12">
+        <h6 class="font-weight-bold" style="color:#FF5403">Consulta de Despesa(s)</h6>
+        <hr style='height:1px; border:none; margin-top: 0px; margin-bottom: 0px;'>
+    </div>
+</div> 
+<br>
+<div class='row'>
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='pk_lancamento_despesa'>Código:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' id="pk_lancamento_despesa" name="pk_lancamento_despesa"/> 
+    </div>
+    <div class='col-md-2'>
+        <label for='ic_status_pagamento_despesa'>Status:&nbsp;</label>
+        <select class='form-control form-control-sm'  id='ic_status_pagamento_despesa' name='ic_status_pagamento_despesa' />
+            <option value=""></option>
+            <option value="1">Pago</option>
+            <option value="2">Pendente</option>
+            <option value="3">Aprovado</option>
+            <option value="4">Atrasado</option>
+            <option value="5">Cancelado</option>
+        </select>  
+    </div>
+    <div class='col-md-2'>
+        <label for='usuario_cadastro_despesa_pk'>Usuário Cadastro:&nbsp;</label>
+        <select class='form-control form-control-sm'  id='usuario_cadastro_despesa_pk' name='usuario_cadastro_despesa_pk' />
+            <option value=""></option>
+        </select>  
+    </div>
+</div>
+<div class='row'> 
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='ds_num_documento_despesa'>Identificação do Documento:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' id="ds_num_documento_despesa" name="ds_num_documento_despesa"/> 
+    </div>
+    <div class='col-md-2'>
+        <label for='ic_tipo_num_documento_despesa'>Identificação do Documento:&nbsp;</label> 
+        <select class='form-control form-control-sm'  id='ic_tipo_num_documento_despesa' name='ic_tipo_num_documento_despesa'>
+            <option value=""></option>                               
+            <option value="1">Num Boleto</option>
+            <option value="2">Num NF</option>
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='empresa_despesa_pk'>Empresa:&nbsp;</label>
+        <select class='form-control form-control-sm'  id='empresa_despesa_pk' name='empresa_despesa_pk'/>
+            <option value=""></option>
+        </select>  
+    </div>
+    <div class='col-md-2'>
+        <label for='contas_despesa_pk'>Conta(s):&nbsp;</label>
+        <select class='form-control form-control-sm'  id='contas_despesa_pk' name='contas_despesa_pk' />
+            <option></option>
+        </select>  
+    </div>
+    <div class='col-md-2'>
+        <label for='ic_status_analise'>Status Analise(s):&nbsp;</label>
+        <select class='form-control form-control-sm'  id='ic_status_analise' name='ic_status_analise' />
+            <option></option>
+            <option value="1">Aprovado</option>
+        </select>  
+    </div>
+</div>    
+<div class="row">
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='tipo_grupo_despesa_pk'>Grupo de Origem Lançamento:&nbsp;</label>
+        <select class='form-control form-control-sm'  id='tipo_grupo_despesa_pk' name='tipo_grupo_despesa_pk'/>
+            <option value=""></option>
+            <option value="1">Leads (Clientes)</option>
+            <option value="2">Colaboradores</option>
+            <option value="3">Fornecedores</option>
+        </select>  
+    </div>
+    <div class='col-md-2'>
+        <label for='grupo_lancamento_despesa_pk' class='recebido_de_pago_para'>Recebido de ? </label>
+        <select class='form-control form-control-sm'  id='grupo_lancamento_despesa_pk' name='grupo_lancamento_despesa_pk'/>
+            <option value=""></option>
+        </select>  
+    </div>            
+</div>  
+<div class='row'>
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='dt_cadastro_ini_despesa'>Data Cadastro  Inicío:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_cadastro_ini_despesa" name="dt_cadastro_ini_despesa"/> 
+    </div>
+    <div class='col-md-2'>
+        <label for='dt_cadastro_fim_despesa' >Data Cadastro Fim:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_cadastro_fim_despesa" name="dt_cadastro_fim_despesa"/> 
+    </div>            
+</div>
+<div class='row'>
+     <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='dt_faturamento_ini_despesa'>Data Faturamento  Inicío:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_faturamento_ini_despesa" name="dt_faturamento_ini_despesa"/> 
+    </div>
+    <div class='col-md-2'>
+        <label for='dt_faturamento_fim_despesa' >Data Faturamento Fim:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_faturamento_fim_despesa" name="dt_faturamento_fim_despesa"/> 
+    </div>
+</div>
+<div class='row'>
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='dt_vencimento_ini_despesa'>Data Vencimento  Inicío:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_vencimento_ini_despesa" name="dt_vencimento_ini_despesa"/> 
+    </div>
+    <div class='col-md-2'>
+        <label for='dt_vencimento_fim_despesa' >Data Vencimento Fim:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_vencimento_fim_despesa" name="dt_vencimento_fim_despesa"/> 
+    </div>
+</div>
+<div class='row'>
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='dt_pagamento_ini_despesa'>Data Pagamento  Inicío:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_pagamento_ini_despesa" name="dt_pagamento_ini_despesa"/> 
+    </div>
+    <div class='col-md-2'>
+        <label for='dt_pagamento_fim_despesa' >Data Pagamento Fim:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_pagamento_fim_despesa" name="dt_pagamento_fim_despesa"/> 
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-4">
+        &nbsp;
+    </div>
+    <div class="col-md-4" align="center">                
+        <button type='button' class="btn btn-primary btn-sm" id='cmdPesqDespesa'>Pesquisar</button>    
+    </div>
+</div> 
+<br>
+<div id='despesa'>
+    <div class='overflow-auto' style='height:400px;overflow-y: scroll;' >
+        <table class='table table-striped table-bordered ' style='width:100%' id='tblDespesa' >
+            <thead style='position: sticky; top: 0px; background-color: white;'>
+                <tr>
+                    <th width='5' align='center'><font style='font-size: 15px'><b>#</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Identificação do Lançamento</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Dt. Cadastro</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Usuário Cadastro</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Empresa</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Conta</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Dt. Faturamento</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Dt. Vencimento</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Dt. Pagamento</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Status</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Tipo</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Tipo Operação</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Grupo do Lançamento</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Recebido de/Pago Para</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Metódo Pag.</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Vl. Lançamento</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Vl. Pendente</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Ação</b></font></th>
+                </tr>
+            </thead>
+            <tfoot style='position: sticky; bottom: 0px; background-color: white;'>
+                <tr>
+                    <td width='100' colspan=14 >&nbsp;</td>
+                    <td width='100' ><b>Total R$<b/></td>
+                    <td align='center' id='totalDespesaLancamento'></td>
+                    <td align='center' id='totalDespesaPendente'></td>
+                    <td align='center'>&nbsp;</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">        
+        <hr>
+    </div>
+</div>

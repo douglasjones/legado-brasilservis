@@ -1,0 +1,878 @@
+<?php
+
+namespace App\Model;
+
+use App\Utils\Util;
+use GuzzleHttp\Client;
+use Throwable;
+
+class Lead {
+
+    public $pdo;
+
+    public function __construct($pdo) {
+        $this->pdo = $pdo;
+    }
+    public function excluirLocalQrCode($pk){
+        Util::execDelete('lead_ronda_qrcode'," leads_pk = ".$pk,$this->pdo);
+    }
+
+    public function salvarQrCode($lead){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $fields = array();
+        $fields['leads_pk'] = $lead['leads_pk'];
+        $fields['ds_ponto'] = $lead['local_ponto'];
+        $fields["dt_ult_atualizacao"] = "sysdate()";
+        $fields["usuario_ult_atualizacao_pk"] = $_SESSION['session_user']['par1'];
+
+        
+
+        $fields["dt_cadastro"] = "sysdate()";
+        $fields["usuario_cadastro_pk"]   =  $_SESSION['session_user']['par1'];
+
+        $pk = Util::execInsert("lead_ronda_qrcode", $fields,$this->pdo);
+        $retorno->status = true;
+        $retorno->message = 'Dados cadastrados com sucesso';
+        $retorno->data = $pk;
+    
+        return $retorno;
+    }
+    public function excluir($pk){
+
+
+        Util::execDelete('contatos'," leads_pk = ".$pk,$this->pdo);
+        Util::execDelete('movimentacao_estoque'," leads_pk = ".$pk,$this->pdo);
+        Util::execDelete('processos'," leads_pk = ".$pk,$this->pdo);
+        Util::execDelete('documentos'," leads_pk = ".$pk,$this->pdo);
+        Util::execDelete('ocorrencias'," leads_pk = ".$pk,$this->pdo);
+
+        //delete contratos_itens
+        $sql="";
+        $sql.=" delete from contratos_itens where pk in(select pk
+          from (select ci.pk from leads l
+          inner join processos p on l.pk = p.leads_pk
+          inner join processos_etapas pe on p.pk = pe.processos_pk
+          inner join contratos c on pe.pk = c.processos_etapas_pk
+          inner join contratos_itens ci on c.pk = ci.contratos_pk
+         where l.pk =".$pk.")x)";
+
+
+        $stmt = $this->pdo->prepare( $sql);
+        $stmt->execute();
+
+        //delete propostas_itens
+        $sql="";
+        $sql.=" delete from propostas_itens where pk in(select pk 
+                from (select pi.pk from propostas_itens pi
+                INNER JOIN propostas p on pi.propostas_pk = p.pk
+                WHERE p.leads_pk  =".$pk.")x)";
+
+        $stmt = $this->pdo->prepare( $sql);
+        $stmt->execute();
+
+        //delete contratos
+        $sql="";
+        $sql.=" delete from contratos where pk in (select pk 
+                from (select c.pk from contratos c 
+                inner join processos_etapas pe on pe.pk = c.processos_etapas_pk
+                inner join processos p on pe.processos_pk = p.pk 
+                where p.leads_pk =".$pk.")x)";
+
+        $stmt = $this->pdo->prepare( $sql);
+        $stmt->execute();
+
+        //delete processos_etapas
+        /*$sql="";
+        $sql.=" delete from processos_etapas where pk in ( select pk 
+                from (select pe.pk from processos_etapas pe
+                inner join processos p on pe.processos_pk = p.pk 
+                where p.leads_pk =".$pk."),x)";
+        $stmt = $this->pdo->prepare( $sql);
+        $stmt->execute();*/
+
+        //delete agenda_colaborador
+
+        $sql="";
+        $sql.=" delete from agenda_colaborador_padrao where contratos_pk in (select pk 
+                from (select c.pk from contratos c 
+                inner join processos_etapas pe on pe.pk = c.processos_etapas_pk
+                inner join processos p on pe.processos_pk = p.pk 
+                where p.leads_pk =".$pk.")x)";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        Util::execDelete('leads'," pk = ".$pk,$this->pdo);
+
+    }
+
+    public function salvar($lead){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $fields = array();
+        $fields['ds_lead'] = str_replace("'", " ", $lead['ds_lead']);
+        $fields['ds_endereco'] = str_replace("'", " ", $lead['ds_endereco']);
+        $fields['ds_numero'] = $lead['ds_numero'];
+        $fields['ds_complemento'] = $lead['ds_complemento'];
+        $fields['ds_cep'] = $lead['ds_cep'];
+        $fields['ds_bairro'] = str_replace("'", " ", $lead['ds_bairro']);
+        $fields['ds_cidade'] = $lead['ds_cidade'];
+        $fields['ds_uf'] = $lead['ds_uf'];
+        $fields['ic_cliente'] = $lead['ic_cliente'];
+        $fields['ds_obs'] = $lead['ds_obs'];
+        $fields['n_qtde_torres'] = $lead['n_qtde_torres'];
+
+        $fields['ds_razao_social'] = str_replace("'", " ", $lead['ds_razao_social']);
+        $fields['ds_cpf_cnpj'] = $lead['ds_cpf_cnpj'];
+        $fields['ds_ie'] = $lead['ds_ie'];
+        $fields['ds_tel'] = $lead['ds_tel'];
+        $fields['ds_fax'] = $lead['ds_fax'];
+        $fields['ds_site'] = $lead['ds_site'];
+        $fields['ds_email'] = $lead['ds_email'];
+        $fields['supervisores_pk'] = $lead['supervisores_pk'];
+        $fields['supervisor1_pk'] = $lead['supervisor1_pk'];
+        $fields['supervisor2_pk'] = $lead['supervisor2_pk'];
+        $fields['responsavel_pk'] = $lead['responsavel_pk'];
+        $fields['segmentos_pk'] = $lead['segmentos_pk'];
+        $fields['leads_pai_pk'] = $lead['leads_pai_pk'];
+        $fields['ic_tipo_lead'] = $lead['ic_tipo_lead'];
+        $fields['ds_email'] = $lead['ds_email'];
+        $fields['ds_tipo'] = $lead['ds_tipo'];
+        $fields['ds_porte'] = $lead['ds_porte'];
+        $fields['dt_abertura'] = $lead['dt_abertura'];
+        $fields['ds_atividade_principal'] = $lead['ds_atividade_principal'];
+        $fields['ds_atividade_secundaria'] = $lead['ds_atividade_secundaria'];
+        $fields['ds_socio1'] = $lead['ds_socio1'];
+        $fields['ds_socio2'] = $lead['ds_socio2'];
+        $fields['ds_socio3'] = $lead['ds_socio3'];
+        if(isset($lead['ic_inss_aplicacao']) && !empty($lead['ic_inss_aplicacao'])){
+            $fields['ic_inss_aplicacao'] = $lead['ic_inss_aplicacao'];
+        }
+        if(isset($lead['ic_iss_retido_tomador']) && !empty($lead['ic_iss_retido_tomador'])){
+            $fields['ic_iss_retido_tomador'] = $lead['ic_iss_retido_tomador'];
+        }
+        $fields['ic_iss_retido_tomador'] = $lead['ic_iss_retido_tomador'];
+      
+
+        if(isset($lead['dia_faturamento']) && !empty($lead['dia_faturamento'])){
+         	$fields['dia_faturamento'] = $lead['dia_faturamento'];
+        }
+       
+        $fields["dt_ult_atualizacao"] = "sysdate()";
+        $fields["usuario_ult_atualizacao_pk"] = $_SESSION['session_user']['par1'];
+
+        if($lead['pk']  == ""){
+
+            $fields["dt_cadastro"] = "sysdate()";
+            $fields["usuario_cadastro_pk"]   =  $_SESSION['session_user']['par1'];
+
+            $pk = Util::execInsert("leads", $fields,$this->pdo);
+            $retorno->status = true;
+            $retorno->message = 'Dados cadastrados com sucesso';
+            $retorno->data = $pk;
+        }
+        else{
+            Util::execUpdate("leads", $fields, " pk = ".$lead['pk'],$this->pdo);
+            $pk = $lead['pk'];
+            $retorno->status = true;
+            $retorno->message = 'Dados atualizado com sucesso';
+            $retorno->data = $pk;
+        }
+        return $retorno;
+
+    }
+
+
+
+    public function listar_por_ds_lead($ds_lead,$ic_cliente,$supervisores_pk,$responsavel_pk,$ds_lead_grid,$ic_tipo_lead,$leads_pai_pk, $leads_clientes_pk,$segmentos_pk){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        //PAGINAÇÃO
+        if(isset($_GET['start']) && $_GET['start']!=0){
+            $displayStart = $_GET['start'];
+        }
+        else{
+            $displayStart = 0;
+        }
+
+        if(isset($_GET['length'])){
+            $displayRange = $_GET['length'];
+            $lengthSql = " LIMIT ".intval($displayRange)." OFFSET ".intval($displayStart);
+        }
+        else{
+            $lengthSql = " ";
+        }
+        $search = "";
+        if (isset($_GET['search']['value']) and $_GET['search']['value'] != '') {
+            $pesq = $_GET['search']['value'];
+            $search .= " AND (
+                            l.ds_lead LIKE '%".$pesq."%' OR
+                            ll.ds_lead LIKE '%".$pesq."%' 
+                        )";
+        }
+
+        $sql ="";
+        $sql.="select l.pk, l.dt_cadastro, l.usuario_cadastro_pk, l.dt_ult_atualizacao, l.usuario_ult_atualizacao_pk ";
+        $sql.="       ,case WHEN l.leads_pai_pk is null  THEN
+                            l.ds_lead 
+                        ELSE 
+                            concat(ll.ds_lead,' - Posto:',l.ds_lead) 
+                        END ds_lead";
+        $sql.="       ,l.ds_endereco ";
+        $sql.="       ,l.ds_numero ";
+        $sql.="       ,l.ds_complemento ";
+        $sql.="       ,l.ds_cep ";
+        $sql.="       ,l.ds_bairro ";
+        $sql.="       ,l.ds_cidade ";
+        $sql.="       ,l.ds_uf ";
+        $sql.="       ,case l.ic_cliente when 1 then 'Ativo' when 2 then 'Desativado' end ic_cliente ";
+        $sql.="       ,l.ds_obs ";
+        $sql.="       ,l.n_qtde_torres ";
+        $sql.="       ,l.ds_razao_social";
+        $sql.="       ,l.ds_cpf_cnpj";
+        $sql.="       ,l.ds_ie";
+        $sql.="       ,l.ds_tel";
+        $sql.="       ,l.ds_fax";
+        $sql.="       ,l.ds_site";
+        $sql.="       ,l.ds_email";
+        $sql.="       ,l.supervisores_pk";
+        $sql.="       ,l.responsavel_pk";
+        $sql.="       ,l.segmentos_pk";
+        $sql.="       ,l.ic_tipo_lead";
+        $sql.="       ,case l.ic_tipo_lead when 1 then 'Cliente' when 2 then 'Posto de Trabalho' end ds_tipo_lead";
+        $sql.="       ,l.leads_pai_pk";
+        $sql.="       ,l.dia_faturamento";
+        $sql.="  from leads l ";
+        $sql.="  left join leads ll on l.leads_pai_pk = ll.pk";
+        $sql.=" where 1=1 ";
+        $sql.= $search;
+        if($ic_cliente != ""){
+            $sql.=" and l.ic_cliente = ".$ic_cliente;
+        }
+        if($segmentos_pk != ""){
+            $sql.=" and l.segmentos_pk = ".$segmentos_pk;
+        }
+        if($leads_clientes_pk!="" && $leads_pai_pk!=""){
+            $sql .= " and (l.pk = " . $leads_clientes_pk . " OR l.leads_pai_pk = " . $leads_clientes_pk . ")";
+        }
+
+
+        if($ic_tipo_lead!=""){
+            $sql.=" and l.ic_tipo_lead = ".$ic_tipo_lead;
+        }
+
+
+        if($ds_lead_grid != ""){
+            $sql.=" and l.ds_lead like '%".$ds_lead_grid."%'";
+        }
+        if($ds_lead != ""){
+            $sql.=" and l.pk = ".$ds_lead;
+        }
+
+        if($supervisores_pk != ""){
+            $sql.=" and l.supervisores_pk =".$supervisores_pk;
+        }
+        if($responsavel_pk != ""){
+            $sql.=" and l.responsavel_pk =".$responsavel_pk;
+        }
+        $sql.=" order by ds_lead asc ";
+      
+
+
+        $stmt = $this->pdo->prepare( $sql.$lengthSql );
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $stmtCount = $this->pdo->prepare( $sql );
+        $stmtCount->execute();
+        $rowsCount = $stmtCount->fetchAll(\PDO::FETCH_ASSOC);
+
+        $retorno->status = true;
+        $retorno->message = 'Dados carregados com sucesso';
+        $retorno->data = $rows;
+        $retorno->iTotalDisplayRecords = count($rowsCount);
+        $retorno->iTotalRecords = count($rowsCount);
+
+        echo json_encode($retorno);
+        exit(0);
+    }
+    public function listar_por_ds_lead_pai_pk($ic_tipo_lead, $leads_pai_pk,$ic_status){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $sql ="";
+        $sql.="select distinct(l.pk), l.dt_cadastro, l.usuario_cadastro_pk, l.dt_ult_atualizacao, l.usuario_ult_atualizacao_pk ";
+        $sql.="       ,case WHEN l.leads_pai_pk is null  THEN
+                            l.ds_lead 
+                        ELSE 
+                            concat(ll.ds_lead,' - Posto:',l.ds_lead) 
+                        END ds_lead";
+        $sql.="       ,l.ds_endereco ";
+        $sql.="       ,l.ds_numero ";
+        $sql.="       ,l.ds_complemento ";
+        $sql.="       ,l.ds_cep ";
+        $sql.="       ,l.ds_bairro ";
+        $sql.="       ,l.ds_cidade ";
+        $sql.="       ,l.ds_uf ";
+        $sql.="       ,case l.ic_cliente when 1 then 'Ativo' when 2 then 'Desativado' end ic_cliente ";
+        $sql.="       ,l.ds_obs ";
+        $sql.="       ,l.n_qtde_torres ";
+        $sql.="       ,l.ds_razao_social";
+        $sql.="       ,l.ds_cpf_cnpj";
+        $sql.="       ,l.ds_ie";
+        $sql.="       ,l.ds_tel";
+        $sql.="       ,l.ds_fax";
+        $sql.="       ,l.ds_site";
+        $sql.="       ,l.ds_email";
+        $sql.="       ,l.supervisores_pk";
+        $sql.="       ,l.responsavel_pk";
+        $sql.="       ,l.segmentos_pk";
+        $sql.="       ,l.ic_tipo_lead";
+        $sql.="       ,case l.ic_tipo_lead when 1 then 'Cliente' when 2 then 'Posto de Trabalho' end ds_tipo_lead";
+        $sql.="       ,l.leads_pai_pk";
+        $sql.="       ,l.dia_faturamento";
+        $sql.="  from leads l ";
+        $sql.="  left join leads ll on l.leads_pai_pk = ll.pk";
+        $sql.=" where 1=1 ";
+        if($ic_status != ""){
+            $sql.=" and l.ic_cliente = ".$ic_status;
+        }
+        if($ic_tipo_lead!=""){
+            $sql.=" and l.ic_tipo_lead = ".$ic_tipo_lead;
+        }
+        if($leads_pai_pk!=""){
+            $sql.=" and l.leads_pai_pk = ".$leads_pai_pk;
+        }
+        if(!empty($_SESSION['session_user']['par6'])){
+            $sql.=" and (l.pk=".$_SESSION['session_user']['par6']." OR l.leads_pai_pk= ".$_SESSION['session_user']['par6'].")";
+        }
+
+        $sql.=" order by ds_lead asc ";
+
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+    }
+    public function listarPorPk($pk){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+        try{
+            $sql ="";
+            $sql.="select l.pk, date_format(l.dt_cadastro,'%d/%m/%Y') dt_cadastro, l.usuario_cadastro_pk, date_format(l.dt_ult_atualizacao,'%d/%m/%Y') dt_ult_atualizacao, l.usuario_ult_atualizacao_pk  ";
+            $sql.="       ,l.ds_lead ";
+            $sql.="       ,l.ds_endereco ";
+            $sql.="       ,l.ds_numero ";
+            $sql.="       ,l.ds_complemento ";
+            $sql.="       ,l.ds_cep ";
+            $sql.="       ,l.ds_bairro ";
+            $sql.="       ,l.ds_cidade ";
+            $sql.="       ,l.ds_uf ";
+            $sql.="       ,l.ic_cliente ";
+            $sql.="       ,case l.ic_cliente when 1 then 'Sim' when 2 then 'Não' end ds_ic_cliente";
+            $sql.="       ,l.ds_obs ";
+            $sql.="       ,l.dia_faturamento";
+            $sql.="       ,l.ic_inss_aplicacao";
+            $sql.="       ,l.ic_iss_retido_tomador";
+            $sql.="       ,l.n_qtde_torres ";
+            $sql.="       ,l.ds_razao_social";
+            $sql.="       ,l.ds_cpf_cnpj";
+            $sql.="       ,l.ds_ie";
+            $sql.="       ,l.ds_tel";
+            $sql.="       ,l.ds_fax";
+            $sql.="       ,l.ds_site";
+            $sql.="       ,l.ds_email";
+            $sql.="       ,l.supervisores_pk";
+            $sql.="       ,l.supervisor1_pk";
+            $sql.="       ,l.supervisor2_pk";
+            $sql.="       ,l.responsavel_pk";
+            $sql.="       ,l.segmentos_pk";
+            $sql.="       ,l.ic_tipo_lead";
+            $sql.="       ,l.leads_pai_pk";
+            $sql.="       ,u.ds_usuario ds_supervisor";
+            $sql.="       ,u.ds_email ds_email_supervisor";
+            $sql.="       ,ur.ds_usuario ds_responsavel";
+            $sql.="       ,l.ds_tipo";
+            $sql.="       ,l.ds_porte";
+            $sql.="       ,date_format(l.dt_abertura,'%d/%m/%Y') dt_abertura";
+            $sql.="       ,l.ds_atividade_principal";
+            $sql.="       ,l.ds_atividade_secundaria";
+            $sql.="       ,l.ds_socio1";
+            $sql.="       ,l.ds_socio2";
+            $sql.="       ,l.ds_socio3";
+            $sql.="       ,usu.ds_usuario ds_usuario_cadastro";
+
+            $sql.="  from leads l";
+            $sql.="        left join usuarios u on u.pk = l.supervisores_pk";
+            $sql.="        left join usuarios ur on ur.pk = l.responsavel_pk";
+            $sql.="        Inner join usuarios usu on usu.pk = l.usuario_cadastro_pk";
+            $sql.=" where l.pk = $pk ";
+
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+
+            $retorno->data = $rows;
+            $retorno->status = true;
+            $retorno->message = 'Dados Salvos com sucesso !';
+            return $retorno;
+        }
+        catch(Throwable $th){
+            print_r($th->getMessage());
+            die();
+        }
+
+        
+    }
+    public function verificarCNPJ($ds_cpf_cnpj){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $sql ="";
+        $sql.="select pk, dt_cadastro, usuario_cadastro_pk, dt_ult_atualizacao, usuario_ult_atualizacao_pk ";
+        $sql.="  from leads ";
+        $sql.=" where 1=1 ";
+        if($ds_cpf_cnpj != ""){
+            $sql.=" and ds_cpf_cnpj = '".$ds_cpf_cnpj."'";
+        }
+        $sql.=" order by ds_lead asc ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+
+    }
+
+    public function listarQRCode($leads_pk){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $sql ="";
+        $sql.="select pk, dt_cadastro, usuario_cadastro_pk, dt_ult_atualizacao, usuario_ult_atualizacao_pk,ds_ponto ";
+        $sql.="  from lead_ronda_qrcode ";
+        $sql.=" where 1=1 ";
+        if($leads_pk != ""){
+            $sql.=" and leads_pk = '".$leads_pk."'";
+        }
+        $sql.=" order by leads_pk asc ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+
+    }
+    public function listarEndereco($leads_pk){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+        $sql= "";
+        $sql.="select pk, dt_cadastro, usuario_cadastro_pk, dt_ult_atualizacao, usuario_ult_atualizacao_pk  ";
+        $sql.="       ,ds_cep ";
+        $sql.="       ,ds_endereco ";
+        $sql.="       ,ds_numero ";
+        $sql.="       ,ds_complemento ";
+        $sql.="       ,ds_bairro ";
+        $sql.="       ,ds_cidade ";
+        $sql.="       ,ds_uf ";
+        $sql.="       ,responsavel_pk";
+        $sql.="       ,segmentos_pk";
+        $sql.="       ,ic_tipo_lead";
+        $sql.="       ,leads_pai_pk";
+        $sql.="       ,CONCAT(ds_endereco, ' N°:',ds_numero, ' (', ds_cidade , '-',ds_uf,')') AS ds_endereco_completo ";
+        $sql.="       ,dia_faturamento";
+        $sql.="  from leads ";
+        $sql.=" where 1=1";
+        if($leads_pk!=""){
+            $sql.=" and pk =".$leads_pk;
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+
+    }
+    public function listarTodos($ds_lead){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $sql ="";
+        $sql.="select l.pk, l.dt_cadastro, l.usuario_cadastro_pk, l.dt_ult_atualizacao, l.usuario_ult_atualizacao_pk ";
+        $sql.="       ,case WHEN l.leads_pai_pk is null  THEN
+                            l.ds_lead 
+                        ELSE 
+                            concat(ll.ds_lead,' - Posto:',l.ds_lead) 
+                        END ds_lead";
+        $sql.="       ,l.ds_endereco ";
+        $sql.="       ,l.ds_numero ";
+        $sql.="       ,l.ds_complemento ";
+        $sql.="       ,l.ds_cep ";
+        $sql.="       ,l.ds_bairro ";
+        $sql.="       ,l.ds_cidade ";
+        $sql.="       ,l.ds_uf ";
+        $sql.="       ,case l.ic_cliente when 1 then 'Ativo' when 2 then 'Desativado' end ic_cliente ";
+        $sql.="       ,l.ds_obs ";
+        $sql.="       ,l.n_qtde_torres ";
+        $sql.="       ,l.ds_razao_social";
+        $sql.="       ,l.ds_cpf_cnpj";
+        $sql.="       ,l.ds_ie";
+        $sql.="       ,l.ds_tel";
+        $sql.="       ,l.ds_fax";
+        $sql.="       ,l.ds_site";
+        $sql.="       ,l.ds_email";
+        $sql.="       ,l.supervisores_pk";
+        $sql.="       ,l.responsavel_pk";
+        $sql.="       ,l.segmentos_pk";
+        $sql.="       ,l.ic_tipo_lead";
+        $sql.="       ,case l.ic_tipo_lead when 1 then 'Cliente' when 2 then 'Posto de Trabalho' end ds_tipo_lead";
+        $sql.="       ,l.leads_pai_pk";
+        $sql.="       ,l.dia_faturamento";
+        $sql.="  from leads l ";
+        $sql.="  left join leads ll on l.leads_pai_pk = ll.pk";
+        $sql.=" where 1=1 ";
+        $sql.=" and l.ic_cliente = 1 ";
+        $sql.=" order by ds_lead asc ";
+     
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+    }
+
+    public function listarLeadPai(){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+
+
+        $sql ="";
+        $sql.="select l.pk, l.dt_cadastro, l.usuario_cadastro_pk, l.dt_ult_atualizacao, l.usuario_ult_atualizacao_pk  ";
+        $sql.="       ,l.ds_lead ";
+        $sql.="       ,l.ds_endereco ";
+        $sql.="       ,l.ds_numero ";
+        $sql.="       ,l.ds_complemento ";
+        $sql.="       ,l.ds_cep ";
+        $sql.="       ,l.ds_bairro ";
+        $sql.="       ,l.ds_cidade ";
+        $sql.="       ,l.ds_uf ";
+        $sql.="       ,l.ic_cliente ";
+        $sql.="       ,case l.ic_cliente when 1 then 'Sim' when 2 then 'Não' end ds_ic_cliente";
+        $sql.="       ,l.ds_obs ";
+        $sql.="       ,l.dia_faturamento";
+        $sql.="       ,l.n_qtde_torres ";
+        $sql.="       ,l.ds_razao_social";
+        $sql.="       ,l.ds_cpf_cnpj";
+        $sql.="       ,l.ds_ie";
+        $sql.="       ,l.ds_tel";
+        $sql.="       ,l.ds_fax";
+        $sql.="       ,l.ds_site";
+        $sql.="       ,l.ds_email";
+        $sql.="       ,l.supervisores_pk";
+        $sql.="       ,l.responsavel_pk";
+        $sql.="       ,l.segmentos_pk";
+        $sql.="       ,l.ic_tipo_lead";
+        $sql.="       ,l.leads_pai_pk";
+        $sql.="       ,u.ds_usuario ds_supervisor";
+        $sql.="       ,u.ds_email ds_email_supervisor";
+        $sql.="       ,ur.ds_usuario ds_responsavel";
+
+        $sql.="  from leads l";
+        $sql.="        left join usuarios u on u.pk = l.supervisores_pk";
+        $sql.="        left join usuarios ur on ur.pk = l.responsavel_pk";
+        $sql.=" where l.ic_cliente = 1 ";
+        $sql.=" and l.ic_tipo_lead = 1 ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+    }
+
+    public function listaLeadsClientes(){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $sql ="";
+        $sql.=" SELECT l.pk, l.ds_lead, l.ds_cpf_cnpj";
+        $sql.="   FROM leads l";
+        //$sql.="  WHERE l.ic_tipo_lead=1";
+        $sql.="  WHERE 1=1";
+        $sql.="    AND l.ic_cliente=1";
+        $sql.="  GROUP BY l.pk";
+        $sql.="  ORDER BY l.ds_lead";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+    }
+    
+    public function listarCpfCnpjClientes(){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $sql ="";
+        $sql.=" SELECT l.pk, l.ds_lead, l.ds_cpf_cnpj";
+        $sql.="   FROM leads l";
+        $sql.="  WHERE l.ic_tipo_lead=1";
+        $sql.="    AND l.ic_cliente=1";
+        $sql.="    AND l.ds_cpf_cnpj<>''";
+        $sql.="  GROUP BY l.ds_cpf_cnpj";
+        $sql.="  ORDER BY l.ds_lead";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+    }
+
+    public function listaLeadsPostosTrabalho($leads_pk){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $sql ="";
+        $sql.=" SELECT l.pk, l.ds_lead";
+        $sql.="   FROM leads l";
+        $sql.="  WHERE l.ic_tipo_lead=2";
+        if($leads_pk!=""){
+            $sql.="    AND l.leads_pai_pk=".$leads_pk;    
+        }    
+        $sql.="    AND l.ic_cliente=1";     
+        $sql.="  GROUP BY l.pk";
+        $sql.="  ORDER BY l.ds_lead"; 
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+    }
+    public function listarClienteColaborador(){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $sql ="";
+        $sql.=" SELECT l.pk,";
+        $sql.="        l.ds_lead";
+        $sql.=" FROM leads l ";
+        $sql.=" left JOIN leads ll ON l.pk = ll.leads_pai_pk";
+        $sql.=" left JOIN agenda_colaborador_padrao a ON ll.pk = a.leads_pk";
+        $sql.=" WHERE 1 = 1 ";
+        $sql.="    AND l.ic_cliente = 1";
+        $sql.="    AND l.ic_tipo_lead = 1";
+        $sql.="    AND a.dt_cancelamento IS NULL";    
+        $sql.=" GROUP BY l.pk";
+        $sql.=" ORDER BY l.ds_lead";    
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+    }
+    public function listaColaboradorPostosTrabalho($leads_pk){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $sql ="";
+        $sql.=" SELECT l.pk,";
+        $sql.="        l.ds_lead";
+        $sql.=" FROM leads l";
+        $sql.=" WHERE 1=1";
+        if(!empty($leads_pk)){
+            $sql.=" AND l.leads_pai_pk=".$leads_pk;
+            $sql.=" or l.pk=".$leads_pk;
+        }
+        $sql.="    AND l.ic_cliente = 1";
+        $sql.="    Group by l.ds_lead";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+    }
+    public function listaFornecedorPostosTrabalho($leads_pk){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $sql ="";
+        $sql.=" SELECT l.pk,";
+        $sql.="        l.ds_lead,";
+        $sql.="        l.ic_cliente";
+        $sql.=" FROM leads l  ";
+        $sql.=" WHERE 1=1 ";
+        if(!empty($leads_pk)){
+            $sql.=" AND l.leads_pai_pk=".$leads_pk;
+        }
+        $sql.="    AND l.ic_tipo_lead = 2";
+        $sql.="    Group by l.pk";
+        $sql.="  ORDER BY l.ic_cliente = 1 desc ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+    }
+	public function listarLeadsPorEmpresa($empresas_pk){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $sql ="";
+        $sql.=" SELECT l.pk, l.ds_lead";
+        $sql.="   FROM leads l";
+        $sql.="   LEFT JOIN processos p ON l.pk = p.leads_pk";
+        $sql.="   LEFT JOIN processos_etapas pe ON p.pk = pe.processos_pk";
+        $sql.="   LEFT JOIN contratos c ON pe.pk = c.processos_etapas_pk";
+        if(!empty($empresas_pk)){
+            $sql.=" WHERE c.empresas_pk=".$empresas_pk;
+        }
+        $sql.=" GROUP BY l.pk";
+        $sql.=" ORDER BY l.ds_lead";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+    }
+	public function listarLeadsClienteEmpresa($empresas_pk, $ic_status, $ic_tipo_lead, $leads_pai_pk){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $sql ="";
+        $sql.=" SELECT l.pk, l.ds_lead";
+        $sql.="   FROM leads l";
+        $sql.="   LEFT JOIN processos p ON l.pk = p.leads_pk";
+        $sql.="   LEFT JOIN processos_etapas pe ON p.pk = pe.processos_pk";
+        $sql.="   LEFT JOIN contratos c ON pe.pk = c.processos_etapas_pk";
+        $sql.=" WHERE c.empresas_pk=".$empresas_pk;
+        if($ic_status != ""){
+            $sql.=" and l.ic_cliente = ".$ic_status;
+        }
+        if($ic_tipo_lead!=""){
+            $sql.=" and l.ic_tipo_lead = ".$ic_tipo_lead;
+        }
+        if($leads_pai_pk!=""){
+            $sql.=" and l.leads_pai_pk = ".$leads_pai_pk;
+        }
+        
+        $sql.=" GROUP BY l.pk";
+        $sql.=" ORDER BY l.ds_lead";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $retorno;
+    }
+	public function pegarPkPorRazaoSocial($razao_social,$cpf_cnpj){
+        $retorno = new \StdClass; //Estrutura de retorno para controller
+        $retorno->status = false; //Retorno setado status como false
+        $retorno->data = []; //Retorno data setado como vazio
+
+        $sql ="";
+        $sql.=" SELECT l.pk";
+        $sql.="   FROM leads l";
+        $sql.=" WHERE l.ds_razao_social='".$razao_social."'";
+        $sql.=" and l.ds_cpf_cnpj = '".$cpf_cnpj."'";
+        $sql.=" GROUP BY l.pk";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $retorno->data = $rows;
+        $retorno->status = true;
+        $retorno->message = 'Dados Salvos com sucesso !';
+        return $rows[0]['pk'];
+    }
+
+
+}

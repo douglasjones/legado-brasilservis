@@ -1,0 +1,231 @@
+{% extends "theme/base.login.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="/assets/js/local/area_colaborador.js?v=14"></script>
+    <!-- CUSTOM JS -->
+    <script src="/assets/js/global/utils.js"></script>
+    <script src="/assets/js/global/bestflow.js"></script>
+
+    <script src="https://cdn.rawgit.com/eduardolundgren/tracking.js/v1.1.3/build/tracking-min.js"></script>
+    <script src="https://cdn.rawgit.com/eduardolundgren/tracking.js/v1.1.3/build/data/face-min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const resultDiv = document.getElementById("result");
+            const webcamVideo = document.getElementById("webcamVideo");
+            const webcamCanvas = document.getElementById("webcamCanvas");
+
+            const webcamContext = webcamCanvas.getContext("2d");
+
+            const webcamTracker = new tracking.ObjectTracker("face");
+
+            webcamTracker.setInitialScale(4);
+            webcamTracker.setStepSize(2);
+            webcamTracker.setEdgesDensity(0.1);
+
+            tracking.track("#webcamCanvas", webcamTracker);
+
+            const captureWebcamButton = document.getElementById("captureWebcam");
+            captureWebcamButton.addEventListener("click", function () {
+                captureWebcam();
+                $("#entrada").css('display', 'none');
+                $("#webcamVideo").css('display', 'none');
+                $("#button_tirar_foto").css('display', 'none');
+                $("#confirmação").css('display', 'inline');
+                $("#button_confirmacao").css('display', 'inline');
+                $("#webcamCanvas").css('display', 'inline');
+            });
+
+
+            function captureWebcam() {
+                webcamContext.drawImage(webcamVideo, 0, 0, webcamCanvas.width, webcamCanvas.height);
+                const photoDataUrl = webcamCanvas.toDataURL("image/png");
+            }
+
+
+            // Inicie o rastreamento da webcam assim que a página estiver pronta
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    webcamVideo.srcObject = stream;
+                })
+                .catch(function (error) {
+                    console.error("Erro ao acessar a câmera:", error);
+                });
+        });
+    </script>
+{% endblock %}
+{% block title %}
+    Passo 4
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link rel="preload" href="/assets/img/logo/logo-white.png" as="image">
+    <link rel="stylesheet" href="/assets/plugins/preloader/preloader.css">
+
+    <!-- FONTS  -->
+    <link rel="stylesheet" href="/assets/fonts/Poppins/poppins.css">
+
+    <!-- GLOBAL CSS -->
+    <link rel="stylesheet" href="/assets/plugins/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/assets/plugins/muze-template/app.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+    <style>
+        #overflowTest {
+            background: #cccccc;
+            border-radius: 20px;
+            color: black;
+            padding: 20px;
+            width: 80%;
+            height: 100px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+        }
+        .onoff input.toggle {
+            display: none;
+        }
+
+        .onoff input.toggle + label {
+            display: inline-block;
+            position: relative;
+            box-shadow: inset 0 0 0px 1px #d5d5d5;
+
+            height: 25px;
+            width: 30px;
+            border-radius: 30px;
+        }
+
+        .onoff input.toggle + label:before {
+            content: "";
+            display: block;
+            height: 25px;
+            width: 30px;
+            border-radius: 30px;
+            background: #ff9a66;
+            transition: 0.1s ease-in-out;
+        }
+
+        .onoff input.toggle + label:after {
+            content: "";
+            position: absolute;
+            height: 25px;
+            width: 30px;
+            top: 0;
+            left: 0px;
+            background: #ff9a66;
+            border-radius: 30px;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: 0.1s ease-in-out;
+        }
+
+        .onoff input.toggle:checked + label:before {
+            width: 70px;
+            background: #14074f;
+        }
+
+        .onoff input.toggle:checked + label:after {
+            left: 40px;
+        }
+
+        .balao{background:#cccccc; font-size: 10px; padding:20px; position:relative; top:20px; left:20px; width:100%; float:right;  }
+        .balao:before{ content:''; position: absolute; width:20px; height:20px; left:-10px; top:25px; background:#cccccc; -webkit-transform:rotate(45deg); }
+    </style>
+{% endblock %}
+{% block content %}
+    <main class="content_wrapper" >
+        <div class="container">
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div  tabindex="-1" role="dialog" aria-labelledby="modal-set-ramalLabel" >
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-12" style="padding: 15px;background-color: #F7F7F7">
+                                <div class="card-body" style="text-align: center">
+                                    <div class='row'>
+                                        <div class='col-md-2'>
+                                        </div>
+                                        <div class='col-md-8'>
+                                            <img width="300px" src="https://server.gpros.com.br/comercial/logos/logoOficial.png" >
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            &nbsp;
+                                            <input type="hidden" id="id_empresa" value="{{ id_empresa }}">
+                                            <input type="hidden" id="id_colaborador" value="{{ id_colaborador }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="contato-itens row">
+                                            <div class="col-4">
+                                                <img alt="" src="/assets/img/passos.png" style="width: 100px;text-align: center">
+                                            </div>
+                                            <div class="col-8">
+                                                <div class="balao" id="entrada"><b>Enquadre seu rosto no quadrado abaixo.</b> </div>
+                                                <div class="balao" id="confirmação" style="display: none"><b>A foto ficou boa ? Se sim, clique em Enviar Foto. Caso contrário refazer</b> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-10" id="button_tirar_foto" >
+                                        <div class="contato-itens row">
+                                            <div class="col-md-3">
+
+                                            </div>
+                                            <div class="col-md-8">
+                                                <button  style="width:70%;background-color: #14074f;color: #ff9a66" class="btn" id="captureWebcam">Capturar Rosto da Webcam</button><br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" id="button_confirmacao" style="display: none">
+                                        <div class="contato-itens row">
+                                            <div class="col-md-2">
+
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button  style="width:70%;background-color: #ff9a66;color: #14074f" class="btn" id="refazer">Refazer</button><br>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button  style="width:70%;background-color: #14074f;color: #ff9a66" class="btn" id="enviarFoto">Enviar Foto</button><br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-2">
+                                        </div>
+                                        <div class="col-9" >
+                                            <video id="webcamVideo" style="width: 50px;height: 300px;background-color: white;" autoplay playsinline></video>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2">
+                                        </div>
+                                        <div class="col-9" >
+                                            <canvas id="webcamCanvas" style="width: 420px;height: 300px;background-color: white;"></canvas>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+{% endblock %}

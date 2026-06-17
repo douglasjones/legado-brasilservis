@@ -1,0 +1,141 @@
+{% set area = 'administracao' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/js/local/atendimento.js?v=14"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v={{ JSversion }}"></script>
+{% endblock %}
+{% block title %}
+    Atendimento
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href='{{ base_url() }}/assets/css/local/receptivo.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container col">
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-md-12 col-lg-12 d-flex align-items-stretch">
+                        <div class="widthfull card card-shadow mb-12" style="width: 1200px">
+                            <div class="card-header" style="background-color: #F7F7F7">
+                                <div class="card-title">
+                                    <h6   style= "color:#FF5403">Administração</h6>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <h6>Usuários</h6>
+                                        <hr>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/usuario/receptivo">
+                                                    <i class="bi bi-people" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Usuários</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   <div class="col-sm">
+                                        <h6>Serviço / Ocorrencias </h6>
+                                        <hr>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/servico/receptivo">
+                                                    <i class="bi bi-database-fill-check" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2 " style="font-size: 15px;color: blue">Serviços</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <p>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/tipo_ocorrencia/receptivo">
+                                                    <i class="bi bi-list-columns" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Tipos Ocorrências</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <h6>Equipes</h6>
+                                        <hr>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/equipe/receptivo">
+                                                    <i class="bi bi-microsoft-teams" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Equipes</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="row ">
+                    <div class="col-md-12 col-lg-12 d-flex align-items-stretch" style="margin-top 10px">
+                        <div class="widthfull card card-shadow mb-12" style="width: 1200px ">
+                            <div class="card-header" style="background-color: #F7F7F7">
+                                <div class="card-header" style="background-color: #F7F7F7">
+                                    <div class="card-title">
+                                        <h6   style= "color:#FF5403">Supervisão Configurações</h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <h6> Formulário Categorias / Tipo Formulário </h6>
+                                        <hr>
+                                        <p>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/auditoria_categoria/receptivo">
+                                                    <i class="bi bi-list-columns" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Categorias de Formulário</span>
+                                                </a>
+                                            </div>
+                                        </div> 
+                                        <br>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/auditoria_categoria_tipos/receptivo">
+                                                    <i class="bi bi-list-columns" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Tipos de Formulário</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% set area = 'operacional' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v={{ JSversion }}"></script>
+    <script src="/assets/js/local/supervisao_auditoria_lead_cad_form.js?v=14"></script>
+
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+{% endblock %}
+{% block title %}
+    Supervisão Chacklist
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container col" >
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div>
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;">
+                                <div class="card-header" style="background-color: #F7F7F7">
+                                    <div class="card-title col-sm-4">
+                                        <h5 style= "color:#FF5403" >Checklist Tipos Categorias</h5>
+                                    </div>
+                                    <div class='col-sm-8' align="Right">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="cmdCancelar">Voltar</button>
+                                        &nbsp;
+                                        <button type="button" class="btn btn-primary btn-sm" id="cmdEnviar">Salvar</button>
+                                    </div>
+                                </div>
+                                <form method="post">
+                                    <div class="card-body">
+                                            <input type="hidden" id='pk' name='pk' value='{{ pk }}'>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='leads_pk'>Posto de trabalho:&nbsp;</label>
+                                                <select class="form-control form-control-sm" id="leads_pk" name="leads_pk">
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='auditoria_categorias_pk'>Categoria:&nbsp;</label>
+                                                <select class="form-control form-control-sm" id="auditoria_categorias_pk" name="auditoria_categorias_pk">
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='auditoria_categoria_tipos_pk'>Checklist:&nbsp;</label>
+                                                <select class="form-control form-control-sm" id="auditoria_categoria_tipos_pk" name="auditoria_categoria_tipos_pk">
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4' align="center">
+                                                <button type="button" class="btn btn-primary btn-sm" id="cmdForm">Preencher Formulário</button>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="container">
+                                            <h5 style= "color:#FF5403">
+                                                <div align="left" class='col-md-4'>
+                                                    <span id="ds_form"></span>
+                                                </div>
+                                            </h5>
+                                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                            <div id="auditoria_categoria_form" name="auditoria_categoria_form">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

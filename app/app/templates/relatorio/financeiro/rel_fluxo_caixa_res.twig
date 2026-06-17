@@ -1,0 +1,379 @@
+
+{% set area = 'relatorios' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="/assets/js/local/rel_fluxo_caixa_res.js?v=14"></script>
+{% endblock %}
+{% block title %}
+        Relatório Fluxo de Caixa
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+    <style>
+        .caixa_tabela{
+            width: 100%; /* aqui pode ser auto ou 100%*/
+            height:450px; /* aqui pode ser auto ou 100%*/
+            overflow-x:scroll;
+            overflow-y:scroll;
+        }
+
+        .loader {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background-image: url(/assets/img/square.png);
+            background-size: 60px 60px;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .loader:before , .loader:after{
+            content: '';
+            border-radius: 50%;
+            position: absolute;
+            inset: 0;
+            box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3) inset;
+        }
+        .loader:after {
+            box-shadow: 0 2px 0 #14074f inset;
+            animation: rotate 2s linear infinite;
+
+        }
+
+        @keyframes rotate {
+            0% {  transform: rotate(0)}
+            100% { transform: rotate(360deg)}
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <BR>
+
+    <BR><BR><BR><BR><BR><BR>
+    <div style="
+        height: 55vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center" id="carregar">
+        <div class="loader" style="width: 100px;
+        height: 100px;">
+        </div>
+    </div>
+    <div class="row" id="exibir" style="display: none">
+        <div  role="dialog" aria-labelledby="modal-set-ramalLabel" >
+            <div class="col-lg" style="max-width:2000px;">
+                <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;background-color: #F7F7F7">
+                    <div class="card-header" style="background-color: #F7F7F7">
+                        <div class="card-title col-sm-5">
+                            <h6 style= "color:#FF5403">Relatório Fluxo de Caixa</h6>
+                        </div>
+                        <div class='col-sm-7' align="Right">
+                            <button type="button" class="btn btn-secondary btn-sm" id="cmdCancelar">Voltar</button>
+                            <button type="button" class="btn btn-primary btn-sm" id="cmdExport">Export</button>
+                        </div>
+                    </div>
+                    <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                    <br>
+                    <div id='form'>
+                        <table>
+                            <tr>
+                                <td>
+                                    <b>Relatório:</b>
+                                </td>
+                                <td>
+                                    Fluxo de caixa
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Dt Emissão:</b>
+                                </td>
+                                <td>
+                                    <div><span id="dt_emissao"></span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Usuário Emissão:</b>
+                                </td>
+                                <td>
+                                    <div>{{ session['session_user']['par2'] }}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Período Vencimento:</b>
+                                </td>
+                                <td>
+                                <div>{{dt_vencimento_ini}} - {{ dt_vencimento_fim }}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Tipo Lançamento:</b>
+                                </td>
+                                <td>
+                                <span id="ds_tipo_lancamento"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Empresas:</b>
+                                </td>
+                                <td>
+                                <div>{{ds_empresa}}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Grupo Origem do Lançamento:</b>
+                                </td>
+                                <td>
+                                <div>{{ds_tipo_grupo}}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Recebido de ? / Pago de ?:</b>
+                                </td>
+                                <td>
+                                <div>{{ds_grupo_leancamento}}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Usuário Cadastro:</b>
+                                </td>
+                                <td>
+                                <div>{{ds_usuario_cadastro}}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Status:</b>
+                                </td>
+                                <td>
+                                <div>{{ds_ic_status}}</div>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <input type="hidden" id="tipo_lancamento_pk" value="{{tipo_lancamento_pk}}">
+                        <input type="hidden" id="ic_status" value="{{ic_status}}">
+                        <input type="hidden" id="dt_vencimento_ini" value="{{dt_vencimento_ini}}">
+                        <input type="hidden" id="dt_vencimento_fim" value="{{dt_vencimento_fim}}">
+                        <input type="hidden" id="dt_pagamento_ini" value="{{dt_pagamento_ini}}">
+                        <input type="hidden" id="dt_pagamento_fim" value="{{dt_pagamento_fim}}">
+                        <input type="hidden" id="tipos_operacao_pk_receita" value="{{tipos_operacao_pk_receita}}">
+                        <input type="hidden" id="contas_bancarias_pk" value="{{contas_bancarias_pk}}">
+                        <input type="hidden" id="empresas_pk" value="{{empresas_pk}}">
+                        <input type="hidden" id="tipo_grupo_pk" value="{{tipo_grupo_pk}}">
+                        <input type="hidden" id="grupo_leancamento_pk" value="{{grupo_leancamento_pk}}">
+                        <input type="hidden" id="usuario_cadastro_pk" value="{{usuario_cadastro_pk}}">
+                        <input type="hidden" id="dt_faturamento_ini" value="{{dt_faturamento_ini}}">
+                        <input type="hidden" id="dt_faturamento_fim" value="{{dt_faturamento_fim}}">
+                        <br>
+                        <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                        <p>
+                        <!--div class="row">
+                            <div class="col-md-12">
+                                <div id="grid"></div>
+                            </div>
+                        </div-->
+                         <div class='row'><div class='col-md-12 caixa_tabela' > 
+       <table class='table table-striped table-bordered ' style='width:100%' id='tblResultado'> 
+        <thead> 
+            <tr> 
+                <th></th> 
+                <th><input type='text' id='txtCod' /></th> 
+                <th><input type='text' id='txtLancamento' /></th> 
+                <th><input type='text' id='txtVlLancamento' /></th> 
+                <th><input type='text' id='txtVlReceita' /></th> 
+                <th><input type='text' id='txtVlDespesaS' /></th> 
+                <th><input type='text' id='txtDtVencimento' /></th> 
+                <th><input type='text' id='txtDtFaturamento' /></th> 
+                <th><input type='text' id='txtMetodoRecebimento' /></th> 
+                <th><input type='text' id='txtStatus' /></th> 
+                <th><input type='text' id='txtDtPagamento' /></th> 
+                <th><input type='text' id='txtTipoOperacao' /></th> 
+                <th> </th> 
+                <th> </th> 
+                <th><input type='text' id='txtIdLancamento' /></th> 
+                <th><input type='text' id='txtGrupoOrigem' /></th> 
+                <th><input type='text' id='txtPagoRecebidoDe' /></th> 
+                <th><input type='text' id='txtGrupoCentroDeCusto' /></th> 
+                <th><input type='text' id='txtCentroDeCusto' /></th> 
+                <th><input type='text' id='txtUsuCadastro' /></th> 
+                <th><input type='text' id='txtObs' /></th> 
+            </tr> 
+        <tr> 
+        <th width='5%' class='menu_fixo'><font style='font-size: 12px'>#</font></th> 
+        <th width='5%' class='menu_fixo'><font style='font-size: 12px'>Cód</font></th> 
+        <th width='10%' class='menu_fixo'><font style='font-size: 12px'>Tipo<br>Lançamento</font></th> 
+        <th width='5%' class='menu_fixo'><font style='font-size: 12px'>VL Lançamento(s)</font></th> 
+        <th width='5%' class='menu_fixo'><font style='font-size: 12px'>VL Receita(s)</font></th> 
+        <th width='5%' class='menu_fixo'><font style='font-size: 12px'>VL Despesa(s)</font></th> 
+        <th width='5%' class='menu_fixo'><font style='font-size: 12px'>Dt Vencimento<br>Recebimento</font></th> 
+        <th width='5%' class='menu_fixo'><font style='font-size: 12px'>Dt Faturamento</font></th> 
+        <!--th width='5%' class='menu_fixo'><font style='font-size: 12px'>Data<br>Competência / Referência</font></th--> 
+        <th width='5%' class='menu_fixo'><font style='font-size: 12px'>Método de Recebimento<br>Pagamento</font></th> 
+        <th width='5%' class='menu_fixo'><font style='font-size: 12px'>Status</font></th> 
+        <th width='5%' class='menu_fixo'><font style='font-size: 12px'>Dt Pagamento</font></th> 
+        <th width='5%' class='menu_fixo'><font style='font-size: 12px'>Tipo Operação<br>Planos Conta</font></th> 
+        <th width='10%' class='menu_fixo'><font style='font-size: 12px'>Empresa do <br>lançamento</font></th> 
+        <th width='10%' class='menu_fixo'><font style='font-size: 12px'>Conta do Bancária</font></th> 
+        <th width='10%' class='menu_fixo'><font style='font-size: 12px'>Identificação do<br>Lançamento</font></th> 
+        <th width='10%'><font style='font-size: 12px'>Grupo Origem<br>do Lançamento</font></th> 
+        <th width='5%'class='menu_fixo'><font style='font-size: 12px'>Rebido de ?<br>Pago para ?</font></th> 
+        <th width='10%'><font style='font-size: 12px'>Grupos Centro<br>de Custo</font></th> 
+        <th width='5%' class='menu_fixo'><font style='font-size: 12px'>Empresa de<br>Contratação</font></th> 
+        <th width='5%' class='menu_fixo'><font style='font-size: 12px'>Usuário de<br>Cadastro</font></th> 
+        <th width='10%' class='menu_fixo'><font style='font-size: 12px'>Observação</font></th> 
+        </tr> 
+        </thead> 
+        <tbody> 
+        {% set count = 1 %}
+        {% set v_total_lancamento = 0 %}
+        {% set v_total_receita = 0 %}
+        {% set v_total_despesa = 0 %}
+
+        {% for arrCarregar in arrDadosRelatorio %}
+            {% if arrCarregar['t_dt_faturamento'] != null %}
+                {% set dt_faturamento = arrCarregar['t_dt_faturamento'] %}
+            {% else %}
+                {% set dt_faturamento = "" %}
+            {% endif %}
+
+            <tr> 
+            <td width='5%' align='center'><b style='font-size: 13px'>{{ loop.index }}</b></td> 
+            <td width='5%' align='center'><b style='font-size: 13px'>{{ arrCarregar['t_pk']}}</b></td> 
+            <td width='10%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_ds_operacao']}}</b></td> 
+
+           
+
+            {% set v_total_lancamento = v_total_lancamento + arrCarregar['t_vl_lancamento'] %}
+
+            {% if arrCarregar['t_operacao_pk'] == 1 %}
+                <td width='5%' align='center'><b style='font-size: 13px;color:blue'>{{arrCarregar['t_vl_lancamento']|number_format(2, ',', '.')}}</b></td> 
+            {% else %}
+                <td width='5%' align='center'><b style='font-size: 13px;color:red'>{{arrCarregar['t_vl_lancamento']|number_format(2, ',', '.')}}</b></td> 
+            {% endif %}
+              
+
+
+            {% if arrCarregar['t_operacao_pk'] == 1 %}
+                <td width='5%' align='center'><b style='font-size: 13px: 13px;color:blue'>{{arrCarregar['t_vl_lancamento']|number_format(2, ',', '.')}}+"</b></td> 
+
+                {% set v_total_receita = v_total_receita + arrCarregar['t_vl_lancamento']%}
+            {% else %}
+                <td width='5%' align='center'><b style='font-size: 13px'></b></td> 
+            {% endif %}
+
+            {% if arrCarregar['t_operacao_pk'] != 1 %}
+                <td width='5%' align='center'><b style='font-size: 13px;color:red'>{{arrCarregar['t_vl_lancamento']|number_format(2, ',', '.')}}</b></td> 
+             
+                {% set v_total_despesa = v_total_despesa + arrCarregar['t_vl_lancamento'] %}
+            {% else %}
+                <td width='5%' align='center'><b style='font-size: 13px'></b></td> 
+            {% endif %}
+
+
+            <td width='5%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_dt_vencimento']}}</b></td> 
+            <td width='5%' align='center'><b style='font-size: 13px'>{{ dt_faturamento}}</b></td> 
+            <td width='5%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_ds_metodo_pagamento']}}</b></td> 
+            <td width='5%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_ds_status_pagamento']}}</b></td> 
+            {% if arrCarregar['t_dt_pagamento']== null %}
+                <td width='5%' align='center'><b style='font-size: 13px'></b></td> 
+            {% else %}
+                <td width='5%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_dt_pagamento']}}</b></td> 
+            {% endif %}
+
+
+            <td width='5%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_ds_tipo_operacao']}}</b></td> 
+            {% if arrCarregar['t_ds_razao_social']== null %}
+                <td width='10%' align='center'><b style='font-size: 13px'></b></td> 
+            {% else %}
+                <td width='10%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_ds_razao_social']}}</b></td> 
+            {% endif %}
+
+            {% if arrCarregar['t_ds_conta_bancaria_pagamento']== null %}
+                <td width='10%' align='center'><b style='font-size: 13px'></b></td> 
+            {% else %}
+                <td width='10%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_ds_conta_bancaria_pagamento']}}</b></td> 
+            {% endif %}
+
+
+            <td width='10%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_ds_lancamento']}}</b></td> 
+            <td width='10%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_ds_tipo_grupo']}}</b></td> 
+
+
+            {% if arrCarregar['t_ds_recebido_de']== null %}
+                <td width='10%' align='center'><b style='font-size: 13px'></b></td> 
+            {% else %}
+                <td width='10%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_ds_recebido_de']}}</b></td> 
+            {% endif %}
+
+            {% if arrCarregar['t_ds_tipo_grupo_centro_custo']== null %}
+                <td width='10%' align='center'><b style='font-size: 13px'></b></td> 
+            {% else %}
+                <td width='10%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_ds_tipo_grupo_centro_custo']}}</b></td> 
+            {% endif %}
+
+            {% if arrCarregar['t_ds_recebido_de_centro_custo']== null %}
+                <td width='10%' align='center'><b style='font-size: 13px'></b></td> 
+            {% else %}
+                <td width='10%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_ds_recebido_de_centro_custo']}}</b></td> 
+            {% endif %}
+            <td width='5%' align='center'><b style='font-size: 13px'>{{ arrCarregar.data[i]['ds_usuario']}}</b></td> 
+            
+            {% if arrCarregar['t_obs_lancamento']== null %}
+                <td width='10%' align='center'><b style='font-size: 13px'></b></td>
+            {% else %}
+                <td width='10%' align='center'><b style='font-size: 13px'>{{arrCarregar['t_obs_lancamento']}}</b></td>
+            {% endif %}
+
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+           <th></th>
+           <th></th>
+           <th>Totais</th>
+           <th>
+               <font id='valor_lancamento' style='font-size: 13px'>R$ {{ v_total_lancamento|number_format(2, ',', '.')}}</font>
+           </th>
+           <th>
+              <font id='valor_receita' style='font-size: 13px;color:blue'>R$ {{v_total_receita|number_format(2, ',', '.')}}</font>
+           </th>
+           <th>
+               <font id='valor_despesa' style='font-size: 13px;color:red'>R$ {{v_total_despesa|number_format(2, ',', '.')}}</font>
+           </th>
+
+        </tfoot>
+        </table>
+        </div>
+        </div>
+        <br><br><br><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

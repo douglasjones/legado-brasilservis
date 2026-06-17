@@ -1,0 +1,201 @@
+{% block JSfiles %}
+    <script src="/assets/js/local/financeiro_grid_lancamento.js?v=14"></script>
+{% endblock %}
+<div class="row">
+    <div class="col-md-12">
+        <h6 class="font-weight-bold" style="color:#FF5403">Consulta de Lançamento(s)</h6>
+        <hr style='height:1px; border:none; margin-top: 0px; margin-bottom: 0px;'>
+    </div>
+</div> 
+<br>
+<div class='row'>
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='vl_lancamento'>Código:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' id="pk_lancamento_lancamento" name="pk_lancamento_lancamento"/> 
+    </div>
+    <div class='col-md-2'>
+        <label for='tipos_operacao_pk'>Status:&nbsp;</label>
+        <select class='form-control form-control-sm'  id='ic_status_pagamento_lancamento' name='ic_status_pagamento_lancamento' />
+            <option value=""></option>
+            <option value="1">Pago</option>
+            <option value="2">Pendente</option>
+            <option value="3">Aprovado</option>
+            <option value="4">Atrasado</option>
+            <option value="5">Cancelado</option>
+        </select>  
+    </div>
+    <div class='col-md-2'>
+        <label for='tipos_operacao_pk'>Usuário Cadastro:&nbsp;</label>
+        <select class='form-control form-control-sm'  id='usuario_cadastro_lancamento_pk' name='usuario_cadastro_lancamento_pk' />
+            <option value=""></option>
+        </select>  
+    </div>
+</div>
+<div class='row'> 
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='ds_num_documento_lancamento'>Identificação do Documento:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' id="ds_num_documento_lancamento" name="ds_num_documento_lancamento"/> 
+    </div>
+    <div class='col-md-2'>
+        <label for='ic_tipo_num_documento_lancamento'>Identificação do Documento:&nbsp;</label> 
+        <select class='form-control form-control-sm'  id='ic_tipo_num_documento_lancamento' name='ic_tipo_num_documento_lancamento'>
+            <option value=""></option>                               
+            <option value="1">Num Boleto</option>
+            <option value="2">Num NF</option>
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='tipos_operacao_pk'>Empresa:&nbsp;</label>
+        <select class='form-control form-control-sm'  id='empresa_pk' name='empresa_pk'/>
+            <option value=""></option>
+        </select>  
+    </div>
+    <div class='col-md-2'>
+        <label for='bancos_pk'>Conta(s):&nbsp;</label>
+        <select class='form-control form-control-sm'  id='contas_lancamento_pk' name='contas_lancamento_pk' />
+            <option></option>
+        </select>  
+    </div>
+    <div class='col-md-2'>
+        <label for='bancos_pk'>Status Analise(s):&nbsp;</label>
+        <select class='form-control form-control-sm'  id='ic_status_analise' name='ic_status_analise' />
+            <option></option>
+            <option value="1">Aprovado</option>
+        </select>  
+    </div>
+</div>    
+<div class="row">
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='tipo_grupo_pk'>Grupo de Origem Lançamento:&nbsp;</label>
+        <select class='form-control form-control-sm'  id='tipo_grupo_lancamento_pk' name='tipo_grupo_lancamento_pk'/>
+            <option value=""></option>
+            <option value="1">Leads (Clientes)</option>
+            <option value="2">Colaboradores</option>
+            <option value="3">Fornecedores</option>
+        </select>  
+    </div>
+    <div class='col-md-2'>
+        <label for='vl_lancamento' class='recebido_de_pago_para'>Recebido de ? </label>
+        <select class='form-control form-control-sm'  id='grupo_leancamento_pk' name='grupo_leancamento_pk'/>
+            <option value=""></option>
+        </select>  
+    </div>            
+</div>  
+<div class='row'>
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='vl_lancamento'>Data Cadastro  Inicío:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_cadastro_ini_lancamento" name="dt_cadastro_ini_lancamento"/> 
+    </div>
+    <div class='col-md-2'>
+        <label for='vl_lancamento' >Data Cadastro Fim</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_cadastro_fim_lancamento" name="dt_cadastro_fim_lancamento"/> 
+    </div>            
+</div>
+<div class='row'>
+     <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='vl_lancamento'>Data Faturamento  Inicío:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_faturamento_ini_lancamento" name="dt_faturamento_ini_lancamento"/> 
+    </div>
+    <div class='col-md-2'>
+        <label for='vl_lancamento' >Data Faturamento Fim</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_faturamento_fim_lancamento" name="dt_faturamento_fim_lancamento"/> 
+    </div>
+</div>
+<div class='row'>
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='vl_lancamento'>Data Vencimento  Inicío:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_vencimento_ini_lancamento" name="dt_vencimento_ini_lancamento"/> 
+    </div>
+    <div class='col-md-2'>
+        <label for='vl_lancamento' >Data Vencimento Fim</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_vencimento_fim_lancamento" name="dt_vencimento_fim_lancamento"/> 
+    </div>
+</div>
+<div class='row'>
+    <div class="col-md-3">
+        &nbsp;
+    </div>
+    <div class='col-md-2'>
+        <label for='vl_lancamento'>Data Pagamento  Inicío:&nbsp;</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_pagamento_ini_lancamento" name="dt_pagamento_ini_lancamento"/> 
+    </div>
+    <div class='col-md-2'>
+        <label for='vl_lancamento' >Data Pagamento Fim</label>
+        <input type="text" class='form-control form-control-sm' maxlength="10" id="dt_pagamento_fim_lancamento" name="dt_pagamento_fim_lancamento"/> 
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-4">
+        &nbsp;
+    </div>
+    <div class="col-md-4" align="center">                
+        <button type='button' class="btn btn-primary btn-sm" id='cmdPesqLancamento'>Pesquisar</button>    
+    </div>
+</div>
+<br>
+<div id='lancamento'>
+    <div class='overflow-auto' style='height:400px;overflow-y: scroll;' >
+        <table class='table table-striped table-bordered ' style='width:100%' id='tblLancamento' >
+            <thead style='position: sticky; top: 0px; background-color: white;'>
+                <tr>
+                    <th width='5' align='center'><font style='font-size: 15px'><b>#</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Identificação do Lançamento</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Dt. Cadastro</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Usuário Cadastro</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Empresa</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Conta</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Dt. Faturamento</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Dt. Vencimento</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Dt. Pagamento</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Status</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Tipo</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Tipo Operação</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Grupo do Lançamento</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Recebido de/Pago Para</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Metódo Pag.</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Vl. Lançamento</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Vl. Pendente</b></font></th>
+                    <th align='center'><font style='font-size: 15px'><b>Ação</b></font></th>
+                </tr>
+            </thead>
+            <tfoot style='position: sticky; bottom: 0px; background-color: white;'>
+                <tr>
+                    <td width='100' colspan=14 >&nbsp;</td>
+                    <td width='100' ><b>Total R$<b/></td>
+                    <td align='center' id='totalLancamento'></td>
+                    <td align='center' id='totalLancamentoPendente'></td>
+                    <td align='center'>&nbsp;</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div> 
+<div class="row">
+    <div class="col-md-12">        
+        <hr>
+    </div>
+</div>

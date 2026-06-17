@@ -1,0 +1,664 @@
+{% set area = 'operacional' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/js/local/colaborador_print_form.js?v=14"></script>
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script>
+        document.getElementById('exportButton').addEventListener('click', () => {
+            // Seleciona o elemento HTML que você quer converter para PDF
+            const element = document.getElementById('printableArea');
+
+            // Configurações para o html2pdf
+            const opt = {
+                margin:       0,
+                filename:     'colaborador.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+
+            // Converte o HTML para PDF
+            html2pdf().from(element).set(opt).save();
+        });
+    </script>
+{% endblock %}
+{% block title %}
+    Colaboradores
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+     <style>
+        /* Estilo básico para a página */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, p {
+            text-align: center;
+        }
+        /*.content {
+            margin: 20px auto;
+            padding: 20px;
+            
+            width: 80%;
+            background-color: #f9f9f9;
+        }*/
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        /*.container {
+            width: 80%;
+            margin: 0 auto;
+            border: 1px solid #000;
+            padding: 10px;
+        }*/
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            background-color: #f2f2f2;
+            padding: 5px;
+            border: 1px solid #000;
+            font-size: 1em;
+        }
+        .section div {
+            padding: 5px;
+            border: 1px solid #000;
+            border-top: none;
+        }
+        .form-group {
+            margin-bottom: 40px;
+        }
+        .form-group label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
+        }
+        .form-group span {
+            display: inline-block;
+        }
+        .form-group input {
+            border: none;
+            border-bottom: 1px solid #000;
+            width: calc(100% - 150px);
+        }
+        .break-custom {
+            height: 6px; /* Defina a altura desejada */
+            width: 100%; /* A largura pode ser ajustada conforme necessário */
+        }
+        .thin {
+            height: 5px; /* Define a altura da linha */
+            border: none; /* Remove a borda padrão */
+            /* Define a cor da linha */
+            
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+
+            <div class="container col-md-12" >
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div  tabindex="-1" role="dialog" aria-labelledby="modal-set-ramalLabel" >
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;background-color: #F7F7F7">
+                                <div class="card-header" style="background-color: #F7F7F7">
+                                    <div class="card-title col-sm-4">
+                                        <h5 style= "color:#FF5403"  >Colaboradores:</h5>
+                                    </div>
+                                    <div class='col-sm-8' align="Right">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="cmdVoltar">Voltar</button>
+                                        <button type="button" class="btn btn-primary btn-sm" id="exportButton">Imprimir</button>
+                                    </div>
+                                </div>
+
+                                <div class="card-body" id="printableArea">
+                                    <div >
+                                        <div class="row" style="border: 1px solid black;">
+                                            <div class="col-sm-3">
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <br>
+                                                <label><b>Empresa:</label>
+                                                <span>{{arrDados['empresas_pk']}}</b></span>
+                                            </div>
+                                            <div class="col-sm-2" style="text-algin:right">
+                                            
+                                                <br><input type="checkbox" {% if arrDados['tipo_conta_pk']==1 %} checked {% endif %}>&nbsp;<b>Matriz</b></label>
+                                                <br><input type="checkbox" {% if arrDados['tipo_conta_pk']==2 %} checked {% endif %}>&nbsp;<b>Filial_____</b></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="break-custom"></div>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>REGISTRO</b><div class="thin"></div>
+                                                {{arrDados['pk']}}
+                                            </div>
+                                            <div class="col-sm-4"  style="font-size:10px;border: 1px solid black;text-align:left">
+                                               <b>NOME DO EMPREGADO</b><div class="thin"></div>
+                                               {{arrDados['ds_colaborador']}}
+                                            </div>
+                                            <div class="col-sm-6" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>FUNÇÃO/CARGO</b><div class="thin"></div>
+                                                {{arrDados['DadosColaboradorServico'][0]['ds_produto_servico']}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="break-custom"></div>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-2"  style="font-size:10px;border: 1px solid black;text-align:left">
+                                               <b>DATA ADMISSÃO</b><div class="thin"></div>
+                                               {{arrDados['dt_admissao']}}
+                                            </div>
+                                            <div class="col-sm-1"  style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>TIPO</b><div class="thin"></div>
+                                                 P
+                                            </div>
+                                            <div class="col-sm-3" colspan="2"  style="font-size:10px;border: 1px solid black;text-align:center;">
+                                                <b> (P)rimeiro emprego<br>
+                                                    (R)eemprego<br>
+                                                    (O)utros
+                                                </b>
+                                            </div>
+                                            <div class="col-sm-1"  style="font-size:10px;border: 1px solid black;text-align:center;">
+                                                <b> SINDICAL
+                                                </b><div class="thin"></div>
+                                                
+                                            </div>
+                                            <div class="col-sm-3" colspan="2"  style="font-size:10px;border: 1px solid black;text-align:left;">
+                                                <b> (J)á descontou<br>
+                                                    (N)ão descontou<br>
+                                                    (L)iberal (D)escontar
+                                                </b>
+                                            </div>
+                                            <div class="col-sm-2"  style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>JORNADA MENSAL
+                                                </b><div class="thin"></div>                                                
+                                                {{arrDados['ds_carga_horaria_semanal']}} horas
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+                                    <div class="break-custom"></div>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>(H)orista<br>
+                                                    (M)mensalista<br>
+                                                    (O)utros</b>
+                                            </div>
+                                            <div class="col-sm-1"  style="font-size:10px;border: 1px solid black;text-align:center">
+                                               <b>Cód</b><div class="thin"></div>
+                                                {{arrDados['ds_regime_contratacao']}}
+                                            </div>
+                                            <div class="col-sm-2"  style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>SALÁRIO MÊS</b><div class="thin"></div>
+                                                {{arrDados['vl_salario']}}
+                                            </div>
+                                            <div class="col-sm-1" colspan="2"  style="font-size:10px;border: 1px solid black;text-align:center;">
+                                                <b> SAL. HORA
+                                                </b><div class="thin"></div>
+                                                
+                                            </div>
+                                            <div class="col-sm-1"  style="font-size:10px;border: 1px solid black;text-align:center;">
+                                                <b> ENTRADA inicial
+                                                </b><div class="thin"></div>
+                                                {{arrDados['hr_inicio_expediente']}}
+                                            </div>
+                                            <div class="col-sm-1"  style="font-size:10px;border: 1px solid black;text-align:center;">
+                                                <b> SAIDA intervalo
+                                                </b><div class="thin"></div>
+                                                {{arrDados['hr_saida_intervalo']}}
+                                            </div>
+                                            <div class="col-sm-1"  style="font-size:10px;border: 1px solid black;text-align:center;">
+                                                <b> ENTRADA intervalo
+                                                </b><div class="thin"></div>
+                                                {{arrDados['hr_retorno_intervalo']}}
+                                            </div>
+                                            <div class="col-sm-1"  style="font-size:10px;border: 1px solid black;text-align:center;">
+                                                <b> SAIDA<br> final
+                                                </b><div class="thin"></div>
+                                                {{arrDados['hr_termino_expediente']}}
+                                            </div>
+                                            <div class="col-sm-2"  style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>DESCANSO SEMANAL
+                                                </b><div class="thin"></div>
+                                                {% if arrDados['ic_dom']==2 %} 
+                                                    Dom, 
+                                                {% endif %}
+                                                {% if arrDados['ic_seg']==2%}
+                                                    Seg,
+                                                {% endif %}
+                                                {% if arrDados['ic_ter']==2%}
+                                                    Ter,
+                                                {% endif %}
+                                                {% if arrDados['ic_qua']==2%}
+                                                    Qua,
+                                                {% endif %}
+                                                {% if arrDados['ic_qui']==2%}
+                                                    Qui,
+                                                {% endif %}
+                                                {% if arrDados['ic_sex']==2%}
+                                                    Sex,
+                                                {% endif %}
+                                                {% if arrDados['ic_sab']==2%}
+                                                    Sab,
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="break-custom"></div>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-4" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>COMISSIONISTA: &nbsp;<input type="checkbox">SIM &nbsp;<input type="checkbox">NÃO</b><br><br>
+                                                % COMISSÃO: ________________%
+                                            </div>
+                                            <div class="col-sm-4" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>INSALUBRIDADE: &nbsp;<input type="checkbox">SIM &nbsp;<input type="checkbox">NÃO</b><br><br>
+                                                % INSALUBRIDADE: ________________%
+                                            </div>
+                                            <div class="col-sm-4" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>PERICULOSIDADE: &nbsp;<input type="checkbox">SIM &nbsp;<input type="checkbox">NÃO</b><br><br>
+                                                % PERICULOSIDADE: ________________%
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="break-custom"></div>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-4" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>DEPENDENTES</b><br>
+                                                {% if arrDados['ds_nome_mae'] !="" %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            {{arrDados['ds_nome_mae']}}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% if arrDados['ds_nome_pai'] !="" %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            {{arrDados['ds_nome_pai']}}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% if arrDados['ds_nome_conjuge'] !="" %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            {{arrDados['ds_nome_conjuge']}}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% for itens in arrDados['DadosColaboradorFilhos'] %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            {{itens['ds_nome_filho']}}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                {% endfor %}
+                                                
+                                            </div>                                            
+                                            <div class="col-sm-4" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>CPF</b><br>
+                                                {% if arrDados['ds_nome_mae'] !="" %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            &nbsp;                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% if arrDados['ds_nome_pai'] !="" %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% if arrDados['ds_cpf_conjuge'] !="" %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            {{arrDados['ds_cpf_conjuge']}}
+                                                        </div>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% for itens in arrDados['DadosColaboradorFilhos'] %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            {{itens['ds_cpf_filho']}}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                {% endfor %}
+                                                
+                                            </div>                                                                                        
+                                            <div class="col-sm-4" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>Nascimento</b><br>
+                                                {% if arrDados['ds_nome_mae'] !="" %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            &nbsp;                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% if arrDados['ds_nome_pai'] !="" %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% if arrDados['dt_nascimento_conjuge'] !="" %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            {{arrDados['dt_nascimento_conjuge']}}
+                                                        </div>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% for itens in arrDados['DadosColaboradorFilhos'] %}
+                                                    <div class="row" >
+                                                        <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                            {{itens['dt_nascimento_filho']}}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                {% endfor %}
+                                                
+                                            </div>                                                                                                                                    
+                                        </div>
+                                    </div>
+                                    <div class="break-custom"></div>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>ADIANTAMENTO SALARIAL</b><div class="thin"></div>
+                                            </div>
+                                            
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>RAÇA/COR</b><div class="thin"></div>
+                                                {{arrDados['ds_raca']}}
+                                            </div>
+                                            
+                                            <div class="col-sm-3" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b> DEFICIENTE FÍSICO</b><div class="thin"></div>
+                                                <input {% if arrDados['ds_deficiencia_fisica']==1 %} checked {% endif %} type="checkbox">SIM&nbsp;
+                                                <input {% if arrDados['ds_deficiencia_fisica']=="Não" %} checked {% endif %} type="checkbox">NÃO
+                                            </div>
+
+                                            <div class="col-sm-3" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> ESTADO CIVIL</b><div class="thin"></div>
+                                                {{arrDados['ds_estado_civil']}}
+                                            </div>
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> SINDICATO</b><div class="thin"></div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="break-custom"></div>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-6" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>ADIANTAMENTO SALARIAL</b><br>
+                                                <div class="row" >
+                                                    <div class="col-sm-3" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                        <b>TARIFA</b><div class="thin"></div>
+                                                    </div>
+                                                    <div class="col-sm-3" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                        <b>QTDE</b><div class="thin"></div>
+                                                    </div>
+                                                    <div class="col-sm-3" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                        <b>TARIFA</b><div class="thin"></div>
+                                                    </div>
+                                                    <div class="col-sm-3" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                        <b>QTDE</b><div class="thin"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6" style="font-size:15px;border: 1px solid black;text-align:center">
+                                                <br><b>{{arrDados['ds_endereco']}}</b><br>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="break-custom"></div>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>TELEFONE</b><div class="thin"></div>
+                                                {{arrDados['ds_cel']}}
+                                            </div>
+                                            
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>BAIRRO</b><div class="thin"></div>
+                                                {{arrDados['ds_bairro']}}
+                                            </div>
+                                            
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>CEP</b><div class="thin"></div>
+                                                
+                                                {{arrDados['ds_cep']}}
+                                            </div>
+                                            <div class="col-sm-3" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> CIDADE</b><div class="thin"></div>
+                                                {{arrDados['ds_cidade']}}
+                                            </div>
+                                            <div class="col-sm-3" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> UF</b><div class="thin"></div>
+                                                
+                                                {{arrDados['ds_uf']}}
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="break-custom"></div>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>DATA NASCIMENTO</b><div class="thin"></div>
+                                                
+                                                {{arrDados['dt_nascimento']}}
+                                            </div>
+                                            
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>NATURALIDADE</b><div class="thin"></div>
+                                                
+                                                {{arrDados['ds_nacionalidade']}}
+                                            </div>
+                                            
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b> PIS/PASEP</b><div class="thin"></div>
+                                                {{arrDados['ds_pis']}}
+                                            </div>
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> Emissão</b><div class="thin"></div>
+                                            </div>
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> CPF</b><div class="thin"></div>
+                                                {{arrDados['ds_cpf']}}
+                                            </div>
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> CTPS Nº </b><div class="thin"></div>
+                                                {{arrDados['ds_ctps']}}
+                                            </div>
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> UF</b><div class="thin"></div>
+                                                {{arrDados['ds_uf_rg']}}
+                                            </div>
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> SÉRIE</b><div class="thin"></div>
+                                                {{arrDados['ds_serie']}}
+                                            </div>
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> DATA DE EMISSÃO</b><div class="thin"></div>
+                                                {{arrDados['dt_expedicao']}}
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="break-custom"></div>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>NACIONALIDADE</b><div class="thin"></div>
+                                                {{arrDados['ds_nacionalidade']}}
+                                            </div>
+                                            
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>ESCOLARIDADE</b><div class="thin"></div>
+                                                {{arrDados['ds_escolaridade']}}
+                                            </div>
+                                            
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>  CARTEIRA DE IDENTIDADE</b><div class="thin"></div>
+                                                {{arrDados['ds_rg']}}
+                                            </div>
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>  DATA DE EMISSÃO</b><div class="thin"></div>
+                                            </div>
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b> CONTRATO DE EXPERIÊNCIA</b>
+                                                <div class="row" >
+                                                    <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                        <b>(Qtde. de dias)</b>
+                                                    </div>
+                                                </div>
+                                                <div class="row" >
+                                                    <div class="col-sm-12" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                        <b>&nbsp;</b>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> CERTFICADO RESERVISTA </b><div class="thin"></div>
+                                                {{arrDados['ds_certificado_reservista']}}
+                                            </div>
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>  CAT.MIL.</b><div class="thin"></div>
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                    <div class="break-custom"></div>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>TÍTULO ELEITORAL</b><div class="thin"></div>
+                                                {{arrDados['ds_titulo_eleitoral']}}
+                                            </div>
+                                            
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>ZONA</b><div class="thin"></div>
+                                                {{arrDados['ds_zona_eleitoral']}}
+                                            </div>
+                                            
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b> SEÇÃO</b><div class="thin"></div>
+                                                {{arrDados['ds_secao']}}
+                                            </div>
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b>  DATA DE EMISSÃO</b><div class="thin"></div>
+                                            </div>
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> CARTEIRA DE HABILITAÇÃO</b><div class="thin"></div>
+                                            </div>
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> UF </b><div class="thin"></div>
+                                                {{arrDados['ds_uf_rg']}}
+                                            </div>
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> TIPO</b><div class="thin"></div>
+                                            </div>
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> EXPEDIÇÃO</b><div class="thin"></div>
+                                                {{arrDados['dt_expedicao']}}
+                                            </div>
+                                            <div class="col-sm-1" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> VALIDADE</b><div class="thin"></div>
+                                            </div>
+                                            <div class="col-sm-2" style="font-size:10px;border: 1px solid black;text-align:left">
+                                                <b> 1° HABILITAÇÃO</b><div class="thin"></div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="break-custom"></div>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-9" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>AUTORIZAÇÃO</b><div class="thin"></div>
+                                            </div>
+                                            <div class="col-sm-3" style="font-size:10px;border: 1px solid black;text-align:center">
+                                                <b>DATA</b><div class="thin"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="break-custom"></div>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-1" style="font-size:10px;text-align:center">
+                                                &nbsp;
+                                            </div>
+                                            <div class="col-sm-10" style="font-size:10px;text-align:center">
+                                                <b>ENVIAR JUNTO À FICHA DE ADMISSÃO: CARTEIRA DE TRABALHO, EXAME ADMISSIONAL, 01 FOTO 3 X 4 , LIVRO DE REGISTRO DE EMPREGADOS,
+                                                    CÓPIA DA CERTIDÃO DE NASCIMENTO DOS FILHOS MENORES 14 ANOS E CARTÃO DE VACINA DOS FILHOS MENORES 5 ANOS</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div style="border: 0px solid black;">
+                                        <div class="row" >
+                                            <div class="col-sm-12" style="font-size:10px;text-align:left">
+                                                <b>OBS:_________________________________________________________________________________________________________________________________________________________________________________</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</main>
+{% endblock %}

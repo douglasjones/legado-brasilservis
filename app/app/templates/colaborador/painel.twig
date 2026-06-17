@@ -1,0 +1,197 @@
+{% if local == 1%}
+    {% set area = 'rh' %}
+{% else %}
+    {% set area = 'operacional' %}
+{% endif %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/js/local/colaborador_painel.js?v=14"></script>
+    <script src="/assets/js/local/colaborador_documento_res.js?v=14"></script>
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+
+    <!--JS DO APONTAMENTO-->
+    <script src="/assets/js/local/inc_apontamento_colaborador_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_disciplina_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_ponto_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_falta_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_folga_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_troca_escala_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_afastamento_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_ferias_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_servico_extra_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_disciplina_cad_form.js?v=14"></script>
+    <!--JS DO APONTAMENTO-->
+{% endblock %}
+
+{% block title %}
+    Colaboradores
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+    <style>
+    th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        .pulsing-text {
+            font-size: 2em;
+            color: #ff0000;
+            text-align: center;
+            margin-top: 20%;
+            animation: pulse 1s infinite;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div  tabindex="-1" role="dialog" aria-labelledby="modal-set-ramalLabel" >
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;background-color: #F7F7F7">
+                                <div class="card-header" style="background-color: #F7F7F7">
+                                    <div class="card-title col-sm-4">
+                                        <h5 style="color:#FF5403">Painel Colaborador</h5>
+                                    </div>
+                                    <div class="col-sm-8 text-end">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="cmdVoltar">Voltar</button>
+                                        <button type="button" class="btn btn-primary btn-sm" id="cmdEditar">Editar</button>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="local" name="local" value="{{local}}">
+                                <input type="hidden" id="leads_pk" name="leads_pk" value="{{arrColaborador['leads_pk']}}">
+                                <input type="hidden" id="ds_tel" name="ds_tel" value="{{arrColaborador['ds_tel']}}">
+                                <input type="hidden" id="colaborador_pk" name="colaborador_pk" value="{{arrColaborador['pk']}}">
+                                <input type="hidden" id="agenda_colaborador_pk" name="agenda_colaborador_pk" value="{{arrColaborador['agenda_colaborador_pk']}}">
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <!-- Posto de Trabalho e Colaborador lado a lado -->
+                                        <div class="col-md-6">
+                                            <label for="leads_pk">Colaborador:&nbsp;</label>
+                                            <b>{{arrColaborador['ds_colaborador']}}</b>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="colaborador_pk">Status:&nbsp;</label>
+                                            <b>{{arrColaborador['ic_status']}}</b>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <!-- Qualificação e Pin lado a lado -->
+                                        <div class="col-md-6">
+                                            <label for="ds_produto_servico">Pin:&nbsp;</label>
+                                            <b>{{arrColaborador['ds_pin']}}</b>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="ds_pin">Função:&nbsp;</label>
+                                            <b>{{arrColaborador['ds_produto_servico']}}</b>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <!-- CPF e Status Acesso lado a lado -->
+                                        <div class="col-md-6">
+                                            <label for="ds_cpf">Posto de Trabalho:&nbsp;</label>
+                                            <b>{{arrColaborador['ds_lead']}}</b>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="ic_status_app">Data Escala:&nbsp;</label>
+                                            <b>{{arrColaborador['dt_ini_escala']}} - {{arrColaborador['dt_fim_escala']}}</b>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <!-- CPF e Status Acesso lado a lado -->
+                                        <div class="col-md-6">
+                                            <label for="ds_cpf">Turno:&nbsp;</label>
+                                            <b>{{arrColaborador['ds_turno']}}</b>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="ic_status_app">Data Ultimo Ponto:&nbsp;</label>
+                                            <b>{{arrColaborador['dt_hora_ponto']}}</b>
+                                           
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <a class="nav-link" href="javascript:fcAbrirApontamentoOperacionalControlePonto({{arrColaborador['pk']}})">
+                                                <i class="bi bi-hand-index-thumb" style="font-size:20px; color:blue"></i>
+                                                <span class="ms-2" style="font-size: 15px;color: blue">Apontamento(s) por Colaborador</span>
+                                            </a>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a class="nav-link" href="/relatorio/pesqAcompanhamentoPontoAnalitico">
+                                                <i class="bi bi-clipboard2" style="font-size:30px; color:blue"></i>
+                                                <span class="ms-2" style="font-size: 15px;color: blue">Acompanhamento de Ponto</span>
+                                            </a>
+                                           
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a class="nav-link" href="javascript:fcAbrirDocumentoColaborador()">
+                                                <i class="bi bi-clipboard2" style="font-size:20px; color:blue"></i>
+                                                <span class="ms-2" style="font-size: 15px;color: blue">Documentos</span>
+                                            </a>
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <a class="nav-link" style="cursor:pointer" onclick="fcEditarAgenda()">
+                                                <i class="bi bi-calendar" style="font-size:20px; color:blue"></i>
+                                                <span class="ms-2" style="font-size: 15px;color: blue">Escala</span>
+                                            </a>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a class="nav-link" style="cursor:pointer" onclick="fcAbrirAcompanhamentoFolhaPonto()">
+                                                <i class="bi bi-clock" style="font-size:30px; color:blue"></i>
+                                                <span class="ms-2" style="font-size: 15px;color: blue">Reloginho</span>
+                                            </a>
+                                           
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a class="nav-link" style="cursor:pointer" href="javascript:fcAbrirGridForulario()">
+                                                <i class="bi bi-printer" style="font-size:20px; color:blue"></i>
+                                                <span class="ms-2" style="font-size: 15px;color: blue">Ficha Colaborador</span>
+                                            </a>
+                                           
+                                        </div>
+                                    </div>
+
+                                    <!-- Continue com o mesmo padrão para os demais campos -->
+                                </div>
+ 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include('partials/inc_consulta_folha_ponto_colaborador.twig') %}
+    {% include('partials/inc_apontamento_colaborador_cad_form.twig') %}
+    {% include('partials/colaborador_documento.twig') %}
+{% endblock %}

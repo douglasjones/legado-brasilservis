@@ -1,0 +1,322 @@
+{% set area = 'compra_estoque' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="/assets/js/local/fornecedor_cad_form.js?v=14"></script>
+{% endblock %}
+{% block title %}
+    Fornecedores
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <br>
+    <br>
+    <main class="content_wrapper">
+        <div class="container">
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div  tabindex="-1" role="dialog" aria-labelledby="modal-set-ramalLabel" >
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;background-color: #F7F7F7">
+                                <div class="card-header" style="background-color: #F7F7F7">
+                                    <div class="card-title col-sm-4">
+                                        <h5 style= "color:#FF5403"  >Fornecedor</h5>
+                                    </div>
+                                    <div class='col-sm-8' align="Right">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="cmdCancelar">Voltar</button>
+                                        &nbsp;
+                                        <button type="button" class="btn btn-primary btn-sm" id="cmdIncluir">Salvar</button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form id="form" class="form">
+                                        <br>
+                                        <div class="row">
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div> 
+                                            <div class="col-md-10">
+                                                <h5>Dados do Fornecedor</h5>
+                                                <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <input type="hidden" name="pk" id="pk" value="{{pk}}">
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for="ds_fornecedor">Fornecedor:&nbsp;</label>
+                                                <input type="text" class="form-control form-control-sm" id="ds_fornecedor" required="true">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for="ds_fornecedor">Razão Social:&nbsp;</label>
+                                                <input type="text" class="form-control form-control-sm" id="ds_razao_social" required="true">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for="ds_fornecedor">CPF/CNPJ:&nbsp;</label>
+                                                <input type="text" class="form-control form-control-sm" maxlength="18" id="ds_cpf_cnpj" required="true">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ds_fornecedor'>Categoria:&nbsp;</label>
+                                                <select class='form-control form-control-sm chzn-select'  id='categorias_produto_pk' name='categorias_produto_pk' requered/>
+                                                    <option></option>
+                                                </select>    
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ds_tel'>Telefone:&nbsp;</label>
+                                                <input type="text" class="form-control form-control-sm" id="ds_tel" required="true">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ds_email'>E-mail:&nbsp;</label>
+                                                <input type="text" class="form-control form-control-sm" id="ds_email" required="true">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <p>
+                                        <div class="row">
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div> 
+                                            <div class="col-md-10">
+                                                <h5>Dados Bancários</h5>
+                                                <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>     
+                                                <div class='col-md-4'>
+                                                <label for='generos_pk'>Tipo Conta:&nbsp;</label>
+                                                <select class='form-control form-control-sm'  id='tipo_conta_bancaria' name='tipo_conta_bancaria'>
+                                                    <option></option>
+                                                    <option value="1">Conta Corrente</option>
+                                                    <option value="2">Conta Poupança</option>
+                                                </select>
+                                            </div>
+                                        </div> 
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>     
+                                                <div class='col-md-4'>
+                                                <label for='generos_pk'>Banco:&nbsp;</label>
+                                                <select class='form-control form-control-sm chzn-select'  id='bancos_pk' name='bancos_pk'>
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div> 
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-2'>
+                                                <label for='ds_cel2'>Agência:&nbsp;</label>
+                                                <input type='text' class='form-control form-control-sm' id='ds_agencia' maxlength="12" name='ds_agencia'  >
+                                            </div>
+                                            <div class='col-md-2'>
+                                                <label for='ic_whatsapp2'>Conta:&nbsp;</label>
+                                                <input type='text' class='form-control form-control-sm' maxlength="5" id='ds_conta' name='ds_conta'  >
+                                            </div>
+                                            <div class='col-md-2'>
+                                                <label for='ic_whatsapp2'>Digito:&nbsp;</label>
+                                                <input type='text' class='form-control form-control-sm' maxlength="5"  id='ds_digito'  name='ds_digito'  >
+                                            </div>
+                                            <div class='col-md-3'>
+                                                <label for='ic_whatsapp2'>PIX:&nbsp;</label>
+                                                <input type='text' class='form-control form-control-sm'   id='ds_pix'  name='ds_pix'  >
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ds_cel2'>Favorecido:&nbsp;</label>
+                                                <input type='text' class='form-control form-control-sm' id='ds_conta_favorecido' name='ds_conta_favorecido'  >
+                                            </div>
+                                        </div>
+                                        <p>
+                                        <br>
+                                        <div class="row">
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div> 
+                                            <div class="col-md-10">
+                                                <h5>Endereço do Fornecedor</h5>
+                                                <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                            </div>
+                                        </div>      
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ds_cep'>CEP:&nbsp;</label>
+                                                <input type='text' class='form-control form-control-sm' maxlength="9" id='ds_cep' name='ds_cep' >
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ds_endereco'>Endereço:&nbsp;</label>
+                                                <input type='text' class='form-control form-control-sm' id='ds_endereco' name='ds_endereco' >
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-1'>
+                                                <label for='ds_numero'>Número:&nbsp;</label>
+                                                <input type='text' class='form-control form-control-sm' id='ds_numero' name='ds_numero' >
+                                            </div>
+                                            <div class='col-md-2'>
+                                                <label for='ds_complemento'>Complemento:&nbsp;</label>
+                                                <input type='text' class='form-control form-control-sm' id='ds_complemento' name='ds_complemento' >
+                                            </div>
+                                            <div class='col-md-3'>
+                                                <label for='ds_bairro'>Bairro:&nbsp;</label>
+                                                <input type='text' class='form-control form-control-sm' id='ds_bairro' name='ds_bairro' >
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ds_cidade'>Cidade:&nbsp;</label>
+                                                <input type='text' class='form-control form-control-sm' id='ds_cidade' name='ds_cidade' >
+                                            </div>
+                                            <div class='col-md-2'>
+                                                <label for='ds_uf'>UF:&nbsp;</label>
+                                                <select class='form-control form-control-sm'  id='ds_uf' name='ds_uf'>
+                                                    <option></option>
+                                                    <option>AC</option>
+                                                    <option>AL</option>
+                                                    <option>AP</option>
+                                                    <option>AM</option>
+                                                    <option>BA</option>
+                                                    <option>CE</option>
+                                                    <option>DF</option>
+                                                    <option>ES</option>
+                                                    <option>GO</option>
+                                                    <option>MA</option>
+                                                    <option>MT</option>
+                                                    <option>MS</option>
+                                                    <option>MG</option>
+                                                    <option>PA</option>
+                                                    <option>PB</option>
+                                                    <option>PR</option>
+                                                    <option>PE</option>
+                                                    <option>PI</option>
+                                                    <option>RJ</option>
+                                                    <option>RN</option>
+                                                    <option>RS</option>
+                                                    <option>RO</option>
+                                                    <option>RR</option>
+                                                    <option>SC</option>
+                                                    <option>SP</option>
+                                                    <option>SE</option>
+                                                    <option>TO</option>                            
+                                                </select>
+                                            </div> 
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ic_status'>Status:&nbsp;</label>
+                                                <select id="ic_status" class="form-control form-control-sm" name="ic_status">
+                                                    <option value="1">Ativo</option>
+                                                    <option value="2">Inativo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>   
+                                <div class="col-md-12" align="Right">
+                                    <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                    <br>
+                                    <button type="button" class="btn btn-secondary btn-sm" id="cmdCancelar2">Voltar</button>
+                                    &nbsp;
+                                    <button type="submit" class="btn btn-primary btn-sm" id="cmdIncluir2">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

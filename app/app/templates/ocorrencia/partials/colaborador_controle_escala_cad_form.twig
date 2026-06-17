@@ -1,0 +1,442 @@
+<div class="container">
+    <form id="form_agenda" class="agenda">
+        <div class="modal fade bd-example-modal-lg " id="janela_agendas">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #F7F7F7">
+                        <h6 class="modal-title" id="janela_contatosLabel" style= "color:#FF5403"  >Nova Agenda</h6>
+                        <button type="button" class="close" onclick="fecharModalEscala()" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-body" >
+                            <input type='hidden' class='form-control form-control-sm'  id='acao_agenda' name='acao_agenda'>
+                            <h5>Selecione o Posto de Trabalho</h5>
+                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                            <div class="row">
+                                <div class='col-md-6'>
+                                    <label for='agenda_contratos_pk'>Posto de Trabalho: </label>
+                                    <select class='form-control form-control-sm'  id='leads_pk_agenda' name='leads_pk_agenda' >
+                                        <option><option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <h5>Selecione o contrato</h5>
+                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                            <div class="row">
+                                <div class='col-md-4'>
+                                    <label for='agenda_contratos_pk'>Contrato: </label>
+                                    <select class='form-control form-control-sm'  id='contratos_pk_combo' name='contratos_pk_combo' >
+                                        <option><option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id="grid_itens_contrato"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <h5>Data Inicio e Fim da Escala</h5>
+                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                            <div class="row">
+                                <!--div class='col-md-4'>
+                                    <label for='ds_agenda'>Agenda: </label-->
+                                <!--
+                                <input type='hidden' class='form-control form-control-sm'  id='agenda_verifcar_qtde_dias_contrato' name='agenda_verifcar_qtde_dias_contrato'>
+                                <input type='hidden' class='form-control form-control-sm'  id='agenda_contratos_itens_pk' name='agenda_contratos_itens_pk'>
+                                <input type='hidden' class='form-control form-control-sm'  id='qtde_dias_item' name='qtde_dias_item'>-->
+                                <div id="exibir_variavel_processo" style="display:none">
+                                    <input type='hidden' class='form-control form-control-sm'  id='agenda_colaborador_padrao_pk' name='agenda_colaborador_padrao_pk'>
+                                    <input type='hidden'   id='processos_etapas_pk_2' name='processos_etapas_pk_2' >
+                                    <input type='hidden'  id='agenda_contratos_itens_pk' name='agenda_contratos_itens_pk'>
+                                    <input type='hidden'  id='n_qtde_dias_semana' name='n_qtde_dias_semana'>
+                                    <input type='hidden'  id='contratos_itens_pk' name='contratos_itens_pk'>
+                                </div>
+
+                                <!--/div-->
+                                <div class='col-md-4'>
+                                    <label for='dt_inicio_agenda'>Data Início da Escala: </label>
+                                    <input type='text' class='form-control form-control-sm' maxlength="10"  id='dt_inicio_agenda' name='dt_inicio_agenda'>
+                                </div>
+                                <div class='col-md-4'>
+                                    <label for='dt_fim_agenda'>Data Fim Termino do Contrato: </label>
+                                    <input type='text' class='form-control form-control-sm' maxlength="10"  id='dt_fim_agenda' name='dt_fim_agenda'>
+                                </div>
+                            </div>
+                            <p>
+                            <div id="exibir_data_cancelamento" style="display:none">
+                                <h5>Cancelar Escala</h5>
+                                <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                <div class="row">
+                                    <div class='col-md-4'>
+                                        <label for='cargos_pk'>Data Cancelamento: </label>
+                                        <input class='form-control form-control-sm'  id='dt_cancelamento_agenda_escala' name='dt_cancelamento_agenda_escala' />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class='col-md-6'>
+                                        <label for='cargos_pk'>Motivo Cancelamento: </label>
+                                        <textarea class='form-control form-control-sm'  id='ds_motivo_cancelamento' name='ds_motivo_cancelamento' /></textarea>
+                                    </div>
+                                </div>
+                                <p>
+                            </div>
+                            <p>
+                            <h5>Selecione um serviço</h5>
+                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                            <div class="row">
+                                <div class='col-md-4'>
+                                    <label for='cargos_pk'>Produtos/Serviços: </label>
+                                    <select class='form-control form-control-sm'  id='produtos_servicos_pk_combo' name='produtos_servicos_pk_combo' />
+                                    <option></option>
+                                    </select>
+                                </div>
+
+                                <div class='col-md-10' >
+                                    <b><div id="print_dias_por_servico"></div></b>
+                                    <input type="hidden" id="dias_escala_servico" name="dias_escala_servico" value="">
+                                </div>
+
+                            </div>
+                            <p>
+                            <h5>Selecione o colaborador para serviço</h5>
+                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                            <div class="row">
+                                <div class='col-md-5' >
+                                    <label for='colaboradores_pk_agenda'>Colaboradores: </label>
+                                    <input type="hidden" class='form-control form-control-sm'  id='colaboradores_pk_combo_agenda' name='colaboradores_pk_combo_agenda' />
+                                </div>
+                                <div class='col-md-6' >
+                                    <b><div id="print_escala_colaborador"></div></b>
+                                </div>
+                            </div>
+                            <p>
+                            <h5>Horários e Turnos</h5>
+                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+
+                            <div class="row">
+                                <div class='col-md-3' >
+                                    <label for='colaboradores_pk_agenda'>Turno: </label>
+                                    <select class='form-control form-control-sm'  id='turno_base_agenda_pk' name='turno_base_agenda_pk' />
+                                    <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class='col-md-3' >
+                                    <label for='colaboradores_pk_agenda'>HR Entrada: </label>
+                                    <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_inicio_expediente' id='hr_inicio_expediente' />
+                                </div>
+                                <div class='col-md-3' >
+                                    <label for='colaboradores_pk_agenda'>HR Saída: </label>
+                                    <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_termino_expediente' id='hr_termino_expediente' />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class='col-md-3' >
+                                    <label for='colaboradores_pk_agenda'>HR Saída Intervalo: </label>
+                                    <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_saida_intervalo' id='hr_saida_intervalo' />
+                                </div>
+                                <div class='col-md-3' >
+                                    <label for='colaboradores_pk_agenda'>HR Retorno Intervalo: </label>
+                                    <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_retorno_intervalo' id='hr_retorno_intervalo' />
+                                </div>
+                                <div class='col-md-3' >
+                                    <label for='colaboradores_pk_agenda'>Instrajornada: </label>
+                                    <input type="checkbox" name='ic_intrajornada' id='ic_intrajornada' />
+                                </div>
+                            </div>
+                            <p>
+                            <div class="row">
+                                <div class='col-md-8'  >
+                                    <input type="hidden" id="ic_folga_inverter" name="ic_folga_inverter">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class='col-md-4' >
+                                    <label for='colaboradores_pk_agenda'>Tipo Escala (Escalas 12x36):</label>
+                                    <select class='form-control form-control-sm' id="tipo_escala" name="tipo_escala">
+                                        <option ></option>
+                                        <option value="1">Impar</option>
+                                        <option value="2">Par</option>
+                                    </select>
+                                    <div class='row' id="alert_tipo_escala" style="display:none">
+                                        <strong style="color: red">Por favor, informe O Tipo da Escala</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>
+                            <div class="row">
+                                <br>
+                                <div class="row">
+                                    <div class='col-md-8' >
+                                        <button type="button" class="btn btn-secondary btn-sm" id="ic_preenchimento_automatico" name="ic_preenchimento_automatico">Preencher Automático o grid de Escala ?</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>
+                            <h5>Quadro de escala</h5>
+                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                            <div class='row'>
+                                <div class='col-md-12'>
+                                    <table class="table table-striped table-bordered nowrap" style="width:100%" id='tblAgendaTurno'>
+                                        <thead>
+                                        <tr style=" font-size: 14px " >
+                                            <th>#</th>
+                                            <th>Domingo</th>
+                                            <th>Segunda</th>
+                                            <th>Terça</th>
+                                            <th>Quarta</th>
+                                            <th>Quinta</th>
+                                            <th>Sexta</th>
+                                            <th>Sabado</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr style=" background: #BFEFFF; font-size: 14px ">
+                                            <td><b>Folga</b></td>
+                                            <td>
+                                                <input type='checkbox' name='ic_dom_folga' id='ic_dom_folga' />
+                                            </td>
+                                            <td>
+                                                <input type='checkbox' name='ic_seg_folga' id='ic_seg_folga' />
+                                            </td>
+                                            <td>
+                                                <input type='checkbox' name='ic_ter_folga' id='ic_ter_folga' />
+                                            </td>
+                                            <td>
+                                                <input type='checkbox' name='ic_qua_folga' id='ic_qua_folga' />
+                                            </td>
+                                            <td>
+                                                <input type='checkbox' name='ic_qui_folga' id='ic_qui_folga' />
+                                            </td>
+                                            <td>
+                                                <input type='checkbox' name='ic_sex_folga' id='ic_sex_folga' />
+                                            </td>
+                                            <td>
+                                                <input type='checkbox' name='ic_sab_folga' id='ic_sab_folga' />
+                                            </td>
+                                        </tr>
+                                        <tr style=" background: #EEEEEE; font-size: 14px ">
+                                            <td><b>Escala</b></td>
+                                            <td>
+                                                <input type='checkbox' name='ic_dom' id='ic_dom' />
+                                            </td>
+                                            <td>
+                                                <input type='checkbox' name='ic_seg' id='ic_seg' />
+                                            </td>
+                                            <td>
+                                                <input type='checkbox' name='ic_ter' id='ic_ter' />
+                                            </td>
+                                            <td>
+                                                <input type='checkbox' name='ic_qua' id='ic_qua' />
+                                            </td>
+                                            <td  >
+                                                <input type='checkbox' name='ic_qui' id='ic_qui' />
+                                            </td>
+                                            <td>
+                                                <input type='checkbox' name='ic_sex' id='ic_sex' />
+                                            </td>
+                                            <td>
+                                                <input type='checkbox' name='ic_sab' id='ic_sab' />
+                                            </td>
+                                        </tr>
+                                        <tr style=" background: #FFFFFF; font-size: 14px ">
+                                            <td>Turno</td>
+                                            <td>
+                                                <select class='form-control form-control-sm'  id='dom_turnos_pk' name='dom_turnos_pk'>
+                                                    <option></option>
+                                                    <option value="4">Dia Inteiro</option>
+                                                    <option value="1">Manhã</option>
+                                                    <option value="2">Tarde</option>
+                                                    <option value="3">Noite</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class='form-control form-control-sm'  id='seg_turnos_pk' name='seg_turnos_pk'>
+                                                    <option></option>
+                                                    <option value="4">Dia Inteiro</option>
+                                                    <option value="1">Manhã</option>
+                                                    <option value="2">Tarde</option>
+                                                    <option value="3">Noite</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class='form-control form-control-sm'  id='ter_turnos_pk' name='ter_turnos_pk'>
+                                                    <option></option>
+                                                    <option value="4">Dia Inteiro</option>
+                                                    <option value="1">Manhã</option>
+                                                    <option value="2">Tarde</option>
+                                                    <option value="3">Noite</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class='form-control form-control-sm'  id='qua_turnos_pk' name='qua_turnos_pk'>
+                                                    <option></option>
+                                                    <option value="4">Dia Inteiro</option>
+                                                    <option value="1">Manhã</option>
+                                                    <option value="2">Tarde</option>
+                                                    <option value="3">Noite</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class='form-control form-control-sm'  id='qui_turnos_pk' name='qui_turnos_pk'>
+                                                    <option></option>
+                                                    <option value="4">Dia Inteiro</option>
+                                                    <option value="1">Manhã</option>
+                                                    <option value="2">Tarde</option>
+                                                    <option value="3">Noite</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class='form-control form-control-sm'  id='sex_turnos_pk' name='sex_turnos_pk'>
+                                                    <option></option>
+                                                    <option value="4">Dia Inteiro</option>
+                                                    <option value="1">Manhã</option>
+                                                    <option value="2">Tarde</option>
+                                                    <option value="3">Noite</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class='form-control form-control-sm'  id='sab_turnos_pk' name='sab_turnos_pk'>
+                                                    <option></option>
+                                                    <option value="4">Dia Inteiro</option>
+                                                    <option value="1">Manhã</option>
+                                                    <option value="2">Tarde</option>
+                                                    <option value="3">Noite</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr style="font-size: 14px ">
+                                            <td>HR Entrada Expediente</td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_dom' id='hr_turno_dom' />
+                                            </td>
+                                            <td>
+                                                <input   class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_seg' id='hr_turno_seg' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_ter' id='hr_turno_ter' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_qua' id='hr_turno_qua' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_qui' id='hr_turno_qui' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_sex' id='hr_turno_sex' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_sab' id='hr_turno_sab' />
+                                            </td>
+                                        </tr>
+                                        <tr style="font-size: 14px ">
+                                            <td>HR Saida Intervalo</td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_dom' id='hr_intervalo_dom' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_seg' id='hr_intervalo_seg' />
+                                            </td>
+                                            <td>
+                                                <input   class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_ter' id='hr_intervalo_ter' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_qua' id='hr_intervalo_qua' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_qui' id='hr_intervalo_qui' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_sex' id='hr_intervalo_sex' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_sab' id='hr_intervalo_sab' />
+                                            </td>
+                                        </tr>
+                                        <tr style="font-size: 14px ">
+                                            <td>HR Retorno Intervalo</td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_saida_dom' id='hr_intervalo_saida_dom' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_saida_seg' id='hr_intervalo_saida_seg' />
+                                            </td>
+                                            <td>
+                                                <input   class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_saida_ter' id='hr_intervalo_saida_ter' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_saida_qua' id='hr_intervalo_saida_qua' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_saida_qui' id='hr_intervalo_saida_qui' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_saida_sex' id='hr_intervalo_saida_sex' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_intervalo_saida_sab' id='hr_intervalo_saida_sab' />
+                                            </td>
+                                        </tr>
+                                        <tr style="font-size: 14px ">
+                                            <td>HR Saida Expediente</td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_dom_saida' id='hr_turno_dom_saida' />
+                                            </td>
+                                            <td>
+                                                <input   class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_seg_saida' id='hr_turno_seg_saida' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_ter_saida' id='hr_turno_ter_saida' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_qua_saida' id='hr_turno_qua_saida' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_qui_saida' id='hr_turno_qui_saida' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_sex_saida' id='hr_turno_sex_saida' />
+                                            </td>
+                                            <td>
+                                                <input  class='form-control form-control-sm' maxlength="5" type='type' name='hr_turno_sab_saida' id='hr_turno_sab_saida' />
+                                            </td>
+                                        </tr >
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="alert" style="display:none" >
+                                <strong style="color: red">Selecione o Turno / HR Entrada</strong>
+                            </div>
+                            <div id="exibir_checkbox" style="display:none">
+                                <h5>Próxima Semana</h5>
+                                <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                <br>
+                                <div class="row" >
+                                    <div class='col-md-8'>
+                                        <label for='cargos_pk'>Não Repetir Prox. Semana: </label>
+                                        <input type="checkbox"  id='ic_nao_repetir' name='ic_nao_repetir' />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="fecharModalEscala()" data-dismiss="modal">Fechar</button>
+
+                                <button type="submit" class="btn btn-primary btn-sm" id="cmdEnviarAgenda" name="cmdEnviarAgenda" onclick="fcValidarFormAgendas()">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

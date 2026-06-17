@@ -1,0 +1,516 @@
+#datatableOccurrences {
+    font-size: 14px;
+}
+
+.attachments-interaction, .attachments-tasks {
+    display: block;
+    padding: 8px 10px 10px 10px;
+    text-align: left;
+}
+
+.attachments-interaction .attach, .attachments-tasks .attach {
+    display: inline-block;
+    position: relative;
+    height: 40px;
+    animation: rubberBand .7s;
+    -webkit-animation: rubberBand .7s;
+    transition: transform .2s;
+}
+
+.attachments-interaction .attach:hover, .attachments-tasks .attach:hover {
+    transform: scale(1.1);
+}
+
+
+.attachments-interaction .attach img, .attachments-tasks .attach img {
+    width: 30px;
+    margin-right: 5px;
+}
+
+.attachments-interaction .attach i, .attachments-tasks .attach i {
+    font-size: 18px;
+    position: absolute;
+    top: -7px;
+    left: 16px;
+    color: #555555;
+    cursor: pointer;
+    background: white;
+    width: 18px;
+    height: 18px;
+}
+
+.box-actions section:not(:first-child) {
+    margin-top: 15px;
+}
+
+.box-actions section {
+    border-bottom: 1px solid #dee2e6 !important;
+    border-color: #e9ecef !important;
+    padding-bottom: 15px;
+}
+
+.box-actions section p.title {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-family: "Montserrat", "Poppins", sans-serif;
+}
+
+.box-actions section p:not(.title) {
+    margin: 0;
+    font-size: 16px;
+}
+
+.box-actions .baseline * {
+    font-size: 15px;
+}
+
+.box-actions .baseline .baseline-list .baseline-info .date {
+    font-size: 14px;
+    margin-top: 0px;
+    display: block;
+}
+
+.box-actions .baseline, .baseline .baseline-list {
+    position: relative;
+    border-color: #8605B9;
+}
+
+.box-actions .baseline .baseline-border {
+    border-left-width: 2px !important;
+    border-left-style: solid !important;
+}
+
+.box-actions .baseline, .baseline .baseline-list {
+    position: relative;
+    border-color: #8605B9;
+}
+
+.box-actions .baseline .baseline-list:before {
+    display: table;
+    content: " ";
+}
+
+.box-actions .baseline .baseline-list:after {
+    display: table;
+    position: absolute;
+    top: 14px;
+    width: 10px;
+    height: 10px;
+    margin-left: -4px;
+    content: "";
+    border-width: 5px;
+    border-style: solid;
+    border-color: inherit;
+    border-radius: 10px;
+    background-color: transparent;
+    box-shadow: 0 0 0 3px #e5ebf8 inset;
+    left: -2px;
+}
+
+.box-actions .baseline .baseline-list .baseline-info {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    margin-left: 10px;
+    padding-bottom: 5px;
+}
+
+
+.card-body p.title {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-family: "Montserrat", "Poppins", sans-serif;
+}
+
+/* timeline */
+
+.timeline {
+    position: relative;
+    width: 660px;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding: 1em 0;
+    list-style-type: none;
+}
+
+.timeline:before {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    content: ' ';
+    display: block;
+    width: 6px;
+    height: 100%;
+    margin-left: -3px;
+    background: rgb(238, 238, 238);
+    background: -moz-linear-gradient(top, rgba(238, 238, 238, 0) 0%, rgb(238, 238, 238) 8%, rgb(238, 238, 238) 92%, rgba(238, 238, 238, 0) 100%);
+    background: -webkit-linear-gradient(top, rgba(238, 238, 238, 0) 0%, rgb(238, 238, 238) 8%, rgb(238, 238, 238) 92%, rgba(238, 238, 238, 0) 100%);
+    background: -o-linear-gradient(top, rgba(238, 238, 238, 0) 0%, rgb(238, 238, 238) 8%, rgb(238, 238, 238) 92%, rgba(238, 238, 238, 0) 100%);
+    background: -ms-linear-gradient(top, rgba(238, 238, 238, 0) 0%, rgb(238, 238, 238) 8%, rgb(238, 238, 238) 92%, rgba(238, 238, 238, 0) 100%);
+    background: linear-gradient(to bottom, rgba(238, 238, 238, 0) 0%, rgb(238, 238, 238) 8%, rgb(238, 238, 238) 92%, rgba(238, 238, 238, 0) 100%);
+
+    z-index: 5;
+}
+
+.timeline li {
+    padding: 1em 0;
+}
+
+.timeline li:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.direction-l {
+    position: relative;
+    width: 300px;
+    float: left;
+    text-align: right;
+}
+
+.direction-r {
+    position: relative;
+    width: 300px;
+    float: right;
+}
+
+.flag-wrapper {
+    position: relative;
+    display: inline-block;
+
+    text-align: center;
+}
+
+.flag {
+    font-family: "Montserrat", "Poppins", sans-serif;
+    position: relative;
+    display: block;
+    font-weight: 900;
+    text-align: right;
+    text-transform: uppercase;
+    font-size: 18px;
+}
+
+.timeline .flag-wrapper .badge {
+    display: block;
+    padding: 5px;
+    background: rgba(23, 200, 190, 0.20);
+    color: #123e58;
+}
+
+.timeline .flag-wrapper .badge.is_interaction {
+    background: rgba(2, 136, 77, 0.20) !important;
+    color: #02884d !important;
+}
+
+
+.timeline .time-wrapper {
+    margin-top: 5px;
+    display: block;
+}
+
+.direction-r .flag {
+    text-align: left;
+}
+
+.direction-l .flag:before,
+.direction-r .flag:before {
+    position: absolute;
+    top: 50%;
+    right: -36px;
+    content: ' ';
+    display: block;
+    width: 12px;
+    height: 12px;
+    margin-top: -10px;
+    background: #afafaf;
+    border-radius: 10px;
+    z-index: 10;
+}
+
+.direction-r .flag:before {
+    left: -36px;
+}
+
+.direction-l .flag:after {
+    content: "";
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    height: 0;
+    width: 0;
+    margin-top: -8px;
+    border: solid transparent;
+    border-left-color: rgb(248, 248, 248);
+    border-width: 8px;
+    pointer-events: none;
+}
+
+.direction-r .flag:after {
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    height: 0;
+    width: 0;
+    margin-top: -8px;
+    border: solid transparent;
+    border-right-color: rgb(248, 248, 248);
+    border-width: 8px;
+    pointer-events: none;
+}
+
+.time {
+    display: block;
+    font-size: 13px;
+    color: #adb5bd !important;
+}
+
+.direction-r .time {
+    text-align: left;
+}
+
+.direction-l .time {
+    text-align: right;
+}
+
+.description {
+    margin: 10px 0 0 0;
+    font-size: 16px;
+    text-align: right;
+}
+
+.direction-r .description {
+    text-align: left;
+}
+
+.description-title {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.timeline .attachments {
+    display: block;
+}
+
+.timeline .attachments a.attach {
+    color: #333333;
+    display: block;
+    padding: 6px;
+    background: #f6f6f6;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    text-align: left;
+    transition: transform .2s;
+}
+
+.timeline .attachments a.attach:hover {
+    transform: scale(1.05);
+}
+
+.timeline .attachments .attach img {
+    height: 20px;
+    float: left;
+    margin-right: 10px;
+}
+
+
+/* ================ Timeline Media Queries ================ */
+
+@media screen and (max-width: 660px) {
+
+    .timeline {
+        width: 100%;
+        padding: 4em 0 1em 0;
+    }
+
+    .timeline li {
+        padding: 2em 0;
+    }
+
+    .direction-l,
+    .direction-r {
+        float: none;
+        width: 100%;
+
+        text-align: center;
+    }
+
+    .flag-wrapper {
+        text-align: center;
+    }
+
+    .flag {
+        background: rgb(255, 255, 255);
+        z-index: 15;
+    }
+
+    .direction-l .flag:before,
+    .direction-r .flag:before {
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        content: ' ';
+        display: block;
+        width: 12px;
+        height: 12px;
+        margin-left: -9px;
+        background: #fff;
+        border-radius: 10px;
+        border: 4px solid rgb(255, 80, 80);
+        z-index: 10;
+    }
+
+    .direction-l .flag:after,
+    .direction-r .flag:after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -8px;
+        height: 0;
+        width: 0;
+        margin-left: -8px;
+        border: solid transparent;
+        border-bottom-color: rgb(255, 255, 255);
+        border-width: 8px;
+        pointer-events: none;
+    }
+
+    .time-wrapper {
+        display: block;
+        position: relative;
+        margin: 4px 0 0 0;
+        z-index: 14;
+    }
+
+    .direction-l .time-wrapper {
+        float: none;
+    }
+
+    .direction-r .time-wrapper {
+        float: none;
+    }
+
+    .description {
+        position: relative;
+        margin: 1em 0 0 0;
+        padding: 1em;
+        background: rgb(245, 245, 245);
+        -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.20);
+        -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.20);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.20);
+
+        z-index: 15;
+    }
+
+    .direction-l .description,
+    .direction-r .description {
+        position: relative;
+        margin: 1em 1em 0 1em;
+        padding: 1em;
+
+        z-index: 15;
+    }
+
+}
+
+/* options */
+
+.btn-search-complain {
+    margin-top: -4px;
+}
+
+#ra_code_complain {
+    width: calc(100% - 524px)
+}
+
+input[name="filter_date"][readonly] {
+    background: #ffffff !important;
+}
+
+span.filter_date {
+    cursor: pointer;
+}
+
+.box-sla p {
+    font-family: Poppins;
+    font-size: 13px !important;
+    line-height: 20px;
+}
+
+.btn-open-modal-queue {
+    height: 20px;
+}
+
+.progress-bar {
+    width: 100%;
+}
+
+.btn-warning {
+    font-weight: 700;
+}
+
+/* contact */
+
+section.contact label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+section.contact div.input-box {
+    padding: 5px 0;
+}
+
+[data-emojiarea] div {
+    background: #f0f0f0;
+    padding: 5px 8px;
+    display: inline-block;
+    border-radius: 10px;
+    transition: background-color .2s;
+    float: right;
+    margin: -88px 0 0 0;
+}
+
+[data-emojiarea] div:hover {
+    background-color: #e6e6e6;
+}
+
+.btn-fast-message {
+    margin: -3px 72px 0 0;
+}
+
+
+
+.box-historio-interacoes {
+    border: 1px solid #DADFE1;
+    background: #FFFFFF;
+    padding: 20px !important;
+    border-radius: 9px;
+    margin-top: -5px !important;
+    width: 100%;
+    min-height: 100%;
+}
+
+.balao {
+    background: #eaeaea;
+    border-radius: 2px;
+    min-height: 30px;
+    min-width: 100%;
+    position: relative;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+.balaoLabel {
+    color: #7e7e7e;
+    font-style: italic;
+    font-size: 12px;
+    text-align: right;
+}

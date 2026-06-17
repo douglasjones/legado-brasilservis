@@ -1,0 +1,96 @@
+{% set area = 'relatorios' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/js/local/atendimento.js?v=14"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v={{ JSversion }}"></script>
+{% endblock %}
+{% block title %}
+    Relatorios
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href='{{ base_url() }}/assets/css/local/receptivo.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container col">
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-md-12 col-lg-12 d-flex align-items-stretch">
+                        <div class="widthfull card card-shadow mb-12" style="width: 1290px">
+                            <div class="card-header" style="background-color: #F7F7F7">
+                                <div class="card-title">
+                                    <h6   style= "color:#FF5403">Relatórios</h6>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/relatorio/comercial">
+                                                    <i class="bi bi-briefcase" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Comercial</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <p>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/relatorio/operacional">
+                                                    <i class="bi bi-gear" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Operacional</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/relatorio/compra_estoque">
+                                                    <i class="bi bi-cart-check" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2 " style="font-size: 15px;color: blue">Compras Estoque</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <p>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/relatorio/rh">
+                                                    <i class="bi bi-person-gear" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">RH</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/relatorio/financeiro">
+                                                    <i class="bi bi-cash-coin" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Financeiro</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

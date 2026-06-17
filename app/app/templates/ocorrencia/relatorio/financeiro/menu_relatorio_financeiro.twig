@@ -1,0 +1,91 @@
+{% set area = 'relatorios' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/js/local/atendimento.js?v=14"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v={{ JSversion }}"></script>
+    
+{% endblock %}
+{% block title %}
+    Menu Financeiro
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href='{{ base_url() }}/assets/css/local/receptivo.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container col">
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-md-12 col-lg-12 d-flex align-items-stretch">
+                        <div class="widthfull card card-shadow mb-12" style="width: 1290px">
+                            <div class="card-header" style="background-color: #F7F7F7">
+                                <div class="card-title col-sm-4">
+                                    <h6   style= "color:#FF5403">Financeiro</h6>
+                                </div>
+                                <div class='col-sm-8' align="Right">
+                                    <a class="nav-link" href="/menu/relatorio">
+                                        <button type="button" class="btn btn-secondary btn-sm" >Voltar</button>
+                                    </a>  
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/relatorio/pesqRelFluxoCaixa">
+                                                    <i class="bi bi-clipboard2" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Fluxo de Caixa</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/relatorio/pesqRelReceitaPostoTrabalho">
+                                                    <i class="bi bi-clipboard2" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Receita por Posto de Trabalho</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/relatorio/pesqRelDespesaPostoTrabalho">
+                                                    <i class="bi bi-clipboard2" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Despesa por Posto de Trabalho</span>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/relatorio/pesqRelTituloPlanoContas">
+                                                    <i class="bi bi-clipboard2" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Títulos por Plano de Contas</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

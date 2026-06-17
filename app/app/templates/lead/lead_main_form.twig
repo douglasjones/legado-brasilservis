@@ -1,0 +1,143 @@
+{% if local == 2%}
+    {% set area = 'operacional' %}
+{% else %}
+    {% set area = 'comercial' %}
+{% endif %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="/assets/js/local/lead_main_form.js?v=14"></script>
+    <script src="/assets/js/local/lead_det_form.js?v=14"></script>
+
+    <script src="/assets/js/local/contato_res_form.js?v=14"></script>
+    <script src="/assets/js/local/contato_cad_form.js?v=14"></script>
+
+    <script src="/assets/js/local/agenda_res_form.js?v=14"></script>
+    <script src="/assets/js/local/agenda_cad_form.js?v=14"></script>
+
+    <script src="/assets/js/local/comercial_res_form.js?v=14"></script>
+    <script src="/assets/js/local/comercial_cad_form.js?v=14"></script>
+
+    <script src="/assets/js/local/ocorrencia_res_form.js?v=14"></script>
+    <script src="/assets/js/local/ocorrencia_cad_form.js?v=14"></script>
+
+    <script src="/assets/js/local/documento_res_form.js?v=14"></script>
+    <script src="/assets/js/local/documento_cad_form.js?v=14"></script>
+{% endblock %}
+{% block title %}
+    Painel
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <BR>
+    <BR>
+    <main class="content_wrapper">
+        <div class="container">
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <input type="hidden" id="leads_pk" name="leads_pk" value="{{ leads_pk }}">
+                    <input type="hidden" id='ic_abertura' value="{{ ic_abertura }}">
+                    <input type="hidden" id='local' value="{{ local }}">
+
+                    <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                        <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;">
+                           <div class="card-header" style="background-color: #F7F7F7">
+                                <div class="card-title col-sm-4">
+                                    <h5 style= "color:#FF5403"  >Lead - Painel Principal</h5>
+                                </div>
+                                <div class='col-sm-8' align="Right" >
+                                    <button type="button" class="btn btn-secondary btn-sm" id="cmdVoltarLead">Voltar</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="nav nav-pills flex-column flex-sm-row" id="myTab" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" id="dados_cadastrais_lead-tab" data-toggle="tab" href="#dados_cadastrais_lead" role="tab" aria-controls="dados_cadastrais_lead" aria-selected="true">Dados Cadastrais</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="contatos_lead-tab" data-toggle="tab" href="#contatos_lead" role="tab" aria-controls="contatos_lead" aria-selected="false">Contato(s)</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="agendas_lead-tab" data-toggle="tab" href="#agendas_lead" role="tab" aria-controls="agendas_lead" aria-selected="false">Agenda</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="comercial_lead-tab" data-toggle="tab" href="#comercial_lead" role="tab" aria-controls="comercial_lead" aria-selected="false">Comercial</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="ocorrencias_lead-tab" data-toggle="tab" href="#ocorrencias_lead" role="tab" aria-controls="ocorrencias_lead" aria-selected="false">Ocorrências</a>
+                                            </li>
+                                            <!--li class="nav-item">
+                                                <a class="nav-link" id="documentos_lead-tab" data-toggle="tab" href="#documentos_lead" role="tab" aria-controls="documentos_lead" aria-selected="false">Documento(s)</a>
+                                            </li-->
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="financeiro_lead-tab" data-toggle="tab" href="#financeiro_lead" role="tab" aria-controls="financeiro_lead" aria-selected="false">Financeiro</a>
+                                            </li>
+                                        </ul>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="tab-content">
+                                    <!--Dados Lead-->
+                                    <div class="tab-pane fade show active" id="dados_cadastrais_lead" role="tabpanel" aria-labelledby="dados_cadastrais_lead-tab">
+                                        {% include ("lead/lead_det_form.twig") %}
+                                    </div>
+                                    <!--Contato Lead-->
+                                    <div class="tab-pane fade" id="contatos_lead" role="tabpanel" aria-labelledby="contatos_lead-tab">
+                                        {% include ("partials/inc_contato_res_form.twig") %}
+                                    </div>
+                                    <div class="tab-pane fade" id="agendas_lead" role="tabpanel" aria-labelledby="agendas_lead-tab">
+                                        {% include ("partials/inc_agenda_res_form.twig") %}
+                                    </div>
+                                    <div class="tab-pane fade" id="comercial_lead" role="tabpanel" aria-labelledby="comercial_lead-tab">
+                                       {% include ("partials/inc_comercial_res_form.twig") %}
+                                    </div>
+                                    <!--Ocorencias Lead-->
+                                    <div class="tab-pane fade" id="ocorrencias_lead" role="tabpanel" aria-labelledby="ocorrencias_lead-tab">
+                                        {% include ("partials/inc_ocorrencia_res_form.twig") %}
+                                    </div>
+                                    <!--Documentos Lead-->
+                                    <div class="tab-pane fade" id="documentos_lead" role="tabpanel" aria-labelledby="documentos_lead-tab">
+                                        {% include ("partials/inc_documentos_res_form.twig") %}
+                                    </div>
+                                    <!--Documentos Lead-->
+                                    <div class="tab-pane fade" id="financeiro_lead" role="tabpanel" aria-labelledby="financeiro_lead-tab">
+                                        {% include ("partials/inc_financeiro_lead_res_form.twig") %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!--MODAL-->
+    {% include('partials/inc_contato_cad_form.twig') %}
+    {% include('partials/inc_agenda_cad_form.twig') %}
+    {% include('partials/inc_ocorrencia_cad_form.twig') %}
+    {% include('partials/inc_documento_cad_form.twig') %}
+{% endblock %}

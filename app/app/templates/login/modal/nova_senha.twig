@@ -1,0 +1,83 @@
+<style>
+    #modal-first-access .modal-dialog {
+        max-width: 500px !important;
+    }
+
+    @media (min-width: 481px) and(max-width: 767px) {
+        #modal-first-access .modal-dialog {
+            width: 100% !important;
+        }
+    }
+
+    @media (min-width: 320px) and(max-width: 480px) {
+        #modal-first-access .modal-dialog {
+            width: 100% !important;
+        }
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div aria-labelledby="modal-set-ramalLabel" class="modal fade" id="janela_modal_nova_senha" role="dialog"
+                     tabindex="-1">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <form id="formAlterarSenha" method="POST" onsubmit="return false;">
+                                    <div class="row">
+                                        <div class='col-md-4'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-8'>
+                                            <img width="160px" height="60px" src="https://server.gpros.com.br/comercial/logos/logoOficial.png" >
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class='col-md-12'>
+                                            <span class="h6 text-gray-900 mb-6 text-center">Olá <b><span id="text_login"></span></b>, configure sua senha.</span>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-row form-group">
+                                                <div class="col-8">
+                                                    <label>Nova Senha</label>
+                                                    <input type="hidden" id="ds_login_nova_senha" name="ds_login_nova_senha">
+                                                    <input type="password" class="form-control form-control-sm" id="password1" placeholder="Password" name="password1" style='border-radius:25px;border:3px solid #FF5403;'>
+                                                </div>
+                                                <div class="col-8">
+                                                    <label>Confirmar Senha</label>
+                                                    <input type="password" class="form-control form-control-sm" id="password2" placeholder="Confirm Password" name="password2" style='border-radius:25px;border:3px solid #FF5403;'>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-row form-group">
+                                                <div class="col-6">
+                                                   &nbsp;
+                                                </div>
+                                                <div class="col-6">
+                                                    <img rowspan="2" class="redefinir-img" src="/assets/img/profile/redefinir_senha.png" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button style="width: 900px;border-radius:25px" class="btn btn-primary btn-block" id="btn-modal-update-password" type="button">
+                                    Atualizar Minha Senha
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

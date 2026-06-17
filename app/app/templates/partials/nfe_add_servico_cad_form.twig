@@ -1,0 +1,44 @@
+
+{% block JSfiles %}
+    <script src="/assets/js/local/nfe_add_servico_cad_form.js?v=14"></script>
+{% endblock %}
+<div class="modal fade bd-example-modal-lg" id="janela_servicos" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title col-sm-5">
+                        <h5 style= "color:#FF5403">Novo Serviço</h5>
+                </div>
+                <div class='col-sm-7' align="Right">
+                    <button type="button" class="btn btn-secondary btn-sm" aria-label="Close" id="cmdFecharModal">Fechar</button>
+                    &nbsp;
+                    <button type="button" class="btn btn-primary btn-sm" id="cmdSalvarServico">Salvar</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form id='form'>
+                    <div class='row'>
+                        <div class='col-md-4'>
+                            <label for="num_codigo_servico">Código Serviço:&nbsp;</label>
+                            <input type="text" class="form-control form-control-sm" id="num_codigo_servico" value="">
+                            <input type="hidden" id="contas_servico_pk" value="">
+                        </div>
+                        <div class='col-md-4'>
+                            <label for="num_codigo_servico">Código Tributação:&nbsp;</label>
+                            <input type="text" class="form-control form-control-sm" id="codigo_tributacao" value="">
+                            
+                        </div>
+                    </div>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-12'>
+                            <label for="ds_servico">Descrição Serviço:&nbsp;</label>
+                            <textarea type="text" class="form-control form-control-sm" id="ds_servico" value=""></textarea>
+                        </div>
+                    </div>
+                    <br>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

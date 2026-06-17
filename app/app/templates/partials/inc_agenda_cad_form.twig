@@ -1,0 +1,319 @@
+
+<div class="modal fade bd-example-modal-lg" id="event-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="font-weight-bold text-primary">Agenda</h6>
+                <div align='right'>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" id='cmdFecharAgenda' onclick="fcFecharModalCadastroAgenda()">Fechar</button>
+                    <button type="button" class="btn btn-primary btn-sm" id='cmdEnviarAgenda'>Salvar</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form id="formAgenda">
+                    <div class="row">
+                        <div class='col-md-12'>
+                            <h6>
+                                <b>Dados Agenda</b>
+                            </h6>
+                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 1em;'>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-4'>
+                            <label for=''>Tipo de Agenda&nbsp;</label>
+                            <select class=" form-control form-control-sm" id="tipo_agenda_pk" name="tipo_agenda_pk">
+                                <option value=''></option>
+                                <option value='1'>REUNIÃO PRESENCIAL</option>
+                                <option value='2'>REUNIÃO POR VIDEO CHAMADA</option>
+                                <option value='3'>LEMBRETE</option>
+                                <option value='4'>RETORNO</option>
+                                <option value='5'>TAREFA</option>
+                                <option value='6'>PESSOAL</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class='row' id="alert_tipo_agenda_pk" style="display:none">
+                        <div class='col-md-4'>
+                            <span aling="center" style="color: red">Por favor, informe o Tipo de Agenda!</span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class='col-md-3'>
+                            <label for=''>Dt Inicio&nbsp;</label>
+                            <input class="form-control form-control-sm" id="dt_ini_evento" maxlength='10' name="dt_ini_evento">
+                        </div>
+                        <div class='col-md-2'>
+                            <label for=''>Hr Inicio&nbsp;</label>
+                            <input class=" form-control form-control-sm" id="hr_ini_evento" name="hr_ini_evento">
+                        </div>
+                        <div class='col-md-3'>
+                            <label for=''>Dt Termino&nbsp;</label>
+                            <input class=" form-control form-control-sm" maxlength='10' id="dt_fim_evento" name="dt_fim_evento">
+                        </div>
+                        <div class='col-md-2'>
+                            <label for=''>Hr Termino&nbsp;</label>
+                            <input class=" form-control form-control-sm" id="hr_fim_evento" name="hr_fim_evento">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-3'id="alert_dt_ini_evento" style="display:none">
+                            <span aling="center" style="color: red">Por favor, informe a Dt Inicio!</span>
+                        </div>
+                        <div class='col-md-3'>
+                            &nbsp;
+                        </div>
+                        <div class='col-md-3' id="alert_hr_ini_evento" style="display:none">
+                            <span aling="center" style="color: red">Por favor, informe a Hr Inicio!</span>
+                        </div>
+                        <div class='col-md-2'>
+                            &nbsp;
+                        </div>
+                        <div class='col-md-3' id="alert_dt_fim_evento" style="display:none">
+                            <span aling="center" style="color: red">Por favor, informe a Dt Termino!</span>
+                        </div>
+                        <div class='col-md-3'>
+                            &nbsp;
+                        </div>
+                        <div class='col-md-3' id="alert_hr_fim_evento" style="display:none">
+                            <span aling="center" style="color: red">Por favor, informe a Hr Termino!</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-4'>
+                            <label for=''>Status Agenda&nbsp;</label>
+                            <select class=" form-control form-control-sm" id="ic_status" name="ic_status">
+                                <option value='1'>Agenda Pendente</option>
+                                <option value='2'>Agenda Concluída</option>
+                                <option value='3'>Agenda Cancelada</option>
+                            </select>
+                        </div>
+                        <div class='col-md-6' id="div_motivo_cancelameto_pk">
+                            <label for=''>Motivo do Cancelamento&nbsp;</label>
+                            <select class=" form-control form-control-sm" id="motivo_cancelameto_pk" name="motivo_cancelameto_pk">
+                                <option value=''></option>
+                                <option value='1'>Reagendamento para outra data</option>
+                                <option value='2'>Cancelamento solicitado pelo Lead</option>
+                                <option value='3'>Cancelamento solicitado por um dos Participantes</option>
+                                <option value='4'>Agenda em duplicidade</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-4' id="div_classificacao_agenda_pk">
+                            <label for=''>Classificação Agenda&nbsp;</label>
+                            <select class=" form-control form-control-sm" id="classificacao_agenda_pk" name="classificacao_agenda_pk">
+                                <option value=''></option>
+                                <option value='1'>Produtiva</option>
+                                <option value='2'>Improdutiva</option>
+                            </select>
+                        </div>
+                        <div class='col-md-5' id="div_obs_classificacao">
+                            <label for=''>Obs Classificação Agenda&nbsp;</label>
+                            <textarea id="obs_classificacao" class="form-control form-control-sm"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-12'>
+                            <br>
+                            <h6>
+                                <b>Lead</b>
+                            </h6>
+
+                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 1em;'>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-12'>
+                            <label for=''>Lead&nbsp;</label>
+                            <!--chzn-select-->
+                            <select class=" form-control form-control-sm " style="width: 50%" id="leads_pk_agenda" name="leads_pk_agenda">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-4' id="alert_leads_pk_agenda" style="display:none">
+                            <span aling="center" style="color: red">Por favor, informe o Lead!</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-4' id="div_endereco" style="display:none">
+                            <label for=''>Endereço&nbsp;</label>
+                            <select class=" form-control form-control-sm" id="endereco_pk" name="endereco_pk">
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class='col-md-4' id="div_endereco_botao" >
+                            <div class='col-md-12'>
+                                &nbsp;
+                            </div>
+                            <buttom id="cmdSalvarNovoEndereço" class="btn btn-primary btn-md">Novo Endereço</buttom>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-4' id="alert_endereco_pk" style="display:none">
+                            <span aling="center" style="color: red">Por favor, informe o Endereço!</span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class='col-md-3'>
+                            <div id='ds_rua_html'> </div>
+                        </div>
+                        <div class='col-md-1'>
+                            <div id='ds_numero_html'> </div>
+                        </div>
+                        <div class='col-md-3'>
+                            <div id='ds_complemento_html'> </div>
+                        </div>
+                        <div class='col-md-3'>
+                            <div id='ds_bairro_html'> </div>
+                        </div>
+                        <div class='col-md-3'>
+                            <div id='ds_cidade_html'> </div>
+                        </div>
+                        <div class='col-md-4'>
+                            <div id='ds_cep_html'> </div>
+                        </div>
+                        <div class='col-md-2'>
+                            <div id='ds_uf_html'> </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-12'>
+                            <br>
+                            <h6>
+                                <b>Participantes</b>
+                            </h6>
+                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 1em;'>
+                            <input type='hidden' id="agendas_pk" name="agendas_pk">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-4'>
+                            <label for=''>Tipo de Participantes&nbsp;</label>
+                            <select class=" form-control form-control-sm" id="tipo_participante_pk" name="tipo_participante_pk">
+                                <option></option>
+                                <option value='1'>Contatos Lead</option>
+                                <option value='2'>Usuários Sistema</option>
+                            </select>
+                        </div>
+                        <div class='col-md-4'>
+                            <label for=''>Participantes&nbsp;</label>
+                            <select class=" form-control form-control-sm" id="participante_pk" name="participante_pk">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div  class='col-md-4'>
+                            &nbsp;
+                            <div class='row' id="alert_tipo_participante_pk" style="display:none">
+                                <span style="color: red">Por favor, informe o Tipo de Participante!</span>
+                            </div>
+                        </div>
+                        <div  class='col-md-4'>
+                            &nbsp;
+                            <div class="row" id="alert_participante_pk" style="display:none">
+                                <span style="color: red">Por favor, informe o Participante!</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-4'>
+                            <button type="button" id='cmdIncluirParticipante' class="btn btn-primary">Incluir Participantes</button>
+                        </div>
+                    </div>
+                    <div class='col-md-12'>
+                        &nbsp;
+                    </div>
+                    <div class="row">
+                        <div class='col-md-12'>
+                            <table class="table table-striped table-bordered nowrap" style="width:100%" id='tblParticipantesAgenda'>
+                                <thead>
+                                <tr>
+                                    <th>Cód</th>
+                                    <th>Tipo Participante</th>
+                                    <th>Participante</th>
+                                    <th>Nome do Participante</th>
+                                    <th>Cel</th>
+                                    <th>E-mail</th>
+                                    <th>Ação</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-12'>
+                            <br>
+                            <h6>
+                                <b>Documentos</b>
+                            </h6>
+
+                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 1em;'>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <input type="hidden" name="ds_documento_agenda" id="ds_documento_agenda"/>
+                        <input type="hidden" name="ds_nome_original_agenda" id="ds_nome_original_agenda"/>
+                        <input type="hidden" name="pk_documento_bd" id="pk_documento_bd"/>
+
+                        <div class='col-md-12'>
+                            <span class="btn btn-success fileinput-button">
+                                <i class="glyphicon glyphicon-plus"></i>
+                                <span>Incluir Documento</span>
+
+                                <input id="fileuploadAgenda"  type="file" name="FilesPic" multiple >
+                            </span>
+                            <br>
+                            <div id="alert_documento" style="display:none" >
+                                <strong style="color: red">Selecione um arquivo</strong>
+                            </div>
+                            <br>
+                            <div id="progressAgenda" class="progress">
+                                <div class="progress-bar progress-bar-success"></div>
+                            </div>
+                            <div id="files" class="files"></div>
+                            <!---->
+                            <div class="row" id="rowFotos"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-12'>
+                            &nbsp;
+                        </div>
+                        <div class='col-md-12'>
+                            <table class="table table-striped table-bordered nowrap" style="width:100%" id='tblDocumentosAgenda'>
+                                <thead>
+                                <tr>
+                                    <th>Cód</th>
+                                    <th>Documento</th>
+                                    <th>Nome Original</th>
+                                    <th>Ação</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class='col-md-2 text-left'>
+                        <button type="button" class="btn btn-danger btn-sm" id='cmdExcluirAgenda'>Excluir</button>
+                    </div>
+                    <div class='col-md-7 text-right'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-3 text-right'>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="fcFecharModalCadastroAgenda()">Fechar</button>
+                        <button type="button" class="btn btn-primary btn-sm" id='cmdEnviarAgenda1'>Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,146 @@
+{% extends "theme/base.cliente.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/js/local/atendimento.js?v=14"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v={{ JSversion }}"></script>
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="/assets/js/local/ocorrencia_cliente_form.js?v=14"></script>
+    <script src="/assets/js/local/ocorrencia_cliente_cad_form.js?v=14"></script>
+
+    <script src="/assets/js/local/colaborador_cliente_res.js?v=14"></script>
+
+    <script src="/assets/js/local/documento_cliente_form.js?v=14"></script>
+
+    <script src="/assets/js/local/rel_ronda_cliente.js?v=14"></script>
+    <script>
+        function exibirOcorrencia(){
+            $(".chzn-select").chosen('destroy');
+            $("#exibir_ocorrencia").show();
+            $("#exibir_colaborador").hide();
+            $("#exibir_documento").hide();
+            $("#exibir_ronda").hide();
+
+            $(".chzn-select").chosen({allow_single_deselect: true});
+        }
+
+        function exibirDocumento(){
+            $(".chzn-select").chosen('destroy');
+            $("#exibir_ocorrencia").hide();
+            $("#exibir_colaborador").hide();
+            $("#exibir_documento").show();
+            $("#exibir_ronda").hide();
+
+            $(".chzn-select").chosen({allow_single_deselect: true});
+        }
+        function exibirRonda(){
+            $(".chzn-select").chosen('destroy');
+            $("#exibir_ocorrencia").hide();
+            $("#exibir_colaborador").hide();
+            $("#exibir_documento").hide();
+            $("#exibir_ronda").show();
+
+            $(".chzn-select").chosen({allow_single_deselect: true});
+        }
+        function exibirColaborador(){
+            $(".chzn-select").chosen('destroy');
+            $("#exibir_ocorrencia").hide();
+            $("#exibir_colaborador").show();
+            $("#exibir_documento").hide();
+            $("#exibir_ronda").hide();
+            fcPesquisarColaborador();
+            $(".chzn-select").chosen({allow_single_deselect: true});
+        }
+    </script>
+{% endblock %}
+{% block title %}
+    Área do Cliente
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href='{{ base_url() }}/assets/css/local/receptivo.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content" style="width: 1200px;padding: 15px;">
+        <div class="container col" >
+            <div class="container col-md-12">
+
+                <div class="row ">
+                    <div>
+                        <div class="col-lg-12" >
+                            <div class="shadow-lg bg-white rounded mb-9" style="width: 1250px">
+                                <div class="card-header" style="background-color: #F7F7F7">
+                                    <div class="card-title col-sm-10">
+                                        <h5 style= "color:#FF5403"  >Área do cliente - {{ session['session_user']['par2'] }}</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class=' col-sm text-left' style="cursor: pointer">
+                                            <a class="nav-link" onclick="exibirOcorrencia()">
+                                                <i class="bi bi-list-task" style="font-size:22px; color:blue"></i>
+                                                <span class="ms-2 " style="font-size: 18px;color: blue">Ocorrências</span>
+                                            </a>
+                                            <hr>
+                                        </div>
+                                        <div class=' col-sm text-left' style="cursor: pointer">
+                                            <a class="nav-link" onclick="exibirColaborador()" >
+                                                <i class="bi bi-person-square" style="font-size:22px; color:blue"></i>
+                                                <span class="ms-2 " style="font-size: 18px;color: blue">Colaboradores</span>
+                                            </a>
+                                            <hr>
+                                        </div>
+                                        <div class=' col-sm text-left' style="cursor: pointer">
+                                            <a class="nav-link"  onclick="exibirDocumento()">
+                                                <i class="bi bi-filetype-doc" style="font-size:22px; color:blue"></i>
+                                                <span class="ms-2 " style="font-size: 18px;color: blue">Documentos</span>
+                                            </a>
+                                            <hr>
+                                        </div>
+                                        <div class=' col-sm text-left' style="cursor: pointer">
+                                            <a class="nav-link"  onclick="exibirRonda()">
+                                                <i class="bi bi-clipboard2" style="font-size:22px; color:blue"></i>
+                                                <span class="ms-2 " style="font-size: 18px;color: blue">Relatorio Ronda</span>
+                                            </a>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div id="exibir_ocorrencia" style="display: none">
+                                            {% include('partials/cliente/ocorrencia_cliente.twig') %}
+                                        </div>
+                                        <div id="exibir_colaborador" style="display: none">
+                                            {% include('partials/cliente/colaborador_cliente.twig') %}
+                                        </div>
+                                        <div id="exibir_documento" style="display: none">
+                                            {% include('partials/cliente/documento_cliente.twig') %}
+                                        </div>
+                                        <div id="exibir_ronda" style="display: none">
+                                            {% include('partials/cliente/rel_ronda_cliente.twig') %}
+                                        </div>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

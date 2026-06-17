@@ -1,0 +1,93 @@
+{% block JSfiles %}
+    <script src="/assets/js/local/faturamento_adicionar_contratos_form.js?v=14"></script>
+{% endblock %}
+<div class="modal fade bd-example-modal-lg" id="event-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 style= "color:#FF5403" >Adicionar Contrato</h6>
+                <div align='right'>
+                    <button type="button" class="btn btn-secondary btn-sm" id="cmdFecharModalContrato"  data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary btn-sm cmdAdicionarContrato" id="cmdAdicionarContrato"  name="cmdAdicionarContrato">Adicionar Contrato</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="origem" name="origem" value="">
+                <input type='hidden' id='empresa_pk' name='empresa_pk'/>
+                <div class="row">
+                    <div class='col-md-2'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-4'>
+                        <label for='dt_ini_contrato'>Data Início Contrato:&nbsp;</label>
+                        <input id="dt_ini_contrato" class="form-control form-control-sm" name="dt_ini_contrato">
+                    </div>
+                    <div class='col-md-4'>
+                        <label for='dt_fim_contrato'>Data Fim do Contrato:&nbsp;</label>
+                        <input id="dt_fim_contrato" class="form-control form-control-sm" name="dt_fim_contrato">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-md-2'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-4'id="alert_dt_ini_contrato" style="display:none">
+                        <span aling="center" style="color: red">Por favor, informe o Dt Ini Contrato!</span>
+                    </div>
+                    <div class='col-md-4'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-4'id="alert_dt_fim_contrato" style="display:none">
+                        <span aling="center" style="color: red">Por favor, informe o Dt Fim Contrato!</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-md-2'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-4'>
+                        <label for='cliente_pk'>Cliente:&nbsp;</label>
+                        <select id="cliente_pk" class="form-control form-control-sm" name="cliente_pk" style="width:17em">
+                            <option></option>
+                        </select>
+                    </div>
+                    <div class='col-md-4'>
+                        <label for='posto_trabalho_pk'>Posto de Trabalho:&nbsp;</label>
+                        <select id="posto_trabalho_pk" class="form-control form-control-sm" name="posto_trabalho_pk" style="width:17em">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class='col-md-5'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-4'>
+                        <button type="button" class="btn btn-primary btn-sm" id="cmdPesquisarContratos"  name="cmdPesquisarContratos">Pesquisar Contrato</button>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped table-no-bordered display nowrap" style="width:100%" id="tblAdicionarContratos">
+                            <thead>
+                                <th>Ação</th>
+                                <th>#</th>
+                                <th>Cód Contrato</th>
+                                <th>Tipo de Contarto</th>
+                                <th>Posto de Trabalho</th>
+                                <th>Nome Contrato</th>
+                                <th>Valor</th>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm"  id="cmdFecharModalContrato2" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary btn-sm cmdAdicionarContrato2" id="cmdAdicionarContrato2"  name="cmdAdicionarContrato2">Adicionar Contrato</button>
+            </div>
+        </div>
+    </div>
+</div>

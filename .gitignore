@@ -1,0 +1,28 @@
+.DS_Store
+
+# Cliente versionado
+database/
+source/
+logs/
+
+# Dependencias e artefatos locais
+app/vendor/
+app/node_modules/
+app/storage/
+app/uploads/
+app/app/src/docs/
+error_log
+app/.env
+app/.env.*
+!app/.env.example
+
+# Dumps e pacotes grandes
+*.sql
+*.sql.gz
+*.tar
+*.tar.gz
+*.zip
+changelog.md
+
+# Infra local
+infra/dumps/

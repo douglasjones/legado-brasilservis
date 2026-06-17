@@ -1,0 +1,177 @@
+
+{% set area = 'relatorios' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="/assets/js/local/rel_controle_solicitacao_compra_res.js?v=14"></script>
+{% endblock %}
+{% block title %}
+    Relatório Controle de Solicitação de Compras
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+<br><br><br><br>
+    <main class="content_wrapper">
+        <div class="container">
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div  tabindex="-1" role="dialog" aria-labelledby="modal-set-ramalLabel" >
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;background-color: #F7F7F7">
+                                <div class="card-header" style="background-color: #F7F7F7">
+                                    <div class="card-title col-sm-5">
+                                        <h6 style= "color:#FF5403"> Relatório Controle de Solicitação de Compras</h6>
+                                    </div>
+                                    <div class='col-sm-7' align="Right">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="cmdCancelar">Voltar</button>
+                                        <button type="button" class="btn btn-primary btn-sm" id="cmdExport">Export</button>
+                                    </div>
+                                </div>
+                                <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                <br>
+                                <div id='form'>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <b>Relatório:</b>
+                                            </td>
+                                            <td>
+                                                 Controle de Solicitação de Compras
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Dt Emissão:</b>
+                                            </td>
+                                            <td>
+                                                <div><span id="dt_emissao"></span></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Empresa:</b>
+                                            </td>
+                                            <td>
+                                            <div>{{ds_empresa}}</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Solicitante:</b>
+                                            </td>
+                                            <td>
+                                            <div>{{ds_solicitante}}</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Aprovador:</b>
+                                            </td>
+                                            <td>
+                                            <div>{{ds_usuario_aprovacao}}</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Grupo de Centro Custo:</b>
+                                            </td>
+                                            <td>
+                                            <div>{{ds_grupo}}</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Centro de Custo:</b>
+                                            </td>
+                                            <td>
+                                            <div>{{ds_centro_custo}}</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Data Período Cad:</b>
+                                            </td>
+                                            <td>
+                                            <div>{{dt_ini_cad}} - {{dt_fim_cad}}</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Data Período Aprovação:</b>
+                                            </td>
+                                            <td>
+                                            <div>{{dt_ini_aprov}} - {{dt_fim_aprov}}</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Status:</b>
+                                            </td>
+                                            <td>
+                                            <div>{{ds_status}}</div>
+                                            </td>
+                                        </tr>
+                                        
+                                    </table>
+                                    <input type="hidden" id="empresa_pk" value="{{empresa_pk}}">
+                                    <input type="hidden" id="solicitante_pk" value="{{solicitante_pk}}">
+                                    <input type="hidden" id="usuario_aprovacao_pk" value="{{usuario_aprovacao_pk}}">
+                                    <input type="hidden" id="tipo_grupo_centro_custo_pk" value="{{tipo_grupo_centro_custo_pk}}">
+                                    <input type="hidden" id="grupo_lancamento_centro_custo_pk" value="{{grupo_lancamento_centro_custo_pk}}">
+                                    <input type="hidden" id="dt_ini_cad" value="{{dt_ini_cad}}">
+                                    <input type="hidden" id="dt_fim_cad" value="{{dt_fim_cad}}">
+                                    <input type="hidden" id="dt_ini_aprov" value="{{dt_ini_aprov}}">
+                                    <input type="hidden" id="dt_fim_aprov" value="{{dt_fim_aprov}}">
+                                    <input type="hidden" id="ic_status" value="{{ic_status}}">
+                                    <br>
+                                    <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                    <p>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                        <table class="table table-striped table-no-bordered display nowrap" style="width:100%" id="tblResultado">
+                                            <thead>
+                                                <th>Empresa</th>
+                                                <th>Solicitante</th>
+                                                <th>Aprovador</th>
+                                                <th>Dt Solicitação</th>
+                                                <th>Dt Aprovação</th>
+                                                <th>Grupo Centro de Custo</th>
+                                                <th>Centro de Custo</th>
+                                                <th>Cód Pedido de Compra</th>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                                </div>   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

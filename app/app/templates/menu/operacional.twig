@@ -1,0 +1,145 @@
+{% set area = 'operacional' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+
+
+
+    <!--JS DO APONTAMENTO-->
+    <script src="/assets/js/local/inc_apontamento_colaborador_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_disciplina_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_ponto_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_falta_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_folga_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_troca_escala_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_afastamento_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_ferias_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_servico_extra_cad_form.js?v=14"></script>
+    <script src="/assets/js/local/inc_apontamento_disciplina_cad_form.js?v=14"></script>
+    <!--JS DO APONTAMENTO-->
+{% endblock %}
+{% block title %}
+    Operacional
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href='{{ base_url() }}/assets/css/local/receptivo.css' rel='stylesheet' type='text/css'>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container col">
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-md-12 col-lg-12 d-flex align-items-stretch">
+                        <div class="widthfull card card-shadow mb-12" style="width: 1290px">
+                            <div class="card-header" style="background-color: #F7F7F7">
+                                <div class="card-title">
+                                    <h6   style= "color:#FF5403">Operacional</h6>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <h6>Lead's / Ocorrências</h6>
+                                        <hr>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/lead/receptivo?local=2">
+                                                    <i class="bi bi-building-add" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Lead's / Postos de Trabalho</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <p>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/feriado/receptivo">
+                                                    <i class="bi bi-list-task" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2 " style="font-size: 15px;color: blue">Feriados</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <h6>Colaboradores / Apontamentos</h6>
+                                        <hr>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/colaborador/receptivo">
+                                                    <i class="bi bi-person-square" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2 " style="font-size: 15px;color: blue">Colaboradores</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <p>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="javascript:fcAbrirApontamentoOperacional()">
+                                                    <i class="bi bi-hand-index-thumb" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Apontamento(s) por Colaborador</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <h6>Controle de Escalas</h6>
+                                        <hr>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/agenda_colaborador_padrao/receptivoEscala">
+                                                    <i class="bi bi-window-sidebar" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Escalas</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <p>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/agenda_colaborador_padrao/receptivo">
+                                                    <i class="bi bi-calendar2-week" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Acompanhamento de Ponto</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <p>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link"href="#" onclick='javascrip:window.open("/ponto/receptivoPontoAtraso", "", "width=1470,height=700")'>
+                                                    <i class="bi bi-ui-checks-grid" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Acompanhamento de Faltas</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!--MODAL-->
+    {% include('partials/inc_apontamento_colaborador_cad_form.twig') %}
+{% endblock %}

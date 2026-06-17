@@ -1,0 +1,435 @@
+{% set area = 'financeiro' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="/assets/js/local/controle_nfse_cad_form.js?v=14"></script>
+{% endblock %}
+{% block title %}
+    NFE
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <br>
+    <br>
+    <main class="content_wrapper">
+        <div class="container">
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div  tabindex="-1" role="dialog" aria-labelledby="modal-set-ramalLabel" >
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;background-color: #F7F7F7">
+                                <div class="card-header" style="background-color: #F7F7F7">
+                                    <div class="card-title col-sm-5">
+                                        <h5 style= "color:#FF5403" >Nota Fiscal</h5>
+                                    </div>
+                                    <div class='col-sm-7' align="Right">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="cmdCancelar">Voltar</button>
+                                        &nbsp;
+                                        <button type="button" class="btn btn-primary btn-sm" id="cmdSalvar">Salvar</button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <input type="hidden" id='pk' name='pk' value='{{ pk }}'>
+                                    <input type="hidden" id='contas_lead_pk' name='contas_lead_pk' value=''>
+                                    <div class='row'>
+                                        <div class='col-md-4'>
+                                            <label for="tipoNotaFiscalEletronica">Tipo Nota Fiscal Eletrônica:&nbsp;</label>
+                                            <select id="tipoNotaFiscalEletronica" class="form-control form-control-sm" name="tipoNotaFiscalEletronica">
+                                                <option>Nota Fiscal de Serviço Eletronica</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-4'>
+                                            <label for="prestador">Prestador de Serviços:&nbsp;</label>
+                                            <select id="prestador" class="form-control form-control-sm chzn-select" name="prestador">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-4'>
+                                            <label for="naturezaOperacao">Natureza da Operação:&nbsp;</label>
+                                            <select id="naturezaOperacao" class="form-control form-control-sm" name="naturezaOperacao">
+                                                <option value="1">Normal</option>
+                                                <option value="2">Imunidade Subjetiva</option>
+                                                <option value="3">Imunidade Objetiva</option>
+                                                <option value="4">Isenção</option>
+                                                <option value="5">Isenção (Parcial)</option>
+                                                <option value="6">Suspenso / Decisão Judicial</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                        <h6>Tomador de Serviços<h6>
+                                        <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-4'>
+                                            <label for="razaoSocial">Razão Social:&nbsp;</label>
+                                            <select id="razaoSocial" class="form-control form-control-sm chzn-select" name="razaoSocial">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for="cnpj">CNPJ:&nbsp;</label>
+                                            <input id="cnpj" class="form-control form-control-sm" name="cnpj" disabled>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-3'>
+                                            <label for="cep">CEP:&nbsp;</label>
+                                            <input id="cep" class="form-control form-control-sm" name="cep">
+                                            <input type="hidden" id="razaoSocialParaEnviarNaNota" name="razaoSocialParaEnviarNaNota">
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label for="ds_uf">Estado:&nbsp;</label>
+                                            <select id="ds_uf" class="form-control form-control-sm" name="ds_uf">
+                                                <option></option>
+                                                <option value="AC">AC</option>
+                                                <option value="AL">AL</option>
+                                                <option value="AP">AP</option>
+                                                <option value="AM">AM</option>
+                                                <option value="BA">BA</option>
+                                                <option value="CE">CE</option>
+                                                <option value="DF">DF</option>
+                                                <option value="ES">ES</option>
+                                                <option value="GO">GO</option>
+                                                <option value="MA">MA</option>
+                                                <option value="MT">MT</option>
+                                                <option value="MS">MS</option>
+                                                <option value="MG">MG</option>
+                                                <option value="PA">PA</option>
+                                                <option value="PB">PB</option>
+                                                <option value="PR">PR</option>
+                                                <option value="PE">PE</option>
+                                                <option value="PI">PI</option>
+                                                <option value="RJ">RJ</option>
+                                                <option value="RN">RN</option>
+                                                <option value="RS">RS</option>
+                                                <option value="RO">RO</option>
+                                                <option value="RR">RR</option>
+                                                <option value="SC">SC</option>
+                                                <option value="SP">SP</option>
+                                                <option value="SE">SE</option>
+                                                <option value="TO">TO</option>
+                                            <select>
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label for="ds_cidade">Cidade:&nbsp;</label>
+                                            <input id="ds_cidade" class="form-control form-control-sm" name="ds_cidade">
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for="ds_bairro">Bairro:&nbsp;</label>
+                                            <input id="ds_bairro" class="form-control form-control-sm" name="ds_bairro">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-2'>
+                                            <label for="tipoLogradouro">Tipo Logradouro:&nbsp;</label>
+                                            <select name="tipoLogradouro" class="form-control form-control-sm" id="tipoLogradouro">
+                                                <option value=""></option>
+                                                <option value="Alameda">Alameda</option>
+                                                <option value="Avenida">Avenida</option>
+                                                <option value="Chácara">Chácara</option>
+                                                <option value="Colônia">Colônia</option>
+                                                <option value="Condomínio">Condomínio</option>
+                                                <option value="Estância">Estância</option>
+                                                <option value="Estrada">Estrada</option>
+                                                <option value="Fazenda">Fazenda</option>
+                                                <option value="Praça">Praça</option>
+                                                <option value="Prolongamento">Prolongamento</option>
+                                                <option value="Rodovia">Rodovia</option>
+                                                <option value="Rua">Rua</option>
+                                                <option value="Sítio">Sítio</option>
+                                                <option value="Travessa">Travessa</option>
+                                                <option value="Vicinal">Vicinal</option>
+                                            </select>
+                                        </div>
+                                        <div class='col-md-3'>
+                                            <label for="ds_endereco">Logradouro:&nbsp;</label>
+                                            <input id="ds_endereco" class="form-control form-control-sm" name="ds_endereco">
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label for="numero">Numero:&nbsp;</label>
+                                            <input id="numero" class="form-control form-control-sm" name="numero">
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for="complemento">Complemento:&nbsp;</label>
+                                            <input id="complemento" class="form-control form-control-sm" name="complemento">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-3'>
+                                            <label for="inscricaoMunicipal">Incrição Municipal:&nbsp;</label>
+                                            <input id="inscricaoMunicipal" class="form-control form-control-sm" name="inscricaoMunicipal">
+                                        </div>
+                                        <div class='col-md-3'>
+                                            <label for="inscricaoEstadual">Inscrição Estadual:&nbsp;</label>
+                                            <input id="inscricaoEstadual" class="form-control form-control-sm" name="inscricaoEstadual">
+                                        </div>
+                                        <div class='col-md-5'>
+                                            <label for="email">Email:&nbsp;</label>
+                                            <input id="email" class="form-control form-control-sm" name="email">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                        <h6>Código de Serviços<h6>
+                                        <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-7'>
+                                            <label for="listaServicoConsulta">Lista de Serviço para Consulta:&nbsp;</label>
+                                            <select id="listaServicoConsulta" class="form-control form-control-sm" name="listaServicoConsulta">
+                                                <option></option>
+                                            <select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-2'>
+                                            <label for="codigoServico">Código do Serviço:&nbsp;</label>
+                                            <input id="codigoServico" class="form-control form-control-sm" name="codigoServico">
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label for="codigoServico">Código Tributação:&nbsp;</label>
+                                            <input id="codigo_tributacao" class="form-control form-control-sm" name="codigo_tributacao">
+                                        </div>
+                                        <div class='col-md-1'>
+                                            <input type='button' class="btn btn-primary btn-sm" id="cmdInformacoesSevicos" value=">>">
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for="descricaoServico">Descrição do Serviço:&nbsp;</label>
+                                            <input id="descricaoServico" class="form-control form-control-sm" name="descricaoServico">
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label for="aliquota">Alíquota:&nbsp;</label>
+                                            <input id="aliquota" class="form-control form-control-sm" name="aliquota">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+											<h6>Discriminação de Serviço<h6>
+                                        <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-7'>
+                                            <select id="listaDiscriminacaoServico" class="form-control form-control-sm" name="listaDiscriminacaoServico">
+                                                <option></option>
+                                            <select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                        <h6>Impostos<h6>
+                                        <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-3'>
+                                            <label for="valorServico">Vl Total do Serviço R$:&nbsp;</label>
+                                            <input id="valorServico" class="form-control form-control-sm" name="valorServico">
+                                            <input type="hidden" id="vl_liquido" class="form-control form-control-sm" name="vl_liquido">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-2'>
+                                            <label>ISS Retido Pelo Tomador:</label>
+                                            <input type="radio" id="retidoTomador1" name="contact" value="1" />
+                                            <label>Sim</label>
+                                                &nbsp;&nbsp;&nbsp;
+                                            <input type="radio" id="retidoTomador2" name="contact" value="2" checked />
+                                            <label>Não</label>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-2'>
+                                            <label>ISS Aliquota:</label>
+                                            <input id='iss_aliquota' class='form-control form-control-sm iss_aliquota' name='iss_aliquota'>
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label>Valor ISS:</label>
+                                            <input id='iss_valor' class='form-control form-control-sm iss_valor' name='iss_valor'>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-2'>
+                                            <label>INSS Aliquota:</label>
+                                            <input id='inss_aliquota' class='form-control form-control-sm inss_aliquota' name='inss_aliquota'>
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label>Valor INSS:</label>
+                                            <input id='inss_valor' class='form-control form-control-sm inss_valor' name='inss_valor'>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-2'>
+                                            <label>PIS Aliquota:</label>
+                                            <input id='pis_aliquota' class='form-control form-control-sm pis_aliquota' name='pis_aliquota'>
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label>Valor PIS:</label>
+                                            <input id='pis_valor' class='form-control form-control-sm pis_valor' name='pis_valor'>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-2'>
+                                            <label>Cofins Aliquota:</label>
+                                            <input id='cofins_aliquota' class='form-control form-control-sm cofins_aliquota' name='cofins_aliquota'>
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label>Valor Cofins:</label>
+                                            <input id='cofins_valor' class='form-control form-control-sm cofins_valor' name='cofins_valor'>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-2'>
+                                            <label>IR Aliquota:</label>
+                                            <input id='ir_aliquota' class='form-control form-control-sm ir_aliquota' name='ir_aliquota'>
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label>Valor IR:</label>
+                                            <input id='ir_valor' class='form-control form-control-sm ir_valor' name='ir_valor'>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-2'>
+                                            <label>CSLL Aliquota:</label>
+                                            <input id='csll_aliquota' class='form-control form-control-sm csll_aliquota' name='csll_aliquota'>
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label>Valor CSLL:</label>
+                                            <input id='csll_valor' class='form-control form-control-sm csll_valor' name='csll_valor'>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-4'>
+                                            <label>Data Vencimento:</label>
+                                            <input id='dt_vencimento' class='form-control form-control-sm dt_vencimento' name='dt_vencimento'>
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label>Data Competencia:</label>
+                                            <select id="dt_competencia" class="form-control form-control-sm" name="dt_competencia">
+                                                <option value="">Selecione</option>
+                                                <option value="JANEIRO">JANEIRO</option>
+                                                <option value="FEVEREIRO">FEVEREIRO</option>
+                                                <option value="MARÇO">MARÇO</option>
+                                                <option value="ABRIL">ABRIL</option>
+                                                <option value="MAIO">MAIO</option>
+                                                <option value="JUNHO">JUNHO</option>
+                                                <option value="JULHO">JULHO</option>
+                                                <option value="AGOSTO">AGOSTO</option>
+                                                <option value="SETEMBRO">SETEMBRO</option>
+                                                <option value="OUTUBRO">OUTUBRO</option>
+                                                <option value="NOVEMBRO">NOVEMBRO</option>
+                                                <option value="DEZEMBRO">DEZEMBRO</option>
+                                            </select>
+                                            
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                        <h6>Discriminação dos Serviços(Observação)<h6>
+                                        <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                            <textarea id="discriminacao" class="form-control form-control-sm" name="discriminacao" style="white-space: nowrap;"></textarea>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                        <h6>Valor<h6>
+                                        <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-4'>
+                                            <label for="valorDeducao">Vl Total de Deduções R$:&nbsp;</label>
+                                            <input id="valorDeducao" class="form-control form-control-sm" name="valorDeducao">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-4'>
+                                            <label for="numeroRPS">N° do RPS:&nbsp;</label>
+                                            <input id="numeroRPS" class="form-control form-control-sm" name="numeroRPS">
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for="serieRPS">Série do RPS:&nbsp;</label>
+                                            <input id="serieRPS" class="form-control form-control-sm" name="serieRPS">
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for="dataEmissaoRPS">Data de Emissão do RPS:&nbsp;</label>
+                                            <input id="dataEmissaoRPS" class="form-control form-control-sm" name="DataEmissaoRPS">
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="card-footer" style="background-color: #F7F7F7">
+                                  
+                                    <div class='col-sm-12' align="Right">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="cmdCancelar1">Voltar</button>
+                                        &nbsp;
+                                        <button type="button" class="btn btn-primary btn-sm" id="cmdSalvar1">Salvar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

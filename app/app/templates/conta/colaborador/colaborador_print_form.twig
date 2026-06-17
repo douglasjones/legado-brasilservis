@@ -1,0 +1,751 @@
+{% set area = 'operacional' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/js/local/colaborador_print_form.js?v=14"></script>
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+{% endblock %}
+{% block title %}
+    Colaboradores
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+
+            <div class="container col-md-12" >
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div  tabindex="-1" role="dialog" aria-labelledby="modal-set-ramalLabel" >
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;background-color: #F7F7F7">
+                                <div class="card-header" style="background-color: #F7F7F7">
+                                    <div class="card-title col-sm-4">
+                                        <h5 style= "color:#FF5403"  >Colaboradores:</h5>
+                                    </div>
+                                    <div class='col-sm-8' align="Right">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="cmdVoltar">Voltar</button>
+                                        <button type="button" class="btn btn-primary btn-sm" id="cmdImprimirModal">Imprimir</button>
+                                    </div>
+                                </div>
+
+                                <div class="card-body" id="printableArea">
+                                    <form id="form_colaborador_ins" class="form" >
+                                        <div class="tab-content" id="myTabContent">
+                                            <p>
+                                            <div class="tab-pane fade show active" id="dados" role="tabpanel" aria-labelledby="dados-tab">           
+                                                <div class="row">
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div> 
+                                                        
+                                                        <div class="col-md-10">
+                                                            <h5>Colaboradores</h5>
+                                                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                                        </div>
+                                                </div>
+                                                <br>
+                                                <div id='colaboradordados'>
+                                                    <div class='row'>
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div>
+                                                        
+                                                        <div class='col-md-6'>
+                                                            <label for='ds_colaborador'>Colaborador (Nome Completo):&nbsp;</label>
+                                                            <span id='ds_colaborador' name='ds_colaborador'></span>
+                                                            <input type="hidden" name="colaborador_pk" id="colaborador_pk" value="{{pk}}">
+                                                        </div>                     
+                                                    </div>
+                                                    <br>
+
+                                                    <div class='row'>
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class='col-md-3'>
+                                                            <label for='ds_cel2'>Nacionalidade:&nbsp;</label>
+                                                            <span id='ds_nacionalidade' name='ds_nacionalidade'  > </span>
+                                                        </div>
+                                                    </div> 
+                                                    <br>  
+                                                    <div class='row'>
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class='col-md-4'>
+                                                            <label for='ds_cep'>Grau Escolaridade:&nbsp;</label>
+                                                            <span id='grau_escolaridade_pk' name="grau_escolaridade_pk"> </span>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class='print-style'>
+                                                    <div class='row'>
+                                                        
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class='col-md-3'>
+                                                            <label for='dt_nascimento'>Data Nasc.:&nbsp;</label>
+                                                            <span id='dt_nascimento' name='dt_nascimento' ></span>
+                                                        </div> 
+
+                                                        <div class='col-md-2'>
+                                                            <label for='generos_pk'>Gênero:&nbsp;</label>
+                                                            <span  id='generos_pk' name='generos_pk' > </span>
+                                                            
+                                                        </div>
+                                                        <div class='col-md-2'>
+                                                            <label for='ds_cel'>Raça:&nbsp;</label>
+                                                            <span id='ds_raca' name='ds_raca'> </span>
+                                                        </div>
+                                                        <div class='col-md-3'>
+                                                            <label for='ds_cel'>Deficiência Física:&nbsp;</label>
+                                                            <span  id='ds_deficiencia_fisica' name='ds_deficiencia_fisica'> </span>
+                                                        </div>                     
+                                                    </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class='row'>
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <label for='ds_cel2'>Nome do Pai:&nbsp;</label>
+                                                            <span  id='ds_nome_pai' name='ds_nome_pai'  > </span>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class='row'>
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <label for='ic_whatsapp2'>Nome da Mãe:&nbsp;</label>
+                                                            <span  id='ds_nome_mae' name='ds_nome_mae'  > </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div> 
+                                                        <div class="col-md-10">
+                                                            <h5>Dados de Contratação</h5>
+                                                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <div id='contratacaodados'>
+                                                    <div class='row'>
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class='col-md-4'>
+                                                            <label for='matricula'>Empresa:&nbsp;</label>
+                                                            <span  id='empresas_pk' name='empresas_pk'  > </span>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class='print-style'>
+                                                    <div class='row'>
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class='col-md-3'>
+                                                            <label for='matricula'>Regime Contratação:&nbsp;</label>
+                                                            <span  id='regime_contratacao_pk' name='regime_contratacao_pk'  > </span>
+                                                        </div>
+                                                        <div class='col-md-2'>
+                                                            <label for='ds_rg'>Carga Horária:&nbsp;</label>
+                                                            <span  id='ds_carga_horaria_semanal' name='ds_carga_horaria_semanal' > </span>
+                                                        </div> 
+                                                        <div class='col-md-2'>
+                                                            <label for='ds_salario'>Salário R$:&nbsp;</label>
+                                                            <span   id='vl_salario' name='vl_salario' > </span>
+                                                        </div>   
+                                                    </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class='print-style'>
+                                                    <div class='row'>
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class='col-md-4'>
+                                                            <label for='matricula'>Matricula:&nbsp;</label>
+                                                            <span id='ds_matricula' name='ds_matricula'  > </span>
+                                                        </div>
+                                                        <div class='col-md-3'>
+                                                            <label for='ds_rg'>R.E (e-social):&nbsp;</label>
+                                                            <span  id='ds_re' name='ds_re' > </span>
+                                                        </div> 
+                                                    </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class='print-style'>
+                                                    <div class='row'>
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class='col-md-3'>
+                                                            <label for='ds_colaborador'>Data Admissão:&nbsp;</label>
+                                                            <span id='dt_admissao' name='dt_admissao' > </span>
+                                                        </div>
+                                                        <div class='col-md-2'>
+                                                            <label for='ic_funcionario'>Funcionário:&nbsp;</label>
+                                                            <span  id='ic_funcionario' name='ic_funcionario' > </span>
+                                                                
+                                                        </div>                    
+                                                        <div class='col-md-5'>
+                                                            <label for='ic_status'>Status Colaborador no Sistema:&nbsp;</label>
+                                                            <span id='ic_status' name='ic_status' > </span>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    <br>
+
+                                                    <div class='row'>
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class='col-md-3'>
+                                                            <label for='ds_rg'>Reserva:&nbsp;</label>
+                                                            <span id='ic_reserva' name='ic_reserva' >
+                                                        </div>        
+                                                    </div>
+                                                    <p>
+                                                    <div class='row'>
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div>
+                                                        
+                                                        <div class='col-md-3'>
+                                                            <label for='dt_demissao'>Data Demissão:&nbsp;</label>
+                                                            <span  id='dt_demissao' name='dt_demissao'  > </span>
+                                                            
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div>
+                                                        </div>
+                                                    
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row">
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div> 
+                                                        <div class="col-md-10">
+                                                            <h5>Dados de Contato do Colaborador</h5>
+                                                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                                        </div>
+                                                    </div> 
+                                                    <br>
+                                                    <div id='contatodados'>  
+                                                    <div class='print-style'>            
+                                                        <div class='row'>
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div>
+                                                            <div class='col-md-2'>
+                                                                <label for='ds_cel'>Cel:&nbsp;</label>
+                                                                <span id='ds_cel' name='ds_cel'  > </span>
+                                                            </div>
+                                                            <div class='col-md-2'>
+                                                                <label for='ic_whatsapp'>Whatsapp:&nbsp;</label>
+                                                                <span id='ic_whatsapp' name='ic_whatsapp'> </span>
+                                                                    
+                                                            </div>     
+                                                            <div class='col-md-4'>
+                                                                <label for='ds_email'>E-mail:&nbsp;</label>
+                                                                <span  id='ds_email' name='ds_email' > </span>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <br>
+                                                    <div class='print-style'>
+                                                        <div class='row'>
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div>
+                                                            <div class='col-md-2'>
+                                                                <label for='ds_cel2'>Cel 2:&nbsp;</label>
+                                                                <span id='ds_cel2' name='ds_cel2'  > </span>
+                                                            </div>
+                                                            <div class='col-md-2'>
+                                                                <label for='ic_whatsapp2'>Whatsapp 2:&nbsp;</label>
+                                                                <span  id='ic_whatsapp2' name='ic_whatsapp2' > </span>
+                                                                    
+                                                            </div>      
+                                                            <div class='col-md-2'>
+                                                                <label for='ds_cel3'>Cel 3:&nbsp;</label>
+                                                                <span id='ds_cel3' name='ds_cel3'  > </span>
+                                                            </div>
+                                                            <div class='col-md-2'>
+                                                                <label for='ic_whatsapp3'>Whatsapp 3:&nbsp;</label>
+                                                                <span id='ic_whatsapp3' name='ic_whatsapp3' > </span>
+                                                                    
+                                                            </div> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                   <div class="row">
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div> 
+                                                            <div class="col-md-10">
+                                                                <h5>Documentação do Colaborador</h5>
+                                                                <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div id='documentacaodados'>  
+                                                            <div class='print-style'> 
+                                                                <div class='row'>
+                                                                    <div class='col-md-2'>
+                                                                        &nbsp;
+                                                                    </div>
+                                                                    <div class='col-md-3'>
+                                                                        <label for='ds_cpf'>CPF:&nbsp;</label>
+                                                                        <span  id='ds_cpf' name='ds_cpf' > </span>
+                                                                    </div>
+                                                                        
+                                                                    <div class='col-md-3'>
+                                                                        <label for='ds_rg'>Pis:&nbsp;</label>
+                                                                        <span id='ds_pis' name='ds_pis' > </span>
+                                                                    </div>   
+                                                                </div>
+                                                                <br>
+                                                                <div class='row'>
+                                                                    <div class='col-md-2'>
+                                                                        &nbsp;
+                                                                    </div>
+                                                                    <div class='col-md-2'>
+                                                                        <label for='ds_rg'>RG/RNE:&nbsp;</label>
+                                                                        <span id='ds_rg' name='ds_rg' > </span>
+                                                                    </div>
+                                                                    <div class='col-md-3'>
+                                                                        <label for='ds_rg'>Orgão Expedição :&nbsp;</label>
+                                                                        <span  id='ds_org_exp' name='ds_org_exp' > </span>
+                                                                    </div>  
+                                                                    <div class='col-md-3'>
+                                                                        <label for='ds_rg'>Dt. Expedição :&nbsp;</label>
+                                                                        <span id='dt_expedicao' name='dt_expedicao' > </span>
+                                                                    </div>
+                                                                    <div class='col-md-2'>
+                                                                        <label for='ds_uf_rg'>UF RG:&nbsp;</label>
+                                                                        <span  id='ds_uf_rg' name='ds_uf_rg'> </span>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class='row'>
+                                                                    <div class='col-md-2'>
+                                                                        &nbsp;
+                                                                    </div>
+                                                                    <div class='col-md-3'>
+                                                                        <label for='ds_rg'>Titulo Eleitoral:&nbsp;</label>
+                                                                        <span id='ds_titulo_eleitoral' name='ds_titulo_eleitoral' > </span>
+                                                                    </div>
+                                                                    <div class='col-md-3'>
+                                                                        <label for='ds_rg'>Zona Eleitoral:&nbsp;</label>
+                                                                        <span id='ds_zona_eleitoral' name='ds_zona_eleitoral' > </span>
+                                                                    </div> 
+                                                                    <div class='col-md-3'>
+                                                                        <label for='ds_rg'>Seção:&nbsp;</label>
+                                                                        <span  id='ds_secao' name='ds_secao' > </span>
+                                                                    </div>                
+                                                                </div>
+                                                                <br>
+                                                                <div class='row'>
+                                                                    <div class='col-md-2'>
+                                                                        &nbsp;
+                                                                    </div>
+                                                                
+                                                                    <div class='col-md-3'>
+                                                                        <label for='ds_rg'>CTPS:&nbsp;</label>
+                                                                        <span   id='ds_ctps' name='ds_ctps' > </span>
+                                                                    </div>
+                                                                    <div class='col-md-2'>
+                                                                        <label for='ds_rg'>Série:&nbsp;</label>
+                                                                        <span  id='ds_serie' name='ds_serie' > </span>
+                                                                    </div>     
+                                                                </div>
+                                                                <br>
+                                                                
+                                                                <div class='row'>
+                                                                    <div class='col-md-2'>
+                                                                        &nbsp;
+                                                                    </div>
+                                                                    <div class='col-md-3'>
+                                                                        <label for='ds_rg'>Certificado Reservista:&nbsp;</label>
+                                                                        <span  id='ds_certificado_reservista' name='ds_certificado_reservista' > </span>
+                                                                    </div>
+                                                                
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p>
+                                                    <div class="row">
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div> 
+                                                        <div class="col-md-10">
+                                                            <h5>Dados de Dependentes</h5>
+                                                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                                        </div>
+                                                    </div>
+                                                    <br>     
+                                                    <div id='dependendesdados'>   
+                                                        <div class='print-style'>
+                                                        <div class='row'>
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div>
+                                                            <div class='col-md-8'>
+                                                                <label for='ic_whatsapp2'>Nome Cônjuge:&nbsp;</label>
+                                                                <span  id='ds_nome_conjuge' name='ds_nome_conjuge'  > </span>
+                                                            </div>
+                                                        </div>  
+                                                        <br>                   
+                                                        <div class='row'>
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div>     
+                                                                <div class='col-md-2'>
+                                                                <label for='generos_pk'>Estado Civil:&nbsp;</label>
+                                                                <span  id='estado_civil' name='estado_civil'> </span>
+                                                                    
+                                                            </div>
+                                                        </div> 
+                                                        <br>    
+                                                        <div class='row'>
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div>
+                                                            <div class='col-md-3'>
+                                                                <label for='ds_cel2'>Dt. Nasc. Cônjuge:&nbsp;</label>
+                                                                <span id='dt_nascimento_conjuge' maxlength="10" name='dt_nascimento_conjuge'  > </span>
+                                                            </div>
+                                                            <div class='col-md-3'>
+                                                                <label for='ic_whatsapp2'>CPF Cônjuge:&nbsp;</label>
+                                                                <span id='ds_cpf_conjuge' name='ds_cpf_conjuge'  > </span>
+                                                            </div>
+                                                            <div class='col-md-3'>
+                                                                <label for='ic_whatsapp2'>Tel Cônjuge:&nbsp;</label>
+                                                                <span   id='ds_tel_conjuge' maxlength="14" name='ds_tel_conjuge'  > </span>
+                                                            </div>
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div>
+                                                            <div class='col-md-7'>
+                                                                <label for='ic_whatsapp2'>Regime Casamento:&nbsp;</label>
+                                                                <span   id='regime_casamento' name='regime_casamento'> </span>
+                                                                    
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class='row'>
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div>
+                                                            <div class='col-md-3'>
+                                                                <label for='ds_rg'>Filho menor 14 anos:&nbsp;</label>
+                                                                <span id='ic_filho_menor_14' name='ic_filho_menor_14' > </span>
+                                                            </div> 
+                                                            <div class='col-md-2' id="exibir_qtde_filho">
+                                                                <label for='ds_rg'>Qtde. Filho:&nbsp;</label>
+                                                                <span  id='qtde_filho' name='qtde_filho' > </span>
+                                                            </div> 
+                                                        </div> 
+                                                        </div>  
+                                                        
+                                                        <br>
+                                                        <p>
+                                                        <br>
+                                                        <div class='print-stylefilho'>
+                                                            <div class="row" >
+                                                                <div class='col-md-2'>
+                                                                    &nbsp;
+                                                                </div>
+                                                                <div class="col-md-10" id="exibir_nomes_filhos">
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                            </div>
+                                                            <p>
+                                                            <br>
+                                                        </div>
+                                                    </div>
+                                                    <p>
+                                                    <div class="row">
+                                                        <div class='col-md-2'>
+                                                            &nbsp;
+                                                        </div> 
+                                                        <div class="col-md-10">
+                                                            <h5>Dados Bancários</h5>
+                                                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                                        </div>
+                                                    </div> 
+                                                    <br>   
+                                                    <div id='bancodados'>                   
+                                                        <div class='row'>
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div>     
+                                                                <div class='col-md-4'>
+                                                                <label for='generos_pk'>Tipo Conta:&nbsp;</label>
+                                                                <span  id='tipo_conta_bancaria' name='tipo_conta_bancaria'></span>
+                                                                
+                                                            </div>
+                                                        </div> 
+                                                        <br>
+                                                        <div class='row'>
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div>     
+                                                                <div class='col-md-4'>
+                                                                <label for='generos_pk'>Banco:&nbsp;</label>
+                                                                <span id='bancos_pk' name='bancos_pk'> </span>
+                                                                    
+                                                            </div>
+                                                        </div> 
+                                                        <br>
+                                                        <div class='print-style'>
+                                                            <div class='row'>
+                                                                <div class='col-md-2'>
+                                                                    &nbsp;
+                                                                </div>
+                                                                <div class='col-md-2'>
+                                                                    <label for='ds_cel2'>Agência:&nbsp;</label>
+                                                                    <span  id='ds_agencia' maxlength="12" name='ds_agencia'  > </span>
+                                                                </div>
+                                                                <div class='col-md-2'>
+                                                                    <label for='ic_whatsapp2'>Conta:&nbsp;</label>
+                                                                    <span maxlength="15" id='ds_conta' name='ds_conta'  > </span>
+                                                                </div>
+                                                                <div class='col-md-2'>
+                                                                    <label for='ic_whatsapp2'>Digito:&nbsp;</label>
+                                                                    <span    id='ds_digito' maxlength="5" name='ds_digito'  > </span>
+                                                                </div>
+                                                                <div class='col-md-4'>
+                                                                    <label for='ic_whatsapp2'>PIX:&nbsp;</label>
+                                                                    <span    id='ds_pix'  name='ds_pix'  > </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class='row'>
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div>
+                                                            <div class='col-md-4'>
+                                                                <label for='ds_cel2'>Favorecido:&nbsp;</label>
+                                                                <span  id='ds_conta_favorecido' name='ds_conta_favorecido'  > </span>
+                                                            </div>
+                                                        
+                                                        </div>
+                                                    </div>
+                                                    <p>
+                                                    <div class="row">
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div> 
+                                                            <div class="col-md-10">
+                                                                <h5>Endereço do Colaborador</h5>
+                                                                <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                                            </div>
+                                                        </div>  
+                                                        <br>    
+                                                        <div id='enderecodados'>
+                                                        <div class='row'>
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div>
+                                                            <div class='col-md-2'>
+                                                                <label for='ds_cep'>CEP:&nbsp;</label>
+                                                                <span  id='ds_cep' name='ds_cep' > </span>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class='row'>
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div>
+                                                            <div class='col-md-8'>
+                                                                <label for='ds_endereco'>Endereço:&nbsp;</label>
+                                                                <span id='ds_endereco' name='ds_endereco' > </span>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class='print-style'>
+                                                            <div class='row'>
+                                                                <div class='col-md-2'>
+                                                                    &nbsp;
+                                                                </div>
+                                                                <div class='col-md-3'>
+                                                                    <label for='ds_numero'>Número:&nbsp;</label>
+                                                                    <span id='ds_numero' name='ds_numero' > </span>
+                                                                </div>
+                                                                <div class='col-md-4'>
+                                                                    <label for='ds_complemento'>Complemento:&nbsp;</label>
+                                                                    <span  id='ds_complemento' name='ds_complemento' > </span>
+                                                                </div>
+                                                                <div class='col-md-3'>
+                                                                    <label for='ds_bairro'>Bairro:&nbsp;</label>
+                                                                    <span id='ds_bairro' name='ds_bairro' > </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class='print-style'>
+                                                            <div class='row'>
+                                                                <div class='col-md-2'>
+                                                                    &nbsp;
+                                                                </div>
+                                                                <div class='col-md-4'>
+                                                                    <label for='ds_cidade'>Cidade:&nbsp;</label>
+                                                                    <span  id='ds_cidade' name='ds_cidade' > </span>
+                                                                </div>
+                                                                <div class='col-md-2'>
+                                                                    <label for='ds_uf'>UF:&nbsp;</label>
+                                                                    <span  id='ds_uf' name='ds_uf'> </span>
+                                                                        
+                                                                </div> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p>
+                                                        <div class="row">
+                                                            <div class='col-md-2'>
+                                                                &nbsp;
+                                                            </div> 
+                                                            <div class="col-md-10">
+                                                                <h5>Dados de Vestuário</h5>
+                                                                <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                                            </div>
+                                                        </div> 
+                                                        <br>   
+                                                        <div id='vestuariodados'>  
+                                                            <div class='print-style'>
+                                                                <div class='row'>
+                                                                    <div class='col-md-2'>
+                                                                        &nbsp;
+                                                                    </div>
+                                                                    <div class='col-md-2'>
+                                                                        <label for='ds_cel2'>N Sapato:&nbsp;</label>
+                                                                        <span  id='ds_n_sapato'  name='ds_n_sapato'  > </span>
+                                                                    </div>
+                                                                    <div class='col-md-2'>
+                                                                        <label for='ic_whatsapp2'>Tamanho Camisa:&nbsp;</label>
+                                                                        <span   id='ds_n_camisa' name='ds_n_camisa'  > </span>
+                                                                    </div>
+                                                                    <div class='col-md-2'>
+                                                                        <label for='ic_whatsapp2'>Tamanho Calça:&nbsp;</label>
+                                                                        <span   id='ds_n_calca'  name='ds_n_calca'  > </span>
+                                                                    </div>
+                                                                    <div class='col-md-2'>
+                                                                        <label for='ic_whatsapp2'>Tamanho luva:&nbsp;</label>
+                                                                        <span    id='ds_n_luva'  name='ds_n_luva'  > </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <p>
+                                                        <div id='qualificacaodados'>
+                                                            <div class='print-styleh'>
+                                                                <div id="exibir_osservicos">
+                                                        
+                                                                    <div class="row">
+                                                                        <div class='col-md-2'>
+                                                                            &nbsp;
+                                                                        </div> 
+                                                                        <div class="col-md-10">
+                                                                            <h5>Qualificação</h5>
+                                                                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                                                        </div>
+                                                                    </div>  
+                                                                    <div class='print-style2'>
+                                                                        <div class='row'>
+                                                                            <div class='col-md-2'>
+                                                                                &nbsp;
+                                                                            </div>
+                                                                            <div class="col-md-10" id="exibir_servicos">
+                                                                            
+                                                                            </div>
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <p>
+                                                        <div id='beneficiosdados'>
+                                                            <div class='print-styleh'>
+                                                                <div id="exibir_osbeneficios">
+                                                                <div class="row">
+                                                                    <div class='col-md-2'>
+                                                                        &nbsp;
+                                                                    </div> 
+                                                                    <div class="col-md-10">
+                                                                        <h5>Benefícios</h5>
+                                                                        <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                                                    </div>
+                                                                </div>      
+                                                        
+                                                                <div class='print-style3'>
+                                                                    <div class='row'>
+                                                                        <div class='col-md-2'>
+                                                                            &nbsp;
+                                                                        </div>
+                                                                        <div class="col-md-10" id="exibir_beneficios">
+                                                                        
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>        
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

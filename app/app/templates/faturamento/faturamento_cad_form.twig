@@ -1,0 +1,211 @@
+{% set area = 'financeiro' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/js/local/faturamento_cad_form.js?v=14"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v={{ JSversion }}"></script>
+
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+{% endblock %}
+{% block title %}
+    Atendimento
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href='{{ base_url() }}/assets/css/pages/settings-selectables.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container col" >
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                
+                <div class="row ">
+                    <div>
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;">
+                                <div class="card-body">
+                                    <form id="form_lead" class="form">
+                                        <input type="hidden" id='pk' name='pk' value='{{ pk }}'>
+                                        <div class='row'>
+                                            <div class="card-title col-sm-4">
+                                                <h5 style= "color:#FF5403"  >Faturamento</h5>
+                                            </div>
+                                            <div class='col-sm-8' align="Right">
+                                                <button type="button" class="btn btn-secondary btn-sm" id="cmdCancelar">Voltar</button>
+                                                &nbsp;
+                                                <button type="button" class="btn btn-primary btn-sm" id="cmdEnviar">Salvar</button>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="faturamento_pk" name="faturamento_pk">
+                                        <input type="hidden" id="qtde_contas" name="qtde_contas">
+
+                                        <div class='row'>
+                                            <div class='col-md-3'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-3'>
+                                                <label for='dt_faturamento_ini'>Dt Inicio Faturamento:&nbsp;</label>
+                                                <input type="text" class='form-control form-control-sm' id="dt_faturamento_ini" name="dt_faturamento_ini">
+                                            </div>
+                                            <div class='col-md-3'>
+                                                <label for='dt_faturamento_fim'>Dt Fim Faturamento:&nbsp;</label>
+                                                <input type="text" class='form-control form-control-sm' id="dt_faturamento_fim" name="dt_faturamento_fim">
+                                            </div>
+                                        </div>
+                                        <p>  
+                                        <div class='row'>
+                                            <div class='col-md-3'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-6'>
+                                                Empresa(s)  
+                                                <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>  
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-8'>
+                                                <div id="listar_contas"></div>
+                                            </div>
+                                        </div>
+
+                                        <p>  
+                                        <div class='row'>
+                                            <div class='col-md-3'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-6'>
+                                                Tipos de Contrato(s)  
+                                                <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>  
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ic_contrato_fixo'> Contratos Fixos:&nbsp;</label>
+                                                <input  type='checkbox' id='ic_contrato_fixo' name='ic_contrato_fixo' />
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ic_contrato_aditivo'>Contratos Aditivos:&nbsp;</label>
+                                                <input  type='checkbox' id='ic_contrato_aditivo' name='ic_contrato_aditivo' />
+                                            </div>
+                                        </div>
+
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ic_contrato_servico_extra'>Contratos Servicos Extras:&nbsp;</label>
+                                                <input  type='checkbox' id='ic_contrato_servico_extra' name='ic_contrato_servico_extra' />
+                                            </div>
+                                        </div>
+                                        <p>
+                                        <div class='row'>
+                                            <div class='col-md-3'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-6'>
+                                                Emissões  
+                                                <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>  
+                                            </div>
+                                        </div>
+                                        <!--div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ic_gerar_boleto'> Gerar Fatura:&nbsp;</label>
+                                                <input  type='checkbox' id='ic_gerar_fatura' name='ic_gerar_fatura' />
+                                            </div>
+                                        </div-->
+
+                                        <div class='row'  id='exibir_nota_fiscal'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ic_gerar_nota_fiscal'>Gerar Notas Fiscais:&nbsp;</label>
+                                                <input  type='checkbox' id='ic_gerar_nota_fiscal' name='ic_gerar_nota_fiscal' />
+                                            </div>
+                                        </div>
+
+                                        <div class='row' id='exibir_boleto'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ic_gerar_boleto'> Gerar Boletos:&nbsp;</label>
+                                                <input  type='checkbox' id='ic_gerar_boleto' name='ic_gerar_boleto' />
+                                            </div>
+                                        </div>
+                                        
+                                        <p>
+                                        <div class='row'>
+                                            <div class='col-md-3'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-6'>
+                                                Dados Complemantares  
+                                                <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>  
+                                            </div>
+                                        </div>
+
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='obs'> Observação:&nbsp;</label>
+                                                <textarea  rows="5" cols="50" id="obs" name="obs"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ic_status'> Status:&nbsp;</label>
+                                                <select class='form-control form-control-sm'  id='ic_status' name='ic_status' />
+                                                    <option value=1>Faturamento Gerado</option>
+                                                    <option value=2>Faturamento Cancelado</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent()}}
+    <script src="/assets/js/local/proposta_facilities_impressao.js?v=14"></script>
+{% endblock %}
+{% block title %}
+    Impressão
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <style>
+        @media print{
+            #noprint{
+                display:none;
+            }
+        }
+
+    </style>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container col"  >
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-lg">
+                        <div class="row">
+                            <div class='col-sm-12' align="center" id='noprint'>
+                                <button type="button" class="btn btn-secondary btn-sm" id="cmdVoltar">Voltar</button>
+                                <button type="button" class="btn btn-primary btn-sm" id="cmdImprimir">Imprimir</button>
+                            </div>
+                        </div>
+                        <div class='col-sm-12' id="printableArea">
+                            <br>
+                            <div class="row">
+                                <div class='col-sm-11' align='right'>
+                                    <img id='logo' width='60%' height='60%' alt='logo'>
+                                </div>
+                            </div>
+                            <br>
+                            <div class='row'>
+                                <div class='col-sm-6' align='left'>
+                                    <b>Para:</b><br>
+                                    <input type="hidden" id="pk" value="{{ pk }}">
+                                    <input type="hidden" id="ic_versao" value="{{ ic_versao }}">
+                                    <input type="hidden" id="ic_abertura" value="{{ ic_abertura }}">
+                                    <input type="hidden" id="leads_pk" value="{{ leads_pk }}">
+                                    <span id='ds_lead'></span>
+                                </div>
+                                <div class='col-sm-6' align='right'>
+                                    <b>Data:</b><br>
+                                    <span id='dt_base_categoria'></span>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class='row'>
+                                <div class='col-sm-6' align='left'>
+                                    <b>A/C:</b><br>
+                                    <span id='ds_aos_cuidados'></span>
+                                </div>
+                                <div class='col-sm-6' align='right'>
+                                    <b>ORÇAMENTO Nº:</b><br>
+                                    <span id='n_orcamento'></span>
+                                </div>
+                            </div>
+                            <br>
+
+                            <div class='row'>
+                                <div class='col-sm-1'>
+                                    &nbsp;
+                                </div>
+                                <div class='col-sm-10' align='left'>
+                                    <b>Tipo:</b>
+                                    <span id='ds_tipo'></span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class='col-sm-12' id='ds_proposta' style='border:1px solid black'>
+                                <br>
+
+                            </div>
+                            <br>
+
+                            <div class='row'>
+                                <div class='col-sm-1'>
+                                    &nbsp;
+                                </div>
+                                <div class='col-sm-10' align='right'>
+                                    <b>Valor Total R$:</b>
+                                    <span id='ds_total'></span>
+                                </div>
+                            </div>
+                            <br>
+
+                            Orçamento válido por 30 (Trinta) dias conforme Código de Defesa do Consumidor - Art. 40. § 1º.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

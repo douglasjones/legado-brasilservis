@@ -1,0 +1,59 @@
+
+{% block JSfiles %}
+    <script src="/assets/js/local/inc_ponto_folha_regerar_form.js?v=14"></script>
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="modal fade bd-example-modal-lg" id="janela_regerar">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content" >
+                                <div class="modal-header">
+                                    <h6 style= "color:#FF5403"  >Regerar Folha Ponto</h6>
+                                    <div align='right'>
+                                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Fechar</button>
+                                        <button type="button" class="btn btn-primary btn-sm cmdEnviar" id="cmdEnviar"  name="cmdEnviar">Salvar</button>
+                                    </div>
+                                </div>
+                                <form id="form_colaborador">
+                                    <div class="card-body py-3">
+                                        <div class="row">
+                                            <div class='col-md-3'> &nbsp; </div>
+                                            <input type='hidden' id='colaboradores_pk' name='colaboradores_pk'/>
+                                            <input type='hidden' id='ponto_folha_pk' name='ponto_folha_pk'/>
+                                            <div class='col-md-3'> 
+                                                <label for='dt_apontamento'>Dt. Iní. Período:&nbsp;</label>
+                                                <input maxlength="10" type='text' class='form-control form-control-sm'  id='dt_ini_periodo' name='dt_ini_periodo'/>
+                                                <input type='hidden' id='data_periodo_ini' name='data_periodo_ini'/>
+                                                <div class='row' id="alert_dt_ini_periodo" style="display:none">
+                                                    <span aling="center" style="color: red">Por favor, informe a Data ínicio do Período!</span>
+                                                </div>
+                                            </div>
+                                            <div class='col-md-3'> 
+                                                <label for='dt_apontamento'>Dt. Fim. Período:&nbsp;</label>
+                                                <input maxlength="10" type='text' class='form-control form-control-sm'  id='dt_fim_periodo' name='dt_fim_periodo'/>
+                                                <input type='hidden' id='data_periodo_fim' name='data_periodo_fim'/>
+                                                <div class='row' id="alert_dt_fim_periodo" style="display:none">
+                                                    <span aling="center" style="color: red">Por favor, informe a Data Fim do Período!</span>
+                                                </div>
+                                            </div>
+                                        </div>                               
+                                        <br>
+                                    </div>	
+                                </form>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Fechar</button>
+                                    <button class="btn btn-primary btn-sm" id="cmdEnviar">Regerar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+<div>
+    <div class="modal fade modal-wide" tabindex="-1" role="dialog" aria-labelledby="meuModalLabel" aria-hidden="true" id="printFolhaAll">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-center">
+                    <h6 style= "color:#FF5403">Imprimir Folha Ponto - Colaborador Período</h6>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-outline-warning btn-sm print_folha_all" onclick="fcPrintAllByPeriodoColaborador()">
+                             Imprimir
+                        </button>
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">
+                            Fechar
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-md-3 fw-bold">
+                            <label for="ds_colaborador" class="form-label">Colaborador:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <span id="text-colaborador-all" class="form-text"></span>
+                            <input type="hidden" id="colaborador_pk_print_all">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-md-3 fw-bold">
+                            <label for="dt_inicio_print" class="form-label">Período:</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control form-control-sm mask-date" id="dt_inicio_print" placeholder="Início">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control form-control-sm mask-date" id="dt_fim_print" placeholder="Fim">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

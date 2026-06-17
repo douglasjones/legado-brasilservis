@@ -1,0 +1,45 @@
+{% block JSfiles %}
+    <script src="/assets/js/local/faturamento_copiar_res_form.js?v=14"></script>
+{% endblock %}
+<div class="modal fade bd-example-modal-lg" id="event-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 style= "color:#FF5403" >Copiar Faturamento</h6>
+                <div align='right'>
+                    <button type="button" class="btn btn-secondary btn-sm" id="cmdFechar" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary btn-sm cmdEnviar" id="cmdEnviar" name="cmdEnviar">Salvar</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="origem" name="origem" value="">
+                <input type='hidden' id='pk' name='pk'/>
+                <div class="row">
+                    <div class='col-md-3'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-3'>
+                        <label for='dt_ini_faturamento'>Dt. Faturamento Ini.:&nbsp;</label>
+                        <input maxlength="10" type='text' class='form-control form-control-sm'  id='dt_ini_faturamento' name='dt_ini_faturamento'/>
+                        <div class='row' id="alert_dt_ini_faturamento" style="display:none">
+                            <span aling="center" style="color: red">Por favor, informe a Data de Faturamento Ini.!</span>
+                        </div>
+                    </div>
+
+                    <div class='col-md-3'>
+                        <label for='dt_fim_faturamento'>Dt. Faturamento Fim:&nbsp;</label>
+                        <input maxlength="10" type='text' class='form-control form-control-sm'  id='dt_fim_faturamento' name='dt_fim_faturamento'/>
+                        <div class='row' id="alert_dt_fim_faturamento" style="display:none">
+                            <span aling="center" style="color: red">Por favor, informe a Data de Faturamento Fim!</span>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" id="cmdFechar1" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary btn-sm cmdEnviar1" id="cmdEnviar1"  name="cmdEnviar1">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>

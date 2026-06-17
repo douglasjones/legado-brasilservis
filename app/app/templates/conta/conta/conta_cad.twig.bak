@@ -1,0 +1,557 @@
+{% set area = 'cpanel' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="/assets/js/local/conta_cad.js?v=14"></script>
+{% endblock %}
+{% block title %}
+    Contas
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <BR>
+    <BR>
+    <main class="content_wrapper">
+        <div class="container">
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div  id="abrir" tabindex="-1" role="dialog" aria-labelledby="modal-set-ramalLabel" >
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;">
+                                <form id="form" class="form" onsubmit="return false;">
+                                    <div class="card-header" style="background-color: #F7F7F7">
+                                        <div class="card-title col-sm-4">
+                                            <h5 style= "color:#FF5403"  >Editar/Cadastrar Contas</h5>
+                                        </div>
+                                        <div class='col-sm-8' align="Right" >
+                                            <button type="button" class="btn btn-secondary btn-sm" id="cmdVoltarConta">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary btn-sm" id="cmdEnviarConta1">Salvar</button>
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <!--INFORMAÇÕES TRAZIDAS DA CONTROLLER E COLOCANDO EM VARIAVEIS HIDDEN-->
+                                        <input type="hidden" id="pk" value="{{ pk }}">
+                                        <input type="hidden" id="contas_config_notas_pk" value="">
+                                        <input type='hidden' id='acao' name='acao'>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active"  id="dados-tab" data-toggle="tab" href="#dados" role="tab" aria-controls="dados" >Dados Cadastrais</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" id="nota-tab" data-toggle="tab" href="#nota" role="tab" aria-controls="nota" >Dados Config. Nota Fiscal</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class="col-md-12">
+                                                &nbsp;
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="tab-content" id="myTabContent">
+                                            <div class="tab-pane fade show active" id="dados" role="tabpanel" aria-labelledby="dados-tab">
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-3'>
+                                                        <label for='tipo_conta_pk'>Tipo Conta:&nbsp;</label>
+                                                        <select id="tipo_conta_pk" class="form-control form-control-sm" name="tipo_conta_pk" required>
+                                                            <option value=""></option>
+                                                            <option value="1">Principal</option>
+                                                            <option value="2">Secundária</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-3'>
+                                                        <label for='ds_lead'>Tipo Pessoa:&nbsp;</label>
+                                                        <select id="ds_tipo_pessoa" class="form-control form-control-sm" name="ds_tipo_pessoa" required>
+                                                            <option value=""></option>
+                                                            <option value="1">PF</option>
+                                                            <option value="2">PJ</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-3'>
+                                                        <label for='ds_cpf_cnpj'>CPF/CNPJ:&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="18" id='ds_cpf_cnpj' name='ds_cpf_cnpj' >
+                                                    </div>
+                                                    <div class='col-md-2'>
+                                                        <br>
+                                                        <button type="button" class="btn btn-primary btn-sm" onclick="validarCnpj(ds_cpf_cnpj.value)">Consultar CNPJ</button>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-8'>
+                                                        <label for='ds_lead'>Nome da Conta:&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="100" id='ds_conta' name='ds_conta' required >
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-8'>
+                                                        <label for='ds_razao_social'>Razão Social/Nome:&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="100" id='ds_razao_social' name='ds_razao_social' >
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-2'>
+                                                        <label for='dt_inicio'>ID Cliente: </label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="25"  id='id_cliente' name='id_cliente'>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-5'>
+                                                        <label for='ds_img_cliente'>URL Logo:</label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="200" id='ds_img_cliente' name='ds_img_cliente'>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-3'>
+                                                        <label for='ds_ie'>CNAE :&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="20" id='ds_cnae' name='ds_ie' >
+                                                    </div>
+                                                    <div class='col-md-3'>
+                                                        <label for='ds_ie'>RG :&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="20" id='ds_rg' name='ds_rg' >
+                                                    </div>
+                                                </div>
+
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-2'>
+                                                        <label for='ds_tel_lead'>Telefone:&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm'  id='ds_tel_fixo' name='ds_tel_fixo' >
+                                                    </div>
+                                                    <div class='col-md-2'>
+                                                        <label for='ds_tel_lead'>Celular:&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm'  id='ds_tel_fixo1' name='ds_tel_fixo1' >
+                                                    </div>
+                                                    <div class='col-md-4'>
+                                                        <label for='ds_email_lead'>Email:&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm'  maxlength="80" id='ds_email_contato_receita' name='ds_email_contato_receita' >
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-2'>
+                                                        <label for='ds_cep'>CEP:&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm'  maxlength="9" id='ds_cep' name='ds_cep' required>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-8'>
+                                                        <label for='ds_endereco'>Endereço:&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="100" id='ds_endereco' name='ds_endereco'  required>
+                                                    </div>
+                                                </div>
+
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-2'>
+                                                        <label for='ds_numero'>Número:&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="10" id='ds_numero' name='ds_numero'  required>
+                                                    </div>
+                                                    <div class='col-md-3'>
+                                                        <label for='ds_complemento'>Complemento:&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="10" id='ds_complemento' name='ds_complemento'  >
+                                                    </div>
+                                                </div>
+
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-3'>
+                                                        <label for='ds_bairro'>Bairro:&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="45" id='ds_bairro' name='ds_bairro'  required>
+                                                    </div>
+                                                    <div class='col-md-3'>
+                                                        <label for='ds_cidade'>Cidade:&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="45" id='ds_cidade' name='ds_cidade'  required>
+                                                    </div>
+
+                                                    <div class='col-md-2'>
+                                                        <label for='ds_uf'>UF:&nbsp;</label>
+                                                        <select class='form-control form-control-sm'  id='ds_uf' name='ds_uf' required>
+                                                            <option></option>
+                                                            <option>AC</option>
+                                                            <option>AL</option>
+                                                            <option>AP</option>
+                                                            <option>AM</option>
+                                                            <option>BA</option>
+                                                            <option>CE</option>
+                                                            <option>DF</option>
+                                                            <option>ES</option>
+                                                            <option>GO</option>
+                                                            <option>MA</option>
+                                                            <option>MT</option>
+                                                            <option>MS</option>
+                                                            <option>MG</option>
+                                                            <option>PA</option>
+                                                            <option>PB</option>
+                                                            <option>PR</option>
+                                                            <option>PE</option>
+                                                            <option>PI</option>
+                                                            <option>RJ</option>
+                                                            <option>RN</option>
+                                                            <option>RS</option>
+                                                            <option>RO</option>
+                                                            <option>RR</option>
+                                                            <option>SC</option>
+                                                            <option>SP</option>
+                                                            <option>SE</option>
+                                                            <option>TO</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-2'>
+                                                        <label for='dt_inicio'>Dt Ativação: </label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="10"  id='dt_ativacao' name='dt_ativacao'>
+                                                    </div>
+                                                    <div class='col-md-2'>
+                                                        <label for='dt_inicio'>Dt Cancelamento: </label>
+                                                        <input type='text' class='form-control form-control-sm' maxlength="10"  id='dt_cancelamento' name='dt_cancelamento'>
+                                                    </div>
+                                                    <div class='col-md-3'>
+                                                        <label for='dia_vencimento'>Status:&nbsp;</label>
+                                                        <select id="ic_status" class="form-control form-control-sm" name="ic_status" >
+                                                            <option value="1">Ativo</option>
+                                                            <option value="2">Desativado</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-4'>
+                                                        <h5>Configurações Financeiras</h5>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-10'>
+                                                        <hr style='margin:0px; border-color:black;'>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-4'>
+                                                        <label for='ic_teto_gastos'>Ativar modulo de Teto de gastos:&nbsp;</label>
+                                                        <select id="ic_teto_gastos" class="form-control form-control-sm" name="ic_teto_gastos" >
+                                                            <option value="2">Não</option>
+                                                            <option value="1">Sim</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-4'>
+                                                        <label for='ic_analise_financeira'>Ativar módulo de Análise Financeira:&nbsp;</label>
+                                                        <select id="ic_analise_financeira" class="form-control form-control-sm" name="ic_analise_financeira" >
+                                                            <option value="2">Não</option>
+                                                            <option value="1">Sim</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-4'>
+                                                        <label for='ic_faturamento'>Ativar módulo de Faturamento:&nbsp;</label>
+                                                        <select id="ic_faturamento" class="form-control form-control-sm" name="ic_faturamento" >
+                                                            <option value="2">Não</option>
+                                                            <option value="1">Sim</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-4'>
+                                                        <label for='ic_nf_gerar'>Ativar módulo de Emissão NF:&nbsp;</label>
+                                                        <select id="ic_nf_gerar" class="form-control form-control-sm" name="ic_nf_gerar" >
+                                                            <option value="2">Não</option>
+                                                            <option value="1">Sim</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-4'>
+                                                        <label for='ic_boleto'>Ativar módulo de Emissão de boletos:&nbsp;</label>
+                                                        <select id="ic_boleto" class="form-control form-control-sm" name="ic_boleto" >
+                                                            <option value="2">Não</option>
+                                                            <option value="1">Sim</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-4'>
+                                                        <h5>Configurações Folha de Ponto</h5>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-10'>
+                                                        <hr style='margin:0px; border-color:black;'>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-4'>
+                                                        <label for='ic_preencher_folha'>Ativar módulo Preenchimento automatico:&nbsp;</label>
+                                                        <select id="ic_preencher_folha" class="form-control form-control-sm" name="ic_preencher_folha" >
+                                                            <option value="1">Sim</option>
+                                                            <option value="2">Não</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="nota" role="tabpanel" aria-labelledby="nota-tab">
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class='col-md-3'>
+                                                        <label for='ds_inscricao_estatual'>Inscrição Estadual:&nbsp;</label>
+                                                        <input type='text' class='form-control form-control-sm' id='ds_inscricao_estatual' name='ds_inscricao_estatual'>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-md-2'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='ic_regime_tributacao'>Regime Tributação:&nbsp;</label>
+                                                    <select class='form-control form-control-sm' id='ic_regime_tributacao' name='ic_regime_tributacao'>
+                                                        <option value='1'>Nenhum</option>
+                                                        <option value='2'>Simples Nacional</option>
+                                                        <option value='3'>Simples Nacional - Excesso</option>
+                                                        <option value='4'>Normal - Lucro Presumido/Lucro Real</option>
+                                                        <option value='5'>Normal - Lucro Real</option>
+                                                    </select>
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='ic_regime_tributacao_especial'>Regime Tributação Especial:&nbsp;</label>
+                                                    <select class='form-control form-control-sm' id='ic_regime_tributacao_especial' name='ic_regime_tributacao_especial'>
+                                                        <option></option>
+                                                        <option value='1'>Sem Regime Tributário Especial</option>
+                                                        <option value='2'>Micro Empresa Municipal</option>
+                                                        <option value='3'>Estimativa</option>
+                                                        <option value='4'>Sociedade de profissionais</option>
+                                                        <option value='5'>Cooperativa</option>
+                                                        <option value='6'>Microempresário Individual - MEI</option>
+                                                        <option value='7'>Microempresa ou Pequeno Porte - ME APP</option>
+                                                        <option value='8'>Lucro Real</option>
+                                                        <option value='9'>Lucro Presumido</option>
+                                                        <option value='10'>Tributação Normal</option>
+                                                        <option value='11'>Simples Nacional Com Excesso de Sublimite</option>
+                                                        <option value='12'>Empresa de Responsabilidade Limitada</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class='row'>
+                                                <div class='col-md-2'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='ic_incentivo_cultural'>Incentivo Cultural:&nbsp;</label>
+                                                    <input type="checkbox" id='ic_incentivo_cultural' name='ic_incentivo_cultural'>
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='ic_incentivo_fiscal'>Incentivo Fiscal:&nbsp;</label>
+                                                    <input type="checkbox" id='ic_incentivo_fiscal' name='ic_incentivo_fiscal'>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class='row'>
+                                                <div class='col-md-2'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-1'>
+                                                    <label for='ds_ddd_nota'>DDD:&nbsp;</label>
+                                                    <input type='text' maxlength='3' class='form-control form-control-sm' id='ds_ddd_nota' name='ds_ddd_nota'>
+                                                </div>
+                                                <div class='col-md-2'>
+                                                    <label for='ds_tel_nota'>Telefone:&nbsp;</label>
+                                                    <input type='text' class='form-control form-control-sm' id='ds_tel_nota' name='ds_tel_nota'>
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='ds_email_nota'>Email:&nbsp;</label>
+                                                    <input type='text' class='form-control form-control-sm' id='ds_email_nota' name='ds_email_nota'>
+                                                </div>
+                                            </div>
+                                            <div class='row'>
+                                                <div class='col-md-2'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='ds_link_arquivo_certificado'>Link Arquivo Certificado:&nbsp;</label>
+                                                    <input type='text' class='form-control form-control-sm' id='ds_link_arquivo_certificado' name='ds_link_arquivo_certificado'>
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='ds_nome_arquivo_certificado'>Nome Arquivo Certificado:&nbsp;</label>
+                                                    <input type='text' class='form-control form-control-sm' id='ds_nome_arquivo_certificado' name='ds_nome_arquivo_certificado'>
+                                                </div>
+                                            </div>
+                                            <div class='row'>
+                                                <div class='col-md-2'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='ds_nome_certificado'>Nome Certificado:&nbsp;</label>
+                                                    <input type='text' class='form-control form-control-sm' id='ds_nome_certificado' name='ds_nome_certificado'>
+                                                </div>
+                                            </div>
+                                            <div class='row'>
+                                                <div class='col-md-2'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-3'>
+                                                    <label for='ds_id_nota'>ID:&nbsp;</label>
+                                                    <input type='text' class='form-control form-control-sm' id='ds_id_nota' name='ds_id_nota'>
+                                                </div>
+                                            </div>
+                                            <div class='row'>
+                                                <div class='col-md-2'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-3'>
+                                                    <label for='dt_criacao_certificado'>Dt. Criação Certificado:&nbsp;</label>
+                                                    <input type='text' maxlength='10' class='form-control form-control-sm' id='dt_criacao_certificado' name='dt_criacao_certificado'>
+                                                </div>
+                                                <div class='col-md-3'>
+                                                    <label for='dt_vencimento_certificado'>Dt. Vencimento Certificado:&nbsp;</label>
+                                                    <input type='text' maxlength='10' class='form-control form-control-sm' id='dt_vencimento_certificado' name='dt_vencimento_certificado'>
+                                                </div>
+                                            </div>
+                                            <div class='row'>
+                                                <div class='col-md-2'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-3'>
+                                                    <label for='ds_ult_numero_nota'>Ult. Número Nota:&nbsp;</label>
+                                                    <input type='text' class='form-control form-control-sm' id='ds_ult_numero_nota' name='ds_ult_numero_nota'>
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <label for='ds_serie_nota'>Série Nota:&nbsp;</label>
+                                                    <input type='text' class='form-control form-control-sm' id='ds_serie_nota' name='ds_serie_nota'>
+                                                </div>
+                                            </div>
+                                            <div class='row'>
+                                                <div class='col-md-2'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-2'>
+                                                    <label for='ic_status_nota'>Status:&nbsp;</label>
+                                                    <select class='form-control form-control-sm' id='ic_status_nota' name='ic_status_nota'>
+                                                        <option value='2'>Não Validado</option>
+                                                        <option value='1'>Validado</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class='row'>
+                                                <div class='col-md-2'>
+                                                    &nbsp;
+                                                </div>
+                                                <div class='col-md-8'>
+                                                    <label for='ds_obs_nota'>Obs:&nbsp;</label>
+                                                    <textarea class='form-control form-control-sm' id='ds_obs_nota' name='ds_obs_nota'>
+                                                    </textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

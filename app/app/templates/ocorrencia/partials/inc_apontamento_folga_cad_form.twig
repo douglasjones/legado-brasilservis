@@ -1,0 +1,84 @@
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class='col'>
+                    <h6 class="font-weight">Novo apontamento - <b>Folga</b></h6>
+                    <hr>
+                </div>
+                <div class="row" style="margin: 5px">
+                    <div class='col-md-3'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-5'>
+                        <label for='motivo_folga_pk'>Motivo da Folga:&nbsp;</label>
+                        <select  name="motivo_folga_pk" class="form-control form-control-sm" id="motivo_folga_pk" onchange='fcAbrirNovaSelect()'>
+                            <option value=''></option>
+                            <option value='1'>Folga Trabalhada</option>
+                            <option value='2'>Escala Errada</option>
+                            <option value='3'>Convocação Normal</option>
+                        </select>
+                        <div class='row' id="alert_motivo_folga_pk" style="display:none">
+                            <span aling="center" style="color: red">Por favor, informe o Motivo da folga!</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin: 5px">
+                    <div class='col-md-3'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-6'>
+                        <label for='ds_obs_folga'>Observação:&nbsp;</label>
+                        <textarea cols="50"  id="ds_obs_folga" name="ds_obs_folga"></textarea>
+                    </div>
+                    <div class='row' id="alert_ds_obs_folga" style="display:none">
+                        <span aling="center" style="color: red">Por favor, informe a Observação!</span>
+                    </div>
+                </div>
+                <div class="row" style="margin: 5px">
+                    <div class='col-md-3'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-5' id="dv_motivo_folga_trabalhada" style="display:none">
+                        <label for='motivo_ft_pk'>Motivo da Folga Trabalhada:&nbsp;</label>
+                        <select  name="motivo_ft_pk" class="form-control form-control-sm" id="motivo_ft_pk">
+                            <option value=''></option>
+                            <option value='1'>Posto Vago</option>
+                            <option value='2'>Falta de Efetivo</option>
+                            <option value='3'>Cobertura</option>
+                            <option value='4'>Troca de Plantão</option>
+                            <option value='5'>Serviço Extra</option>
+
+                        </select>
+                        <div class='row' id="alert_motivo_ft_pk" style="display:none">
+                            <span aling="center" style="color: red">Por favor, informe o Motivo da folga trabalhada!</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin: 5px">
+                    <div class='col-md-3'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-5' id="dv_leads_ft" style="display:none">
+                        <label for='lead_cobertura_pk'>Posto De Trabalho FT.:&nbsp;</label>
+                        <select  name="lead_cobertura_pk" class="form-control form-control-sm" id="lead_cobertura_pk">
+                            <option value=''></option>
+                        </select>
+                        <div class='row' id="alert_leads_ft" style="display:none">
+                            <span aling="center" style="color: red">Por favor, informe o Posto de Trabalho FT!</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin: 5px">
+                    <div class='col-md-3'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-6' id="dv_vl_ft" style="display:none">
+                        <label for='vl_ft'>Vl. Folga Trabalhada:&nbsp;</label>
+                        <input type="text" name="vl_ft" class="form-control form-control-sm" id="vl_ft">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,727 @@
+{% block JSfiles %}
+    <script src="/assets/js/local/financeiro_contas_pagar_receber_cad_form.js?v=14"></script>
+{% endblock %}
+<div class="modal fade bd-example-modal-lg" id="event-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="font-weight-bold" style= "color:#FF5403"  >Lançamento Contas a Pagar e Receber</h5>
+                <div align='right'>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" id="fecharModalLancamento2">Fechar</button>
+                    <button type="button" class="btn btn-primary btn-sm" id='btnSalvarLancamento2'>Salvar</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>Indentificação do Lançamento</h5>
+                        <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>                     
+                    </div>
+                </div>  
+                <p> 
+                <div class='row'>
+                    <div class='col-md-10'>
+                        <label for='ds_lancamento'>Identificação do Lançamento:&nbsp;</label>
+                        <input type="text" class='form-control form-control-sm' maxlength="80" id="ds_lancamento" name="ds_lancamento"/> 
+                        <input type="hidden" id="lancamento_pk" name="lancamento_pk"/> 
+                    </div>
+                </div>            
+                <div class='row' id="alert_ds_lancamento" style="display:none">
+                    <div class='col-md-6'>
+                        <strong style="color: red">Por favor, informe a Identificação do Lançamento</strong>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-6'>
+                        <label for='ds_num_documento'>Identificação do Documento:&nbsp;</label>
+                        <input type="text" class='form-control form-control-sm' maxlength="80" id="ds_num_documento" name="ds_num_documento"/> 
+                    </div>
+                    <div class='col-md-5'>
+                        <label for='ic_tipo_num_documento'>Tipo do Documento:&nbsp;</label> 
+                        <select class='form-control form-control-sm chzn-select'  id='ic_tipo_num_documento' name='ic_tipo_num_documento'>
+                            <option value=""></option>                               
+                            <option value="1">Num Boleto</option>
+                            <option value="2">Num NF</option>
+                        </select>
+                    </div>
+                </div> 
+                <div class='row'>   
+                        
+                    <div class='col-md-4'>
+                        <label for='tipos_operacao_pk'>Planos Conta:&nbsp;</label>
+                        <select class='form-control form-control-sm chzn-select' style="width:100%" id='tipos_operacao_pk' name='tipos_operacao_pk' requered/>
+                            <option value=""></option>
+                        </select>  
+                    </div>                 
+                    <div class='col-md-4'>
+                        <label for='tipos_operacao_pk'>Categoria(s):&nbsp;</label>
+                        <select class='form-control form-control-sm chzn-select' style="width:100%" id='categorias_financeiras_pk' name='categorias_financeiras_pk' requered>
+                            <option value=""></option>
+                        </select>  
+                    </div>
+                    <div class='col-md-4'>
+                        <label for='tipos_operacao_pk'>Tipo de Lançamento:&nbsp;</label>
+                        <select class='form-control form-control-sm chzn-select'  style="width:100%"  id='tipo_lancamento_pk' name='tipo_lancamento_pk' requered>
+                            <option value=""></option>                               
+                            <option value="1">Receita</option>
+                            <option value="7">Custo Fixo</option>
+                            <option value="8">Custo Variável</option>
+                            <option value="2">Despesa Fixa</option>
+                            <option value="3">Despesa Variável</option>
+                            <option value="4">Imposto</option>
+                            <option value="5">Transferência</option>
+                            <option value="6" id="exibir_opc_caixinha">Caixinha</option>
+                        </select>  
+                    </div>
+                    
+                </div>  
+                <div class='row' id="alert_tipo_lancamento_pk" style="display:none">
+                    <div class='col-md-6'>
+                        <strong style="color: red">Por favor, informe o Tipo de Lançamento</strong>
+                    </div>
+                </div>  
+                <div class='row' id="alert_categorias_financeiras_pk" style="display:none">
+                    <div class='col-md-4'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-6'>
+                        <strong style="color: red">Por favor, informe a Categoria</strong>
+                    </div>
+                </div> 
+                <div class='row' id="alert_tipos_operacao_pk" style="display:none">
+                    <div class='col-md-8'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-4'>
+                        <strong style="color: red">Por favor, informe o Plano de Contas</strong>
+                    </div>
+                </div>
+                <br>     
+                <div class="row">                        
+                    <div class="col-md-12">
+                        <h5><div id="label_lancamento">Lançar Para</div></h5>
+                        <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                    </div>
+                </div>                     
+                <p>           
+                <div class='row'>
+                    <div class='col-md-4'>
+                        <label for='tipo_grupo_pk'>Grupo Origem do Lançamento:&nbsp;</label>
+                        <select class='form-control form-control-sm chzn-select'  id='tipo_grupo_pk' name='tipo_grupo_pk' requered/>
+                            <option value=""></option>
+                            <option value="1">Cliente(s)</option>
+                            <option value="2">Colaboradores</option>
+                            <option value="3">Fornecedores</option>
+                        </select>  
+                    </div>
+                    <div class='col-md-3' id='mostrar_btn_add_fornecedor'>
+                        <label for='btn_add_fornecedor'>&nbsp;</label>
+                        <button id='btn_add_fornecedor' class='btn btn-primary btn-sm'>Adicionar Fornecedor</button>
+                    </div>
+                </div> 
+                <div class='row' id="alert_tipo_grupo_pk" style="display:none">
+                    <div class='col-md-6'>
+                        <strong style="color: red">Por favor, informe o Grupo de Origem</strong>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-4' id='exibir_combo_fornecedor'>
+                        <label for='grupo_lancamento_pk'>Pago para / Recebido de:&nbsp;</label>
+                        <select class='form-control form-control-sm chzn-select' style="width:100%"  id='grupo_lancamento_pk' name='grupo_lancamento_pk' requered/>
+                            <option value=""></option>
+                        </select>  
+                    </div> 
+                    <div class='col-md-4'  id='exibir_input_fornecedor'>
+                        <label for='grupo_lancamento_pk'>Pago para / Recebido de:&nbsp;</label>
+                        <input type='text' class='form-control form-control-sm' style="width:100%"  id='grupo_lancamento_fornecedor_pk' name='grupo_lancamento_fornecedor_pk'/> 
+                    </div> 
+                    <div class='col-md-4' id='div_cliente_lancamento_pk'>
+                        <label for='cliente_lancamento_pk'>Cliente:&nbsp;</label>
+                        <select class='form-control form-control-sm chzn-select' style="width:100%"  id='cliente_lancamento_pk' name='cliente_lancamento_pk' requered/>
+                            <option value=""></option>
+                        </select>  
+                    </div> 
+                    <div class='col-md-4'>
+                        <label for='posto_trabalho_lancamento_pk'>Posto de Trabalho:&nbsp;</label>
+                        <select class='form-control form-control-sm chzn-select' style="width:100%"  id='posto_trabalho_lancamento_pk' name='posto_trabalho_lancamento_pk' requered/>
+                            <option value=""></option>
+                        </select>  
+                    </div>
+                    <div class='col-md-4' id="alert_grupo_lancamento_pk" style="display:none">
+                        <strong style="color: red">Por favor, informe Pago para / Recebido de</strong>
+                    </div> 
+                    <div class='col-md-4'>
+                        <label for='contratos_pk'>Contrato(s):&nbsp;</label>
+                        <select class='form-control form-control-sm chzn-select' style="width:100%"  id='contratos_pk' name='contratos_pk' requered/>
+                            <option value=""></option>
+                        </select>  
+                    </div>
+                </div>                     
+                <div id="listar_dados_bancarios_colaborador"></div>
+                    
+                <div  id='divExibirCentroCustol'>
+                    <div class="row" >
+                        <div class="col-md-12">
+                            <h5>Centro de Custo</h5>
+                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                        </div>
+                    </div>      
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-4'>
+                            <label for='tipo_grupo_pk'>Grupos Centro de Custo:&nbsp;</label>
+                            <select class='form-control form-control-sm chzn-select'  id='tipo_grupo_centro_custo_pk_receita' name='tipo_grupo_centro_custo_pk_receita'>
+                                <option value=""></option>
+                                <option value="1">Leads (Clientes)</option>
+                                <option value="2">Colaboradores</option>
+                                <option value="3">Fornecedores</option>
+                                <option value="4">Centro de Custo</option>
+                            </select>  
+                        </div>
+                        <div class='col-md-4'>
+                            <label for='vl_lancamento'>Centro de Custo:&nbsp;</label>
+                            <select class='form-control form-control-sm chzn-select'  id='grupo_lancamento_centro_custo_pk_receita' name='grupo_lancamento_centro_custo_pk_receita'>
+                                <option value=""></option>
+                            </select>  
+                        </div>
+                    </div>
+                    <br>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>Datas e Valor</h5>
+                        <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-4'>
+                        <label for='vl_lancamento' class='metodo_recebimento_pagamento'>Parcelas</label>
+                        <div id="combo_qtde_parcelas_pk"></div>                           
+                    </div>
+                    <div class='col-md-4'>
+                        <label for='vl_lancamento' class='metodo_recebimento_pagamento'>Método de pagamento</label>
+                        <select class='form-control form-control-sm'  id='metodos_pagamento_pk' name='metodos_pagamento_pk' requered/>
+                            <option ></option>
+                        </select> 
+                    </div>
+                </div>    
+                <div class='row' id="alert_metodos_pagamento_pk" style="display:none">
+                    <div class='col-md-4'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-6'>
+                        <strong style="color: red">Por favor, informe Método de Pagamento</strong>
+                    </div>
+                </div>     
+
+                <p>
+                <div class='row'>
+                    <div class='col-md-12'>
+                        <table class='table table-striped table-bordered nowrap' style='width:100%' id='tbParcelas'>
+                            <thead>
+                                <tr>
+                                    <th>Parcela</th>
+                                    <th>Dt Faturamento</th>
+                                    <th>Dt Vencimento</th>
+                                    <th>Vl do Lançamento:</th>
+                                </tr>
+                            </thead>                                
+                                <tr>
+                                    <td>
+                                        Parcela  <text id='ds_parcela'> 1 </text> <input type='hidden' id='parcela_pk"+v_linha+"' value='"+v_linha+"' />                                            
+                                    </td>
+                                    <td>
+                                        <input type='text' class="form-control form-control-sm" id="dt_faturamento1" name="dt_faturamento" maxlength="10"/>
+                                    </td>
+                                    <td>
+                                        <input type='text' class="form-control form-control-sm" id="dt_vencimento1" name="dt_vencimento" maxlength="10"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class='form-control form-control-sm' id="vl_lancamento1" name="vl_lancamento"/> 
+                                    </td>
+                                </tr>    
+                            <tbody id="div_datas_valores_pagamento">     
+                            
+                            </tbody>
+                        </table>
+                    </div>    
+                </div>
+                <div class='row' id="alert_dt_vencimento" style="display:none">
+                    <div class='col-md-4'>
+                        &nbsp;
+                    </div> 
+                    <div class='col-md-6'>
+                        <strong style="color: red">Por favor, informe Dt Vencimento</strong>
+                    </div>
+                </div>
+                <div class='row' id="alert_vl_lancamento" style="display:none">
+                    <div class='col-md-6'>
+                        <strong style="color: red">Por favor, informe Vl do Lançamento</strong>
+                    </div>
+                </div>
+                <br>
+                <div class="row"> 
+                    <div class='col-md-12'>
+                        <br>
+                        <h5> <b>Documentos</b> </h5>
+                        
+                    <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 1em;'> 
+                    </div>
+                </div>
+                <div class="row" >
+                    <input type="hidden" name="ds_documento" id="ds_documento"/>
+                    <input type="hidden" name="ds_nome_original" id="ds_nome_original"/>
+                    <input type="hidden" name="pk_documento_bd" id="pk_documento_bd"/>
+
+                    <div class='col-md-12'>
+                            <span class="btn btn-success fileinput-button">
+                                <i class="glyphicon glyphicon-plus"></i>
+                                <span>Incluir Documento</span>
+
+                                <input id="fileupload"  type="file" name="FilesPic" multiple >
+                            </span>
+                        <br>
+                        <div id="alert_documento" style="display:none" >
+                            <strong style="color: red">Selecione um arquivo</strong>
+                        </div>
+                        <br>
+                        <div id="files" class="files"></div>
+                        <!---->
+                        <div class="row" id="rowFotos"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-md-12'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-12'>
+                        <table class="table table-striped table-bordered nowrap" style="width:100%" id='tblDocumentosLancamento'>
+                            <thead>
+                                <tr>
+                                    <th>Cód</th>
+                                    <th>Documento</th>
+                                    <th>Nome Original</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" >
+                    <div class="col-md-12">
+                        <h5>Empresa e Conta / Status</h5>
+                        <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                    </div>
+                </div>
+                <p>
+                <div class='row' id="div_lancar_empresa">   
+                    <div class='col-md-5'>
+                        <label for='tipos_operacao_pk'>Lançar para a Empresa:&nbsp;</label>
+                        <select class='form-control form-control-sm' style="width:100%" id='empresa_lancamento_pk' name='empresa_lancamento_pk' requered/>
+                            <option value=""></option>
+                        </select>  
+                    </div>                                     
+                    <div class='col-md-5' id="div_conta_bancarias">
+                        <label for='contas_pk'>Conta Bancária:&nbsp;</label>
+                        <select class='form-control form-control-sm' style="width:100%" id='contas_bancarias_pk' name='contas_bancarias_pk' />
+                            <option value=""></option>
+                        </select>  
+                    </div>
+                </div>
+                <div class='row' id="alert_empresa_lancamento_pk" style="display:none">
+                    <div class='col-md-6'>
+                        <strong style="color: red">Por favor, informe a Empresa para Lançamento</strong>
+                    </div>
+                </div>     
+                <div class='row' id="alert_contas_bancarias_pk" style="display:none">
+                    <div class='col-md-4'>
+                        &nbsp;
+                    </div>                    
+                    <div class='col-md-6'>
+                        <strong style="color: red">Por favor, informe a Conta para Lanamento</strong>
+                    </div>
+                </div>
+                <div class='row' >
+                    <div class='col-md-4'>
+                        <label for='tipos_operacao_pk'>Status:&nbsp;</label>
+                        <select class='form-control form-control-sm'  id='ic_status_lancamento' name='ic_status_lancamento' requered>
+                            <option value=""></option>
+                            <option id="exibir_pago" value="1">Pago</option>
+                            <option value="2">Pendente</option>
+                            <option value="3">Aprovado</option>
+                            <option value="4">Atrasado</option>
+                            <option value="5">Cancelado</option>
+                            <option id="exibir_parcial" value="6">Baixa Parcial Lançamento</option>
+                        </select>  
+                    </div>
+                    <div class='col-md-4' id="exibir_dt">
+                        <label for='dt_pagamento' >Dt Pagamento:&nbsp;</label>
+                        <input type='text' class="form-control form-control-sm" maxlength="10" id="dt_pagamento" name="dt_pagamento"/>
+                    </div>
+                    <div class='col-md-4' id="exibir_vl_parcial">
+                        <label for='vl_parcial' >Vl Parcial:&nbsp;</label>
+                        <input type='text' class="form-control form-control-sm" maxlength="10" id="vl_parcial" name="vl_parcial"/>
+                    </div>
+                </div>                    
+                <!--aAlert-->             
+                <div class='row' id="alert_ic_status_lancamento" style="display:none">                          
+                    <div class='col-md-6'>
+                        <strong style="color: red">Por favor, informe o Status</strong>
+                    </div>
+                </div>      
+                <div class='row' id="alert_dt_pagamento" style="display:none">
+                    <div class='col-md-4'>
+                        &nbsp;
+                    </div>                    
+                    <div class='col-md-6'>
+                        <strong style="color: red">Por favor, informe a Dt de Pagamento</strong>
+                    </div>
+                </div>  
+                <div class='row' id="alert_vl_parcial" style="display:none">
+                    <div class='col-md-6'>
+                        &nbsp;
+                    </div>                    
+                    <div class='col-md-6'>
+                        <strong style="color: red">Por favor, informe a Vl Parcial</strong>
+                    </div>
+                </div>        
+                <div class="row" id="exibir_tbl_parcial">
+                    <p>
+                    <div class="row" >
+                        <div class="col-md-12">
+                            <div align='right'>Total a Pagar: R$ <span id='totalAPagar'></span></div>
+                            <div align='left'><h6>Histórico de Baixas Parciais</h6> </div>
+                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                        </div>
+                    </div>
+                    <div class='col-md-12'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-12'>
+                        <table class="table table-striped table-bordered nowrap" style="width:100%" id='tblHistoricoParcial'>
+                            <thead>
+                                <tr>
+                                    <th>Cód</th>
+                                    <th>Data Baixa Parcial</th>
+                                    <th>Conta Bancária</th>
+                                    <th>Empresa</th>
+                                    <th>Vl Baixa Parcial</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td align='right' colspan="5">    
+                                        Pago Parcial Atual: R$ <span id="totalParcial"> </span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>                 
+                <div class='row'>
+                    <div class='col-md-10'>
+                        <label for='dt_competencia'>Observação:&nbsp;</label>
+                        <textarea class="form-control form-control-sm" id="obs_lancamento" name="obs_lancamento"></textarea>
+                    </div>
+                </div> 
+                <br>
+                <div class='row' id='listar_combo_nfse'>   
+                    <div class='col-sm-5'>
+                        <label for='ic_gerar_nfse'><b>Gerar Nota Fiscal de Serviços Eletrônica?</b></label>
+                    </div>
+                    <div class='col-sm-2'>
+                        <select class='form-control form-control-sm' id='ic_gerar_nfse' name='ic_gerar_nfse'/>
+                            <option value="2">Não</option>
+                            <option value="1">Sim</option>
+                        </select>  
+                    </div>
+                </div>
+                <div id='form_cad_nfse'>
+                    <input type="hidden" name="pk" id="pk"/>
+                    <input type="hidden" name="tomador_pk" id="tomador_pk"/>
+                    <input type="hidden" name="descricaoServico" id="descricaoServico"/>
+                    <input type="hidden" name="contas_lead_pk" id="contas_lead_pk"/>
+                    <br>
+                    <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>  
+                    <br>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-4'>
+                            <label for="prestador">Prestador de Serviços:&nbsp;</label>
+                            <select id="prestador_pk" class="form-control form-control-sm chzn-select" name="prestador_pk">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-4'>
+                            <label for="cnpj">CNPJ:&nbsp;</label>
+                            <input id="cnpj" class="form-control form-control-sm" name="cnpj" disabled>
+                        </div>
+                        <div class='col-md-4'>
+                            <label for="naturezaOperacao">Natureza da Operação:&nbsp;</label>
+                            <select id="naturezaOperacao" class="form-control form-control-sm" name="naturezaOperacao">
+                                <option value="1">Normal</option>
+                                <option value="2">Imunidade Subjetiva</option>
+                                <option value="3">Imunidade Objetiva</option>
+                                <option value="4">Isenção</option>
+                                <option value="5">Isenção (Parcial)</option>
+                                <option value="6">Suspenso / Decisão Judicial</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col-md-3'>
+                            <label for="cep">CEP:&nbsp;</label>
+                            <input id="cep" class="form-control form-control-sm" name="cep">
+                            <input type="hidden" id="razaoSocialParaEnviarNaNota" name="razaoSocialParaEnviarNaNota">
+                                        
+                        </div>
+                        <div class='col-md-2'>
+                            <label for="ds_uf">Estado:&nbsp;</label>
+                            <select id="ds_uf" class="form-control form-control-sm" name="ds_uf">
+                                <option></option>
+                                <option value="AC">AC</option>
+                                <option value="AL">AL</option>
+                                <option value="AP">AP</option>
+                                <option value="AM">AM</option>
+                                <option value="BA">BA</option>
+                                <option value="CE">CE</option>
+                                <option value="DF">DF</option>
+                                <option value="ES">ES</option>
+                                <option value="GO">GO</option>
+                                <option value="MA">MA</option>
+                                <option value="MT">MT</option>
+                                <option value="MS">MS</option>
+                                <option value="MG">MG</option>
+                                <option value="PA">PA</option>
+                                <option value="PB">PB</option>
+                                <option value="PR">PR</option>
+                                <option value="PE">PE</option>
+                                <option value="PI">PI</option>
+                                <option value="RJ">RJ</option>
+                                <option value="RN">RN</option>
+                                <option value="RS">RS</option>
+                                <option value="RO">RO</option>
+                                <option value="RR">RR</option>
+                                <option value="SC">SC</option>
+                                <option value="SP">SP</option>
+                                <option value="SE">SE</option>
+                                <option value="TO">TO</option>
+                            <select>
+                        </div>
+                        <div class='col-md-2'>
+                            <label for="ds_cidade">Cidade:&nbsp;</label>
+                            <input id="ds_cidade" class="form-control form-control-sm" name="ds_cidade">
+                        </div>
+                        <div class='col-md-4'>
+                            <label for="ds_bairro">Bairro:&nbsp;</label>
+                            <input id="ds_bairro" class="form-control form-control-sm" name="ds_bairro">
+                        </div>
+                    </div>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-2'>
+                            <label for="tipoLogradouro">Tipo Logr.:&nbsp;</label>
+                            <select name="tipoLogradouro" class="form-control form-control-sm" id="tipoLogradouro">
+                                <option value=""></option>
+                                <option value="Alameda">Alameda</option>
+                                <option value="Avenida">Avenida</option>
+                                <option value="Chácara">Chácara</option>
+                                <option value="Colônia">Colônia</option>
+                                <option value="Condomínio">Condomínio</option>
+                                <option value="Estância">Estância</option>
+                                <option value="Estrada">Estrada</option>
+                                <option value="Fazenda">Fazenda</option>
+                                <option value="Praça">Praça</option>
+                                <option value="Prolongamento">Prolongamento</option>
+                                <option value="Rodovia">Rodovia</option>
+                                <option value="Rua">Rua</option>
+                                <option value="Sítio">Sítio</option>
+                                <option value="Travessa">Travessa</option>
+                                <option value="Vicinal">Vicinal</option>
+                            </select>
+                        </div>
+                        <div class='col-md-3'>
+                            <label for="ds_endereco">Logradouro:&nbsp;</label>
+                            <input id="ds_endereco" class="form-control form-control-sm" name="ds_endereco">
+                        </div>
+                        <div class='col-md-2'>
+                            <label for="numero">Numero:&nbsp;</label>
+                            <input id="numero" class="form-control form-control-sm" name="numero">
+                        </div>
+                        <div class='col-md-4'>
+                            <label for="complemento">Complemento:&nbsp;</label>
+                            <input id="complemento" class="form-control form-control-sm" name="complemento">
+                        </div>
+                    </div>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-3'>
+                            <label for="inscricaoMunicipal">Incrição Municipal:&nbsp;</label>
+                            <input id="inscricaoMunicipal" class="form-control form-control-sm" name="inscricaoMunicipal">
+                        </div>
+                        <div class='col-md-3'>
+                            <label for="inscricaoEstadual">Inscrição Estadual:&nbsp;</label>
+                            <input id="inscricaoEstadual" class="form-control form-control-sm" name="inscricaoEstadual">
+                        </div>
+                        <div class='col-md-5'>
+                            <label for="email">Email:&nbsp;</label>
+                            <input id="email" class="form-control form-control-sm" name="email">
+                        </div>
+                    </div>
+                    <br>
+                    
+                    <h6>Código de Serviços</h6>
+                    <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>  
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-6'>
+                            <label>Lista do Serviço para Consulta:</label>
+                            <select id='servico_pk' class='form-control form-control-sm servico_pk' name='servico_pk'>
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col-md-3'>
+                            <label>Código do Serviço:</label>
+                            <input id='codigo_servico_pk' class='form-control form-control-sm codigo_servico_pk' name='codigo_servico_pk'>
+                        </div>
+                        <div class='col-md-2'>
+                            <label for="codigoServico">Cód Tribu:&nbsp;</label>
+                            <input id="codigo_tributacao" class="form-control form-control-sm" name="codigo_tributacao">
+                        </div>
+                        <div class='col-md-1'>
+                            <br>
+                            <input type='button' class='btn btn-primary btn-sm' id='cmdInformacoesSevicos' value='>>'>
+                        </div>
+                        <div class='col-md-4'>
+                            <label for="descricaoServico">Descrição do Serviço:&nbsp;</label>
+                            <input id="descricaoServico" class="form-control form-control-sm" name="descricaoServico">
+                        </div>
+                        <div class='col-md-4'>
+                            <label>Aliquota:</label>
+                            <input id='vl_aliquota' class='form-control form-control-sm vl_aliquota' name='vl_aliquota'>
+                        </div>
+                    </div>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-12'>
+                            <h6>Discriminação de Serviço<h6>
+                        <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col-md-7'>
+                            <select id="listaDiscriminacaoServico" class="form-control form-control-sm" name="listaDiscriminacaoServico">
+                                <option></option>
+                            <select>
+                        </div>
+                    </div>
+                    <br>
+                    <h6>Impostos</h6>
+                    <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-3'>
+                            <label for="valorServico">Vl Total do Serviço R$:&nbsp;</label>
+                            <input id="valorServico" class="form-control form-control-sm" name="valorServico">
+                        </div>
+                    </div>
+                    <br>
+                    
+                    <div class='row'>
+                        <div class='col-md-3'>
+                            <label>ISS Retido Pelo Tomador:</label><br>
+                            <input type='radio' id='iss_retido1' class='iss_retido1' name='iss_retido' value='1' />
+                            <label>Sim</label>&nbsp;&nbsp;&nbsp;
+                            <input type='radio' id='iss_retido2' class='iss_retido2' name='iss_retido' value='2' />
+                            <label>Não</label>&nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-2'>
+                            <label>ISS Aliquota:</label>
+                            <input id='iss_aliquota' class='form-control form-control-sm iss_aliquota' name='iss_aliquota'>
+                        </div>
+                        <div class='col-md-2'>
+                            <label>Valor ISS:</label>
+                            <input id='iss_valor' class='form-control form-control-sm iss_valor' name='iss_valor'>
+                        </div>
+                    </div>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-2'>
+                            <label>INSS Aliquota:</label>
+                            <input id='inss_aliquota' class='form-control form-control-sm inss_aliquota' name='inss_aliquota'>
+                        </div>
+                        <div class='col-md-2'>
+                            <label>Valor INSS:</label>
+                            <input id='inss_valor' class='form-control form-control-sm inss_valor' name='inss_valor'>
+                        </div>
+                    </div>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-2'>
+                            <label>PIS Aliquota:</label>
+                            <input id='pis_aliquota' class='form-control form-control-sm pis_aliquota' name='pis_aliquota'>
+                        </div>
+                        <div class='col-md-2'>
+                            <label>Valor PIS:</label>
+                            <input id='pis_valor' class='form-control form-control-sm pis_valor' name='pis_valor'>
+                        </div>
+                    </div>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-2'>
+                            <label>Cofins Aliquota:</label>
+                            <input id='cofins_aliquota' class='form-control form-control-sm cofins_aliquota' name='cofins_aliquota'>
+                        </div>
+                        <div class='col-md-2'>
+                            <label>Valor Cofins:</label>
+                            <input id='cofins_valor' class='form-control form-control-sm cofins_valor' name='cofins_valor'>
+                        </div>
+                    </div>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-2'>
+                            <label>IR Aliquota:</label>
+                            <input id='ir_aliquota' class='form-control form-control-sm ir_aliquota' name='ir_aliquota'>
+                        </div>
+                        <div class='col-md-2'>
+                                <label>Valor IR:</label>
+                                <input id='ir_valor' class='form-control form-control-sm ir_valor' name='ir_valor'>
+                        </div>
+                    </div>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-2'>
+                            <label>CSLL Aliquota:</label>
+                            <input id='csll_aliquota' class='form-control form-control-sm csll_aliquota' name='csll_aliquota'>
+                        </div>
+                        <div class='col-md-2'>
+                            <label>Valor CSLL:</label>
+                            <input id='csll_valor' class='form-control form-control-sm csll_valor' name='csll_valor'>
+                        </div>
+                    </div>
+                    <br>
+                    <label><b>Discriminação dos Serviços(Observação):</b></label>
+                    <div class='row'>
+                        <div class='col-md-7'>
+                            <textarea id='descricao_nfse' class='form-control form-control-sm descricao_nfse' name='descricao_nfse'></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" id="fecharModalLancamento">Fechar</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnSalvarLancamento">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>

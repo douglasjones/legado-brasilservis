@@ -1,0 +1,348 @@
+<div class="row">
+    <div class='col-md-6' align="left" >
+        <h6>Lead - Dados Cadastrais</h6>
+    </div>
+    <div class='col-md-6' align="Right">
+        <button type="button" class="btn btn-primary btn-sm" id="cmdEnviarLead">Salvar</button>
+    </div>
+</div>
+<hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+<div class="row">
+    <div class="col-md-12">
+        <form id="form_lead" class="form">
+            <input type="hidden" id="leads_pk">
+            <div class='row'>
+                <div class='col-md-12'>
+                    <div id="ds_lead_titulo"></div>
+                    <br>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-2'>
+                    <div id="id_lead"></div>
+                </div>
+                <div class='col-md-3'>
+                    <div id="dt_cadastro_lead"></div>
+                </div>
+                <div class='col-md-3'>
+                    <div id="dt_ult_atualizacao_lead"></div>
+                </div>
+                <div class='col-md-4'>
+                    <div id="ds_usuario_cadastro"></div>
+                </div>
+            </div>
+            <div class='row'>
+                <div class="col-md-12">
+                    <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                </div>
+            </div>
+            <p>
+            <div class='row' id="lead_pai">
+                <div class='col-md-3'>
+                    <label>Cliente pai:</label>
+                    <select id="leads_pai_pk" class='form-control form-control-sm' name="leads_pai_pk">
+                        <option ></option>
+                    </select>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-3'>
+                    <label for="ic_tipo_lead">Tipo Lead:</label>
+                    <select id="ic_tipo_lead" class="form-control form-control-sm" name="ic_tipo_lead">
+                        <option value="1">Cliente</option>
+                        <option value="2">Posto de trabalho</option>
+                    </select>
+                </div>
+            </div>
+            <div class='row' id="alert_tipo_lead" style="display:none">
+                <div class='col-md-4'>
+                    <strong style="color: red">Por favor, informe Tipo Lead</strong>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-2'>
+                    <label for='cpf_cnpj'>CPF/CNPJ:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_cpf_cnpj' name='ds_cpf_cnpj' >
+                </div>
+                <div class='col-md-2'>
+                    <br>
+                    <button type="button" class="btn btn-primary btn-sm" id="cmdConsultarCNPJ"  onclick="validarCnpj(ds_cpf_cnpj.value)" >Consultar CNPJ</button>
+                </div>
+            </div>
+            
+            <div class='row' id="alert_cnpj" style="display:none">
+                <div class='col-md-3'>
+                    <strong style="color: red">Informe o CPF/CNPJ.</strong>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-2'>
+                    <label for='ds_tipo'>Tipo:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_tipo_lead' name='ds_tipo_lead' >
+                </div>
+                <div class='col-md-2'>
+                    <label for='ds_porte'>Porte:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_porte' name='ds_porte' >
+                </div>
+                <div class='col-md-2'>
+                    <label for='dt_abertura'>Dt Abertura:</label>
+                    <input type='text' class='form-control form-control-sm' id='dt_abertura' name='dt_abertura' >
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-8'>
+                    <label for='ds_atividade_principal_receita'>Atividade Principal:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_atividade_principal_receita' name='ds_atividade_principal_receita' >
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-8'>
+                    <label for='ds_atividade_secundaria_receita'>Atividade Secundária:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_atividade_secundaria_receita' name='ds_atividade_secundaria_receita' >
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-8'>
+                    <label for='ds_lead'>Lead:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_lead' name='ds_lead' >
+                </div>
+            </div>
+            <div class='row' id="alert_ds_lead" style="display:none">
+                <div class='col-md-8'>
+                    <strong style="color: red">Por favor, informe Lead</strong>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-8'>
+                    <label for='ds_razao_social'>Razão Social:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_razao_social' name='ds_razao_social' >
+                </div>
+            </div>
+
+            <div class='row'>
+                <div class='col-md-2'>
+                    <label for='ds_tel_fixo'>Tel Fixo:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_tel_fixo' name='ds_tel_fixo'>
+                </div>
+                <div class='col-md-2'>
+                    <label for='ds_tel_fixo1'>Tel Fixo 1:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_tel_fixo1' name='ds_tel_fixo1'>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-4'>
+                    <label for='ds_socio1'>Sócio1:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_socio1' name='ds_socio1'>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-4'>
+                    <label for='ds_socio1'>Sócio2:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_socio2' name='ds_socio2'>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-4'>
+                    <label for='ds_socio1'>Sócio3:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_socio3' name='ds_socio3'>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-8'>
+                    <label for='ds_email_receita'>E-mail:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_email_contato_receita' name='ds_email_contato_receita' >
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-8'>
+                    <label for='ds_site'>Site:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_site' name='ds_site' >
+                </div>
+            </div>
+            <div class='row'>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-11">
+                    <h4>Endereço</h4>
+                    <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-2'>
+                    <label for='ds_cep'>CEP:&nbsp;</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_cep' name='ds_cep' >
+                </div>
+            </div>
+            <div class='row' id="alert_ds_cep" style="display:none">
+                <div class='col-md-3'>
+                    <strong style="color: red">Por favor, informe CEP</strong>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-8'>
+                    <label for='ds_endereco'>Endereço:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_endereco' name='ds_endereco'>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-2'>
+                    <label for='ds_numero'>Nr:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_numero' name='ds_numero' >
+                </div>
+                <div class='col-md-3'>
+                    <label for='ds_complemento'>Complemento:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_complemento' name='ds_complemento' >
+                </div>
+            </div>
+            <div class='row' id="alert_ds_numero" style="display:none">
+                <div class='col-md-2'>
+                    <strong style="color: red">Por favor, informe Numero</strong>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-3'>
+                    <label for='ds_bairro'>Bairro:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_bairro' name='ds_bairro' >
+                </div>
+                <div class='col-md-3'>
+                    <label for='ds_cidade'>Cidade:</label>
+                    <input type='text' class='form-control form-control-sm' id='ds_cidade' name='ds_cidade' >
+                </div>
+                <div class='col-md-2'>
+                    <label for='ds_uf'>UF:&nbsp;</label>
+                    <select class='form-control form-control-sm'  id='ds_uf' name='ds_uf' requered>
+                        <option></option>
+                        <option>AC</option>
+                        <option>AL</option>
+                        <option>AP</option>
+                        <option>AM</option>
+                        <option>BA</option>
+                        <option>CE</option>
+                        <option>DF</option>
+                        <option>ES</option>
+                        <option>GO</option>
+                        <option>MA</option>
+                        <option>MT</option>
+                        <option>MS</option>
+                        <option>MG</option>
+                        <option>PA</option>
+                        <option>PB</option>
+                        <option>PR</option>
+                        <option>PE</option>
+                        <option>PI</option>
+                        <option>RJ</option>
+                        <option>RN</option>
+                        <option>RS</option>
+                        <option>RO</option>
+                        <option>RR</option>
+                        <option>SC</option>
+                        <option>SP</option>
+                        <option>SE</option>
+                        <option>TO</option>
+                    </select>
+                </div>
+            </div>
+            <div class='row' id="alert_cidade_bairro" style="display:none">
+                <div class='col-md-3' id="alert_ds_bairro" style="display:none">
+                    <strong style="color: red">Por favor, informe Bairro</strong>
+                </div>
+                <div class='col-md-2'>
+                    &nbsp;
+                </div>
+                <div class='col-md-3' id="alert_ds_cidade" style="display:none">
+                    <strong style="color: red">Por favor, informe Cidade</strong>
+                </div>
+                <div class='col-md-2'>
+                    &nbsp;
+                </div>
+                <div class='col-md-3' id="alert_ds_uf" style="display:none">
+                    <strong style="color: red">Por favor, selecione UF</strong>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-4'>
+                    <label for='responsavel_pk'>Responsavel Comercial:&nbsp;</label>
+                    <select class='form-control form-control-sm'  id='responsavel_pk' name='responsavel_pk' />
+                    <option></option>
+                    </select>
+                </div>
+
+                <div class='col-md-2'>
+                    <label>Qtde Torres</label>
+                    <input type="text" id="n_qtde_torres" class='form-control form-control-sm' name="n_qtde_torres"  placeholder=" " />
+                </div>
+            </div>
+
+            <div class='row'>
+                <div class='col-md-2'>
+                    <label for='supervisores_pk'>Supervisor:&nbsp;</label>
+                    <select class='form-control form-control-sm'  id='supervisores_pk' name='supervisores_pk' />
+                    <option></option>
+                    </select>
+                </div>
+                <div class='col-md-2'>
+                    <label for='supervisores1_pk'>Supervisor 1:&nbsp;</label>
+                    <select class='form-control form-control-sm'  id='supervisor1_pk' name='supervisor1_pk' />
+                    <option></option>
+                    </select>
+                </div>
+                <div class='col-md-2'>
+                    <label for='supervisores2_pk'>Supervisor 2:&nbsp;</label>
+                    <select class='form-control form-control-sm'  id='supervisor2_pk' name='supervisor2_pk' />
+                    <option></option>
+                    </select>
+                </div>
+
+            </div>
+            <div class='row'>
+                <div class='col-md-2'>
+                    <label for='ds_uf'>Segmento:&nbsp;</label>
+                    <select class='form-control form-control-sm'  id='segmentos_pk' name='segmentos_pk' requered/>
+                    <option></option>
+                    <option value="1">Condomínios</option>
+                    <option value="2">Escolas</option>
+                    <option value="3">Escritórios</option>
+                    <option value="4">Industrias</option>
+                    <option value="5">Residencial</option>
+                    <option value="6">Pós obra</option>
+                    </select>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-2'>
+                    <label for='ic_cliente'>Cliente:&nbsp;</label>
+                    <select class='form-control form-control-sm'  id='ic_cliente' name='ic_cliente' requered/>
+                    <option></option>
+                    <option value='1'>Sim</option>
+                    <option value='2'>Não</option>
+                    </select>
+                </div>
+            </div>
+            <div class='row' id="alert_ic_cliente" style="display:none">
+                <div class='col-md-2' >
+                    <strong style="color: red">Por favor, Selecione Cliente</strong>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-8'>
+                    <label for='ds_obs'>Observação:&nbsp;</label>
+                    <textarea class='form-control form-control-sm' id='ds_obs' name='ds_obs'></textarea>
+                </div>
+            </div>
+            <p>
+            <div class="row">
+                <div class="col-md-12" align="Right">
+                    <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                    <br>
+                    <button type="button" class="btn btn-secondary btn-sm" id="cmdVoltarLead">Voltar</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="cmdEnviarLead1">Salvar</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>

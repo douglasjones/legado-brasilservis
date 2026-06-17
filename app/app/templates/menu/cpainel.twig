@@ -1,0 +1,183 @@
+{% set area = 'cpanel' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v={{ JSversion }}"></script>
+    <script>
+        function salvar(){
+            var objParametros = {};
+            var arrCarregar = carregarController("lancamento", "migrarBaseFinanceira", objParametros);
+            if (arrEnviar.status == true){
+                utilsJS.toastNotify(true, arrEnviar.message);
+            }else{
+                utilsJS.toastNotify(false, 'Falhou a requisiÃ§Ã£o para salvar o registro')
+            }
+        }
+        function migrarEscalas(){
+            alert("Processo iniciado aguarde")
+            //utilsJS.loading('');
+            var objParametros = {};
+            var arrCarregar = carregarController("agenda_colaborador_padrao", "processa_escala", objParametros);
+            if (arrCarregar.status == true){
+                utilsJS.loaded();
+                utilsJS.toastNotify(true, arrCarregar.message);
+            }else{
+                utilsJS.toastNotify(false, 'Falhou a requisição para salvar o registro')
+            }
+        }
+        function fcCargaFinanceira(){
+            var objParametros = {};
+            var arrCarregar = carregarController("lancamento", "cargaTabelaLancamentos", objParametros);
+            if (arrCarregar.status == true){
+                utilsJS.toastNotify(true, arrCarregar.message);
+            }else{
+                utilsJS.toastNotify(false, 'Falhou a requisição para salvar o registro')
+            }
+        }
+    </script>
+{% endblock %}
+{% block title %}
+    CPainel
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href='{{ base_url() }}/assets/css/local/receptivo.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container col">
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-md-12 col-lg-12 d-flex align-items-stretch">
+                        <div class="widthfull card card-shadow mb-12" style="width: 1290px">
+                            <div class="card-header" style="background-color: #F7F7F7">
+                                <div class="card-title">
+                                    <h6   style= "color:#FF5403">Controle de Contas Clientes</h6>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <h6>Contas Clientes</h6>
+                                        <hr>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/conta/receptivo">
+                                                    <i class="bi bi-person-gear" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Contas Cliente</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="row ">
+                    <div class="col-md-12 col-lg-12 d-flex align-items-stretch">
+                        <div class="widthfull card card-shadow mb-12" style="width: 1290px">
+                            <div class="card-header" style="background-color: #F7F7F7">
+                                <div class="card-title">
+                                    <h6   style= "color:#FF5403">Cpainel</h6>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <h6>Configurações Basicas</h6>
+                                        <hr>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/modulo/receptivo">
+                                                    <i class="bi bi-border-all" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Módulos do Sistema</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class=' col-sm text-left'>
+                                            <a class="nav-link" href="/grupo/receptivo">
+                                                <i class="bi bi-person-vcard" style="font-size:30px; color:blue"></i>
+                                                <label class="ms-2" style="font-size: 15px;color: blue">Perfis de Acesso e Permissões</label>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <h6>Configurações de Processos e Acesso</h6>
+                                        <hr>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/processo_default/receptivo">
+                                                    <i class="bi bi-cpu" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Processos e Workflow</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class=' col-sm text-left'>
+                                            <a class="nav-link" href="/atendimento/receptivo/ligacoesperdidas">
+                                                <i class="bi bi-box-arrow-right" style="font-size:30px; color:blue"></i>
+                                                <label class="ms-2" style="font-size: 15px;color: blue">Configuração Workflow por Setor</label>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <h6>Configurações Temporárias de Ajustes</h6>
+                                        <hr>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" onclick='migrarEscalas()'>
+                                                    <i class="bi bi-journal-text" style="font-size:30px; color:blue;cursor:pointer"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Atualizar Base de Escalas</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" onclick='salvar()'>
+                                                    <i class="bi bi-journal-text" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Migrar Base Financeira</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" href="/area_colaborador/receptivo">
+                                                    <i class="bi bi-journal-text" style="font-size:30px; color:blue"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">prototipo bater ponto</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="text-left">
+                                            <div class=' col-sm text-left'>
+                                                <a class="nav-link" onclick='fcCargaFinanceira()'>
+                                                    <i class="bi bi-journal-text" style="font-size:30px; color:blue;cursor:pointer"></i>
+                                                    <span class="ms-2" style="font-size: 15px;color: blue">Processar Carga Financeira</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% set area = 'rh' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="/assets/js/local/ponto_folha_print_form.js?v=14"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+{% endblock %}
+{% block title %}
+    Folha de Ponto
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+    <style>
+        @media print{
+            #noprint{
+                display:none;
+            }
+        }
+    </style>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <br>
+    <br>
+    <main class="content_wrapper">
+        <div class="container">
+            <div class="container col-md-12">
+                <div class='col-md-12' align='center'>
+                    &nbsp;
+                    <input type="hidden" id="totalLinhas" name="totalLinhas" value="">
+                    <input type="hidden" id="leads_pk" name="leads_pk" value="{{leads_pk}}">
+                    <input type="hidden" id="colaborador_pk" name="colaborador_pk" value="{{colaborador_pk}}">
+                    <input type="hidden" id="pk" name="pk" value="{{pk}}">
+                    <input type="hidden" id="agenda_colaborador_pk" name="agenda_colaborador_pk" >
+                    <input type="hidden" id="relatorio_banco_horas" name="relatorio_banco_horas" value="{{relatorio_banco_horas}}" >
+                    <input type="hidden" id="reloginho" name="reloginho" value="{{reloginho}}" >
+                </div>
+                <div class='row'>
+                    <div class='col-md-12' align='center' >
+                        <button type="button" class="btn btn-secondary" id="cmdVoltar" data-dismiss="modal">Voltar</button>
+                        &nbsp;
+                        <button type="button" class="btn btn-primary" id="cmdImprimirModal"  name="cmdPrint">Imprimir</button>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-2' align='center' > 
+                        &nbsp;
+                    </div> 
+                    <div class='col-md-8' align='center' > 
+                        <form id="impressao" name="impressao">
+                            <div id="areaImpressao" name="area_impressao" style="width: 21cm; height: 29.7cm">
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>   
+            </div>
+        </div>
+    </main>
+{% endblock %}

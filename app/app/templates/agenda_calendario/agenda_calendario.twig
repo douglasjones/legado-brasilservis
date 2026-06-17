@@ -1,0 +1,142 @@
+{% set area = 'comercial' %}
+{% extends "theme/base.twig" %}
+
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/fullcalendar/lib/jquery.min.js"></script>
+    <script src="/assets/plugins/fullcalendar/fullcalendar.min.js"></script>
+    <script src="/assets/plugins/fullcalendar/lang-all.js"></script>
+
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+
+
+    <script src="/assets/js/local/agenda_calendario_form.js?v=14"></script>
+    <script src="/assets/js/local/agenda_cad_form.js?v=14"></script>
+{% endblock %}
+{% block title %}
+    Atendimento
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+    <link href='{{ base_url() }}/assets/plugins/fullcalendar/fullcalendar.css' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container col" >
+            <div class="container col-md-12">
+                <div class="row ">
+                    <div>
+                        <div class="col-lg-12" >
+                            <div class="shadow-lg bg-white rounded mb-4" style="width: 100%;padding: 15px;">
+                                <div class="card-header py-8" >
+                                    <div class="card-title col-sm-2">
+                                        <h5 style= "color:#FF5403"  >Agenda</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="widget bg-gray-light">
+                                            <div class="widget-body">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label>Tipo agenda</label>
+                                                        <select class=" form-control form-control-sm" id="tipo_agenda_pesquisa_pk" name="tipo_agenda_pesquisa_pk">
+                                                            <option value=''></option>
+                                                            <option value='1'>REUNIÃO PRESENCIAL</option>
+                                                            <option value='2'>REUNIÃO POR VIDEO CHAMADA</option>
+                                                            <option value='3'>LEMBRETE</option>
+                                                            <option value='4'>RETORNO</option>
+                                                            <option value='5'>TAREFA</option>
+                                                            <option value='6'>PESSOAL</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label>Status</label>
+                                                        <select class="form-control form-control-sm" id="status_pesq" name="status_pesq">
+                                                            <option></option>
+                                                            <option value='1'>Agenda Pendente</option>
+                                                            <option value='2'>Agenda Concluída</option>
+                                                            <option value='3'>Agenda Cancelada</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label>Lead's</label>
+                                                        <select id='leads_pk_pesquisa' class="form-control form-control-sm">
+                                                            <option></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-1">
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class="col-md-12" align="right">
+                                                            <button type="button" class="btn btn-primary btn-sm" id="cmdPesquisarAgenda">Pesquisar</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                        <br>
+                                                        <div id='usuario' style='font-size: 20px'></div>
+                                                        <br>
+                                                        <h6 align="center">Legendas</h6>
+                                                        <hr>
+                                                        <div id='draggable-events'>
+                                                            <div class="draggable-event btn btn-block" style="background-color:#68C39F;width: 200px; color:#ffff">
+                                                                <i class="fa fa-move"></i>Reunião
+                                                            </div>
+                                                            <div class="draggable-event btn btn-block" style="background-color:#6F42C1;width: 220px; color:#ffff">
+                                                                <i class="fa fa-move"></i>Reunião Por Vídeo Chamada
+                                                            </div>
+                                                            <div class="draggable-event btn btn-block" style="background-color:#ff9933;width: 200px; color:#ffff">
+                                                                <i class="fa fa-move"></i>Retorno
+                                                            </div>
+                                                            <div class="draggable-event btn btn-block" style="background-color:#ffff00;width: 200px; color:#000">
+                                                                <i class="fa fa-move"></i>Lembrete
+                                                            </div>
+                                                            <div class="draggable-event btn btn-block" style="background-color:#ff5050;width: 200px; color:#ffff">
+                                                                <i class="fa fa-move"></i>Tarefa
+                                                            </div>
+                                                            <div class="draggable-event btn btn-block" style="background-color:#3399ff;width: 200px; color:#ffff">
+                                                                <i class="fa fa-move"></i>Pessoal
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div id="calendario"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    {% include('partials/inc_agenda_cad_form.twig') %}
+{% endblock %}

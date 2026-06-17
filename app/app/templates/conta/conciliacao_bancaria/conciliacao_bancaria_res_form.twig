@@ -1,0 +1,127 @@
+{% set area = 'financeiro' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="/assets/js/local/conciliacao_bancaria_res_form.js?v=14"></script>
+{% endblock %}
+{% block title %}
+    Conciliação Bancaria
+{% endblock %}
+{% block content %}
+    <BR>
+    <br>
+    <br>
+    <main class="content_wrapper">
+        <div class="container">
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row ">
+                    <div  tabindex="-1" role="dialog" aria-labelledby="modal-set-ramalLabel" >
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;background-color: #F7F7F7">
+                                <div class="card-header" style="background-color: #F7F7F7">
+                                    <div class="card-title col-sm-4">
+                                        <h5 style= "color:#FF5403">Conciliação Bancaria</h5>
+                                    </div>
+                                    <div class='col-sm-8' align="Right">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="cmdVoltar">Voltar</button>
+                                        &nbsp;
+                                        <button type="button" class="btn btn-primary btn-sm" id="cmdIncluir">Novo</button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class='col-md-4'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for='ic_contrato'>Empresa:&nbsp;</label>
+                                            <select id="empresas_pk" name="empresas_pk" class="form-control form-control-sm chzn-select">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-4'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for='bancos_pk'>Banco(s):&nbsp;</label>
+                                            <select class='form-control form-control-sm chzn-select'  id='bancos_pk' name='bancos_pk' />
+                                            <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-4'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for='ds_agencia'>Agência:&nbsp;</label>
+                                            <select class='form-control form-control-sm chzn-select'  id='ds_agencia' name='ds_agencia' />
+                                            <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-4'>
+                                            &nbsp;
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for='ds_agencia'>Contas:&nbsp;</label>
+                                            <select class='form-control form-control-sm chzn-select'  id='ds_conta' name='ds_conta' />
+                                            <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <p>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            &nbsp;
+                                        </div>
+                                        <div class="col-md-4" align="center">
+                                            <button type="button" class="btn btn-primary btn-sm" id="cmdPesquisar">Pesquisar</button>
+                                        </div>
+                                    </div>
+                                    <p>
+                                    <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                    <p>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-striped table-bordered nowrap" style="width:100%" id="tblResultado">
+                                                <thead>
+                                                <tr>
+                                                    <th>Cód</th>
+                                                    <th>Empresa</th>
+                                                    <th>Banco</th>
+                                                    <th>Agência</th>
+                                                    <th>Conta</th>
+                                                    <th>Dt Conciliação</th>
+                                                    <th>Ação</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

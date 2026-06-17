@@ -1,0 +1,212 @@
+{% set area = 'financeiro' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="/assets/js/local/financeiro_contas_pagar_receber_res_form.js?v=14"></script>
+
+    <script src="/assets/js/local/financeiro_documento_historico_res_form.js?v=14"></script>
+    <script src="/assets/js/local/financeiro_documento_cad_form.js?v=14"></script>
+
+
+    <script>
+
+        let arrColaborador = {{ arrColaborador|json_encode|raw }};
+        let arrLeads = {{ arrLeads|json_encode|raw }};
+        let arrConta = {{ arrConta|json_encode|raw }};
+        let arrMetodoPagamento = {{ arrMetodoPagamento|json_encode|raw }};
+        let financeiro_contas_menu_extrato = permissao("financeiro_contas_menu_extrato", "cons");
+        if(financeiro_contas_menu_extrato.status != true){
+            $('.financeiro_contas_menu_extrato').hide();
+        }
+
+        let financeiro_contas_menu_receita = permissao("financeiro_contas_menu_receita", "cons");
+        if(financeiro_contas_menu_receita.status != true){
+            $('.financeiro_contas_menu_receita').hide();
+        }
+        let financeiro_contas_menu_despesa = permissao("financeiro_contas_menu_despesa", "cons");
+        if(financeiro_contas_menu_despesa.status != true){
+            $('.financeiro_contas_menu_despesa').hide();
+        }
+        let financeiro_contas_menu_lancamentos = permissao("financeiro_contas_menu_lancamentos", "cons");
+        if(financeiro_contas_menu_lancamentos.status != true){
+            $('.financeiro_contas_menu_lancamentos').hide();
+        }
+
+        //PERMISSAO DE MODAL
+        let status_financeiro = permissao("status_finaceiro", "cons");
+        if (status_financeiro.status != true){
+            $("#exibir_pago").hide();
+            $("exibir_parcial").hide();
+        }
+        else{
+            $("#exibir_pago").show();
+            $("#exibir_parcial").show();
+        }     
+   
+        
+
+
+    </script>
+{% endblock %}
+{% block title %}
+    Financeiro
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href='{{ base_url() }}/assets/css/pages/settings-selectables.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+    <style>
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        .search-box {
+            position: relative;
+            width: 250px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px 20px 10px 40px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            outline: none;
+            font-size: 13px;
+        }
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            font-size: 15px;
+            color: #aaa;
+        }
+        .loader {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background-image: url(/assets/img/square.png);
+            background-size: 60px 60px;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .loader:before , .loader:after{
+            content: '';
+            border-radius: 50%;
+            position: absolute;
+            inset: 0;
+            box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3) inset;
+        }
+        .loader:after {
+            box-shadow: 0 2px 0 #14074f inset;
+            animation: rotate 2s linear infinite;
+
+        }
+
+        @keyframes rotate {
+            0% {  transform: rotate(0)}
+            100% { transform: rotate(360deg)}
+        }
+    </style>
+    
+{% endblock %}
+{% block content %}
+{% include('partials/financeiro_documento_historico_res_form.twig') %}
+{% include('partials/financeiro_documentos_cad_form.twig') %}
+{% include('lancamento/financeiro_contas_pagar_receber_cad_form.twig') %}
+    <div style="
+        height: 55vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center" id="carregar">
+        <div class="loader" style="width: 100px;
+        height: 100px;">
+        </div>
+    </div>
+    <div class="row" id="exibir" style="display: none">
+    <main class="main-content" >
+        <div class="row">
+            <div class="col-md-8">
+                &nbsp;
+            </div>
+        </div>
+        <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;background-color: #F7F7F7;">
+            <div class="card-header">
+                <div class='col-md-7' align='left'>
+                    <h5 class="font-weight-bold" style= "color:#FF5403" >Contas a Pagar e Receber</h5>
+                </div>
+                <div class='col-md-5' align='right'>
+                    <button class='btn btn-secondary btn-sm' id='cmdVoltar'>Voltar</button>
+                </div>
+            </div>
+      
+            <div class="row"> 
+                <div class="col-md-12">
+                    <div class='row'>
+                        <div class='col-sm-2'> 
+                            <button type='button' class="btn btn-primary btn-sm" id='cmdNovoLancamento' style="font-size:14px">Novo Lançamento</button>    
+                        </div>
+                    </div> 
+                </div>         
+            </div>
+            <br>
+            <div class="row" align='center'>
+                <div class="col-sm-12">
+                    <ul class="nav nav-pills flex-column flex-sm-row" id="myTab" role="tablist">
+                        <li class="nav-item financeiro_contas_menu_extrato" id="financeiro_contas_menu_extrato">
+                            <a class="nav-link active btn-sm" id="extrato_mes-tab" data-toggle="tab" href="#extrato_mes" role="tab" aria-controls="extrato_mes" aria-selected="true" style="font-size:14px">Extrato Mês</a>
+                        </li>
+                        <li class="nav-item financeiro_contas_menu_receita" id="financeiro_contas_menu_receita">
+                            <a class="nav-link btn-sm" id="receitas-tab" data-toggle="tab" href="#receitas" role="tab" aria-controls="receitas" aria-selected="false" style="font-size:14px">Receita(s)</a>
+                        </li>
+                        <li class="nav-item financeiro_contas_menu_despesa" id="financeiro_contas_menu_despesa">
+                            <a class="nav-link btn-sm" id="despesas-tab" data-toggle="tab" href="#despesas" role="tab" aria-controls="despesas" aria-selected="false" style="font-size:14px">Despesa(s)</a>
+                        </li>
+                        <li class="nav-item financeiro_contas_menu_lancamentos" id="financeiro_contas_menu_lancamentos">
+                            <a class="nav-link btn-sm" id="lancamentos-tab" data-toggle="tab" href="#lancamentos" role="tab" aria-controls="lancamentos" aria-selected="false" style="font-size:14px">Todos Lancamentos</a>
+                        </li>
+                    </ul>
+                    <hr>
+                </div> 
+            </div> 
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active financeiro_contas_menu_extrato" id="extrato_mes" role="tabpanel" aria-labelledby="extrato_mes-tab">
+                    {% include('partials/financeiro_grid_extrato_mes.twig') %}
+                </div>
+                <div class="tab-pane fade financeiro_contas_menu_receita" id="receitas" role="tabpanel" aria-labelledby="receitas-tab">
+                    {% include('partials/financeiro_grid_receita.twig') %}
+                </div>
+                <div class="tab-pane fade financeiro_contas_menu_despesa" id="despesas" role="tabpanel" aria-labelledby="despesas-tab">
+                    {% include('partials/financeiro_grid_despesa.twig') %}
+                </div>
+                <div class="tab-pane fade financeiro_contas_menu_lancamentos" id="lancamentos" role="tabpanel" aria-labelledby="lancamentos-tab">
+                    {% include('partials/financeiro_grid_lancamento.twig') %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">        
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>  
+
+
+{% endblock %}

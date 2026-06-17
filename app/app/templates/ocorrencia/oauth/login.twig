@@ -1,0 +1,82 @@
+{% extends "structure/oauth.twig" %}
+{% set area = 'oauth' %}
+
+{% block title %}
+    Autenticação
+{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block CSSfiles %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/assets/css/local/authentication.css?v={{ config.VERSION_ID }}">
+{% endblock %}
+
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/js/global/oauth.js?v={{ config.VERSION_ID }}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="form-content">
+        <div class="form-items">
+            <div class="px-3 py-4 p-md-5 p-xxl-5 mx-xxl-4">
+                <div class="login-form py-2 py-md-0 mx-auto mx-lg-0">
+
+                    <div class="d-block">
+                        <h2 class="h1 mb-3 d-inline-block">Autenticação</h2>
+                        <div class="d-inline-block">
+                            {% if config.ENVIRONMENT == 0 %}
+                                <span class="badge bg-danger badge-environment text-white float-end">homologação</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+
+                    <div class="position-relative">
+                        <hr class="bg-gray-200 border-gray-200 opacity-100">
+                    </div>
+                    <form class="pt-2" id="authForm" method="POST" novalidate="novalidate" autocomplete="off">
+                        <div class="mb-4 pb-md-2">
+                            <label class="form-label form-label-lg">Login</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-xl" placeholder="Login"
+                                       name="login">
+                            </div>
+                        </div>
+                        <div class="mb-4 pb-md-2">
+                            <label class="form-label form-label-lg">Senha</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control form-control-xl" id="password"
+                                       placeholder="Senha" name="password">
+                                <span class="input-group-text toggle-visibility-password" id="password">
+                        <i class="far fa-eye-slash"></i>
+                    </span>
+                            </div>
+                        </div>
+
+
+                        <div class="d-grid">
+                            <button type="button" class="btn btn-xl btn-primary btn-auth">Entrar</button>
+                        </div>
+                        <div class="my-4 d-flex pb-3">
+                            <div class="form-check form-check-sm mb-0">
+
+                                <input class="form-check-input" type="checkbox" id="gridCheck" name="rememberme">
+                                <label class="form-check-label small text-gray-600" for="gridCheck">
+                                    Lembrar-me
+                                </label>
+                            </div>
+
+                            <!--<a href="#" class="small text-gray-600 ms-auto mt-1">Esqueci minha senha</a>-->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

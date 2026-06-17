@@ -1,0 +1,110 @@
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="modal fade bd-example-modal-lg"  id="janela_apontamento_colaborador">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content" >
+                                <div class="modal-header">
+                                    <h6 style= "color:#FF5403"  >Apontamento Colaborador</h6>
+                                    <div align='right'>
+                                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="fecharModalApontamento()">Fechar</button>
+                                        <button type="button" class="btn btn-primary btn-sm cmdEnviar" id="cmdEnviar"  name="cmdEnviar">Salvar</button>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="origem" name="origem" value="">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class='col-md-8'>
+                                            <h6 for='ic_contrato'>Colaborador / Posto de Trabalho&nbsp;</h6>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class='col-md-4'>
+                                            <label for='tipo_apontamento_pk'>Tipo Apontamento:&nbsp;</label>
+                                            <select  name="tipo_apontamento_pk" class="form-control form-control-sm" id="tipo_apontamento_pk" >
+                                                <option value=''></option>
+                                                <option value='1'>Ponto</option>
+                                                <option value='2'>Falta</option>
+                                                <option value='3'>Folga</option>
+                                                <!--<option value='4'>Troca de Escala</option>-->
+                                                <option value='5'>Afastamento</option>
+                                                <option value='6'>Férias</option>
+                                                <option value='7'>Serviço Extra</option>
+                                                <option value='8'>Disciplina</option>
+                                            </select>
+                                            <div class='row' id="alert_tipo_apontamento_pk" style="display:none">
+                                                <span aling="center" style="color: red">&nbsp;&nbsp;&nbsp;Por favor, informe o Tipo Apontamento!</span>
+                                            </div>
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <label for='colaborador_pk_modal'>Colaborador:&nbsp;</label>
+                                            <select  name="colaborador_pk_modal" class='form-control form-control-sm chzn-select' id="colaborador_pk_modal">
+                                                <option></option>
+                                            </select>
+                                            <div class='row' id="alert_colaborador_pk_modal" style="display:none">
+                                                <span aling="center" style="color: red">&nbsp;&nbsp;&nbsp;Por favor, informe o Colaborador!</span>
+                                            </div>
+                                        </div>
+
+                                        <div class='col-md-3'>
+                                            <label for='dt_apontamento'>Dt Apontamento:&nbsp;</label>
+                                            <input maxlength="10" type='text' class='form-control form-control-sm'  id='dt_apontamento' name='dt_apontamento'/>
+                                            <div class='row' id="alert_dt_apontamento" style="display:none">
+                                                <span aling="center" style="color: red">Por favor, informe a Data de Apontamento!</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div id="tabelaHistoricoApontamento">
+                                        </div>
+                                        <div id="tabelaPostoTrabalho">
+                                        </div>
+                                        <div id="inputDsPin">
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div id='dv_formulario_ponto' style="display: none" >
+                                            {% include('partials/inc_apontamento_ponto_cad_form.twig') %}
+                                        </div>
+                                        <div id='dv_formulario_falta' style="display: none" >
+                                            {% include('partials/inc_apontamento_falta_cad_form.twig') %}
+
+                                        </div>
+                                        <div id='dv_formulario_folga' style="display: none" >
+                                            {% include('partials/inc_apontamento_folga_cad_form.twig') %}
+                                        </div>
+                                        <div id='dv_formulario_troca_escala' style="display: none" >
+                                            {% include('partials/inc_apontamento_troca_escala_cad_form.twig') %}
+                                        </div>
+                                        <div id='dv_formulario_afastamento' style="display: none" >
+                                            {% include('partials/inc_apontamento_afastamento_cad_form.twig') %}
+                                        </div>
+                                        <div id='dv_formulario_ferias' style="display: none" >
+                                            {% include('partials/inc_apontamento_ferias_cad_form.twig') %}
+                                        </div>
+                                        <div id='dv_formulario_servico_extra' style="display: none" >
+                                            {% include('partials/inc_apontamento_servico_extra_cad_form.twig') %}
+                                        </div>
+                                        <div id='dv_formulario_disciplina' style="display: none" >
+                                            {% include('partials/inc_apontamento_disciplina_cad_form.twig') %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="fecharModalApontamento()">Fechar</button>
+                                    <button type="button" class="btn btn-primary btn-sm cmdEnviar1" id="cmdEnviar1"  name="cmdEnviar1">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

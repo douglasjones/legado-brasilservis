@@ -1,0 +1,187 @@
+{% set area = 'financeiro' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/js/local/impressao_lancamento.js?v=14"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v={{ JSversion }}"></script>
+
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+{% endblock %}
+{% block title %}
+    Controle Análise Financeira
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+
+        <div class="container col" >
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                
+                <div class="row ">
+                    <div>
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <form id="form" class="form">
+                                <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;">
+                                    <div class="card-header" style="background-color: #F7F7F7">
+                                        <div class="card-title col-sm-4">
+                                            <h5 style= "color:#FF5403">Lançamento fatura</h5>
+                                        </div>
+                                        <div class='col-sm-8' align="Right">
+                                            <button type="button" class="btn btn-secondary btn-sm" id="cmdVoltar">Voltar</button>
+                                            &nbsp;
+                                            <button type="button" class="btn btn-primary btn-sm" id="cmdImprimir">Imprimir</button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" id="printableArea">
+                                        <form id="form" class="form" >
+                                            <input type="hidden" name="pk" id="pk" value={{ pk }}>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class='row'>                      
+                                                        <div class='col-sm-12' align="left">
+                                                            <h6>Dados de Identificação do Lançamento</h6>     
+                                                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                                        </div>                    
+                                                    </div>
+                                                    <br>
+                                                    <div class='row'>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Cód Lançamento:</b></label>
+                                                            <div id='lancamentos_pk'></div>                          
+                                                        </div>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Dt. Cadastro:</b></label>
+                                                            <div id='dt_cadastro'></div>                          
+                                                        </div>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Nome Usuário:</b></label>
+                                                            <div id='ds_usuario'></div>                          
+                                                        </div>                    
+                                                    </div>
+                                                    <div class='row'>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Tipo Lançamento:</b></label>
+                                                            <div id='ds_operacao'></div>                          
+                                                        </div>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Tipo Operação/ Planos Conta:</b></label>
+                                                            <div id='ds_tipo_operacao'></div>                          
+                                                        </div>                    
+                                                    </div>
+                                                    <div class='row'>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Empresa Para o Lançamento:</b></label>
+                                                            <div id='ds_empresas'></div>                          
+                                                        </div>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Conta Bancária:</b></label>
+                                                            <div id='ds_conta_bancaria'></div>                          
+                                                        </div>                    
+                                                    </div>
+                                                    <div class='row'>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Identificação do Lançamento:</b></label>
+                                                            <div id='ds_lancamento'></div>                          
+                                                        </div>                    
+                                                    </div>
+                                                    <div class='row'>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Grupo Origem do Lançamento:</b></label>
+                                                            <div id='ds_tipo_grupo'></div>                          
+                                                        </div>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Recebimento de ? Pago de ?:</b></label>
+                                                            <div id='ds_grupo_lancamento_centro_custo'></div>                          
+                                                        </div>                    
+                                                    </div>
+                                                    <div class='row'>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Cliente:</b></label>
+                                                            <div id='ds_cliente'></div>                          
+                                                        </div>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Posto De Trabalho:</b></label>
+                                                            <div id='ds_posto_trabalho'></div>                          
+                                                        </div>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Contrato:</b></label>
+                                                            <div id='ds_contrato'></div>                          
+                                                        </div>                    
+                                                    </div>
+                                                    <div class='row'>                    
+                                                        <div class='col-md-4'>                        
+                                                            <label><b>Dt. Pagamento:</b></label>
+                                                            <div id='ds_cliente'></div>                          
+                                                        </div>                     
+                                                    </div>
+                                                    <br>
+                                                    <div class='row'>                      
+                                                        <div class='col-sm-12' align="left">
+                                                            <h6>Dados de Valor e Data Do Lançamento / Status</h6>     
+                                                            <hr style='height:1px; border:none; color:#14074F; background-color:#14074F; margin-top: 0px; margin-bottom: 0px;'>
+                                                        </div>
+                                                        <br>
+                                                    </div>
+                                                    <div class='col-sm-12' align="left">
+                                                        <div class='row'>                    
+                                                            <div class='col-md-4'>                        
+                                                                <label><b>Valor do Lançamento:</b></label>
+                                                                <div id='vl_lancamento'></div>                          
+                                                            </div>                    
+                                                            <div class='col-md-4'>                        
+                                                                <label><b>Método de Recebimento:</b></label>
+                                                                <div id='ds_metodo_pagamento'></div>                          
+                                                            </div>                                        
+                                                        </div>                    
+                                                        <div class='row'>                    
+                                                            <div class='col-md-4'>                        
+                                                                <label><b>Dt Vencimento / Recebimento:</b></label>
+                                                                <div id='dt_vencimento'></div>                          
+                                                            </div>                                
+                                                        </div>                    
+                                                        <div class='row'>                    
+                                                            <div class='col-md-4'>                        
+                                                                <label><b>Status:</b></label>
+                                                                <div id='ic_status'></div>                          
+                                                            </div>                                
+                                                        </div>                    
+                                                        <div class='row'>                    
+                                                            <div class='col-md-4'>                        
+                                                                <label><b>Observação:</b></label>
+                                                                <div id='obs'></div>                          
+                                                            </div>                                
+                                                        </div>                    
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </form>       
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

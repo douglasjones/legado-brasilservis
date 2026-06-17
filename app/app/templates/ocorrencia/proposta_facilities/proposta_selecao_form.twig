@@ -1,0 +1,86 @@
+{% set area = 'comercial' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/js/local/proposta_selecao_form.js?v=14"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v={{ JSversion }}"></script>
+
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+{% endblock %}
+{% block title %}
+    Seleção Proposta
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <!--INFORMAÇÕES TRAZIDAS DA CONTROLLER E COLOCANDO EM VARIAVEIS HIDDEN-->
+    <input type="hidden" id="pk" value="{{ pk }}">
+    <input type="hidden" id="ic_versao" value="{{ ic_versao }}">
+    <input type="hidden" id="ic_abertura" value="{{ ic_abertura }}">
+    <input type="hidden" id="leads_pk" value="{{ leads_pk }}">
+    <main class="main-content">
+        <div class="container col" >
+            <div class="container">
+                <br>
+                <div class="row">
+                    <div class="col-lg">
+                        <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;">
+                            <div class="card-header" style="background-color: #F7F7F7">
+                                <div class="card-title col-sm-4">
+                                    <h5 style= "color:#FF5403"  >Tipo de Proposta</h5>
+                                </div>
+                                <div class='col-sm-8' align="Right">
+                                    <button type="button" class="btn btn-secondary btn-sm" id="cmdVoltar">Voltar</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class='row'>
+                                    <div class='col-md-4'>
+                                        &nbsp;
+                                    </div>
+                                    <div class='col-md-4'>
+                                        <label for='ic_tipo_proposta'>Tipo Proposta:&nbsp;</label>
+                                        <select class='form-control form-control-sm'  id='ic_tipo_proposta' name='ic_tipo_proposta'>
+                                            <option value=""></option>
+                                            <option value="1">Proposta Detalhada</option>
+                                            <!--option value="2">Proposta Básica</option-->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-md-4'>
+                                        &nbsp;
+                                    </div>
+                                    <div class='col-md-4' id="alert_ic_tipo_proposta" style="display:none">
+                                        <span aling="center" style="color: red">Por favor, informe o Tipo Proposta!</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-md-4" align="center">
+                                        <button type="button" class="btn btn-primary btn-sm" id="cmdGerarProposta">Gerar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

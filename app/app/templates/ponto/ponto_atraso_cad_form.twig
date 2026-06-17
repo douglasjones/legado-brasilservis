@@ -1,0 +1,153 @@
+{% set area = 'operacional' %}
+{% extends "theme/base.twig" %}
+
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v=14"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="/assets/js/local/ponto_atraso_cad_form.js?v=14"></script>
+{% endblock %}
+{% block title %}
+    Acompanhamento de Faltas Online
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+   <style>
+    th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        .pulsing-text {
+            font-size: 2em;
+            color: #ff0000;
+            text-align: center;
+            margin-top: 20%;
+            animation: pulse 1s infinite;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <main class="main-content">  
+        <div id="loader"></div>
+            <div class="container col" id="exibir">
+                <div class="container col-md-12">
+                    <div class="row">
+                        <div class="col-md-8">
+                            &nbsp;
+                        </div>
+                    </div> 
+                    <div  tabindex="-1" role="dialog" aria-labelledby="modal-set-ramalLabel" >
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;background-color: #F7F7F7">
+                                <div class='row'>
+                                    <div class="card-title col-sm-6">
+                                        <h6 style= "color:#FF5403"  ><b>Acompanhamento de Faltas Online</b></h6><div id="dt_emissao" style="font-size:16px;font-weight: bold;"></div>
+                                    </div>
+                                </div>  
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <form id="ocorrenciaForm" method="GET" style="margin-top: 1%">
+                                                <div class="row mb-5">
+                                                    
+                                                    <div class="col-4" style="background-color: #e6df55;text-align: center">
+                                                        <b>Atraso de 5 Min </b></div>
+                                                    <div class="col-4" style="background-color: #f99856;text-align: center">
+                                                        <b>Atraso de 10 Min </b></div>
+                                                    <div class="col-4" style="background-color: #ec1c24;text-align: center">
+                                                        <b>Atraso acima de 25 Min</b></div>
+
+                                                </div>
+                                                <div class="row" >
+                                                    <div class="col-12 " >
+                                                        <input type="hidden" id="dt_ini">
+                                                        <input type="hidden" id="dt_fim">
+                                                        <div class="form-group m-3 p-0" align='center'>
+                                                            <button type="button" id="cmdAtualizar"
+                                                                    class="btn btn-sm btn-primary btn-fill btn-finish">
+                                                                Atualizar
+                                                            </button>
+                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                            </form>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                            
+                                                <table  style="width:100%" id="tblPesq">
+                                                    <thead> 
+                                                        <tr>
+                                                            <th>
+                                                                <select style="width: 154px;" class="form-control form-control-sm chzn-select" id="leads_pk" >
+                                                                    <option></option>
+                                                                </select>
+                                                            </th>
+                                                            <th >
+                                                                <select style="width: 134px;" class="form-control form-control-sm chzn-select" id="colaborador_pk" >
+                                                                    <option></option>
+                                                                </select>
+                                                            </th>
+                                                            <th>
+                                                                <select style="width: 123px;"  class="form-control form-control-sm chzn-select" id="turnos_pk" >
+                                                                    <option></option>
+                                                                </select>
+                                                            </th>
+                                                            <th>
+                                                                <select style="width: 123px;"  class="form-control form-control-sm chzn-select" id="funcao_pk" >
+                                                                    <option></option>
+                                                                </select>
+                                                            </th>
+                                                            <th>
+                                                                <input style="width: 138px;" class="form-control form-control-sm" type='text' id='txtDsPin' placeholder='Pesquisar por'/>
+                                                            </th>
+                                                            <th>
+                                                                <input style="width: 123px;" class="form-control form-control-sm" type='text' id='txtEscala' placeholder='Pesquisar por'/>  
+                                                            </th> 
+                                                            <th>
+                                                                <input style="width: 122px;" class="form-control form-control-sm" type='text' id='txtEscala' placeholder='Pesquisar por'/>  
+                                                            </th> 
+                                                        </tr>
+                                                        </thead>
+                                                </table>
+                                                <table  style="width:100%" id="tblResultado">
+                                                    <thead>                                                        
+                                                        <tr role="row">
+                                                            <th style="width: ;">Posto Trabalho</th>
+                                                            <th style="width: 150px;">Colaborador</th>
+                                                            <th style="width: 150px;">Turno</th>
+                                                            <th style="width: 150px;">Função</th>
+                                                            <th style="width: 150px;" >Cel. Colaborador</th>
+                                                            <th style="width: 150px;">Tempo Atraso</th>
+                                                            <th style="width: 150px;" >Ação</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+{% endblock %}
+
+

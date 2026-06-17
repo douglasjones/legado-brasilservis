@@ -1,0 +1,120 @@
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class='col'>
+                <h6 class="font-weight">Novo apontamento - <b>Falta</b></h6>
+                <hr>
+            </div>
+            <div class="row" style="margin: 5px">
+                <div class="col-md-2">
+                    &nbsp;
+                </div>
+                <div class='col-md-6'>
+                    <label for='motivo_falta_pk'>Motivo da Falta:&nbsp;</label>
+                    <select  name="motivo_falta_pk" class="form-control form-control-sm" id="motivo_falta_pk">
+                        <option value=''></option>
+                        <option value='1'>Abonada</option>
+                        <option value='2'>Apoio Operacional</option>
+                        <option value='3'>Atestado</option>
+                        <option value='12'>Atestado por acompanhamento do filho até 5 anos</option>
+                        <option value='13'>Atestado por serviço Justiça Eleitoral 2 dias</option>
+                        <option value='14'>Atestado por doação de sangue</option>
+                        <option value='4'>Atraso</option>
+                        <option value='18'>Declaração de horas abonar horas</option>
+                        <option value='19'>Declaração de horas apontar horario de trabalho</option>
+                        <option value='5'>Extensão SDF</option>
+                        <option value='6'>Falta de Efetivo</option>
+                        <option value='7'>Falta Sem Justificativa</option>
+                        <option value='8'>Licença</option>
+                        <option value='9'>Remanejameto</option>
+                        <option value='10'>Reciclagem</option>
+                    </select>
+                    <div class='row' id="alert_motivo_falta_pk" style="display:none">
+                        <span aling="center" style="color: red">&nbsp;&nbsp;Por favor, informe o Motivo da Falta!</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin: 5px">
+                <div class="col-md-2">
+                    &nbsp;
+                </div>
+                <div class='col-md-6'>
+                    <label for='colaborador_cobertura_falta_pk'>Cobertura:&nbsp;</label>
+                    <select  name="colaborador_cobertura_falta_pk" class='form-control form-control-sm' id="colaborador_cobertura_falta_pk" onchange='fcAbrirSelectsFalta()'>
+                        <option value=''></option>
+                    </select>
+                </div>
+            </div>
+            <div id="exibir_data_atestado">
+                <div class="row" style="margin: 5px" >
+                    <div class="col-md-2">
+                        &nbsp;
+                    </div>
+                    <div class='col-md-3'>
+                        <label for='dt_inicio_atestado'> Data início: &nbsp; </label>
+                        <input type='text' maxlength="10" class='form-control form-control-sm'  id='dt_inicio_atestado' name='dt_inicio_atestado' />
+                    </div>
+
+                    <div class='col-md-3'>
+                        <label for='dt_fim_atestado'> Data fim: &nbsp; </label>
+                        <input type='text' maxlength="10" class='form-control form-control-sm'  id='dt_fim_atestado' name='dt_fim_atestado' />
+                    </div>
+                </div>
+            </div>
+            <div id="exibir_hr_atestado">
+                <div class="row" style="margin: 5px" >
+                    <div class="col-md-2">
+                        &nbsp;
+                    </div>
+                    <div class='col-md-3'>
+                        <label for='hr_ini_declaracao'> Hora início: &nbsp; </label>
+                        <input type='text' maxlength="10" class='form-control form-control-sm mask_hour'  id='hr_ini_declaracao' name='hr_ini_declaracao' />
+                    </div>
+
+                    <div class='col-md-3'>
+                        <label for='hr_fimi_declaracao'> Hora fim: &nbsp; </label>
+                        <input type='text' maxlength="10" class='form-control form-control-sm mask_hour'  id='hr_fimi_declaracao' name='hr_fimi_declaracao' />
+                    </div>
+                </div>
+            </div>
+            <!---colocar aqui a DIV com os dois campos de hora-->
+            <div class="row" style="margin: 5px">
+                <div class="col-md-2">
+                    &nbsp;
+                </div>
+                <div class='col-md-6'>
+                    <label for='ds_obs_falta'>Observação:&nbsp;</label>
+                    <textarea cols="50"  id="ds_obs_falta" name="ds_obs_falta" class="form-control form-control-sm"></textarea>
+                    <div class='row' id="alert_ds_obs_falta" style="display:none">
+                        <span aling="center" style="color: red">&nbsp;&nbsp;Por favor, informe a Observação!</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin: 5px;">
+                <div class="col-md-2">
+                    &nbsp;
+                </div>
+                <div class='col-md-6' style="margin: 5px;display:none" id="motivo_cobertura_pk">
+                    <label for='colaborador_cobertura_falta_pk'>Motivo Cobertura:&nbsp;</label>
+                    <select  name="motivo_cobertura_falta_pk" class="form-control form-control-sm" id="motivo_cobertura_falta_pk">
+                        <option value=''></option>
+                        <option value='1'>Folga Trabalhada</option>
+                        <option value='2'>Escala Errada</option>
+                        <option value='3'>Posto Vago</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row" style="margin: 5px;">
+                <div class="col-md-2">
+                    &nbsp;
+                </div>
+                <div class='col-md-6' style="display:none;margin: 5px;" id="dv_vl_ft_falta">
+                    <label for='vl_ft_falta'>Valor Falta:&nbsp;</label>
+                    <input type="text" class="form-control form-control-sm" id="vl_ft_falta" name="vl_ft_falta">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% block content %}
+    <div class="row">
+        <div class='col'>
+            <h6 class="font-weight">Novo apontamento - <b>Afastamento</b></h6>
+            <hr>
+        </div>
+        <div class="row" style="margin: 5px">
+            <div class='col-md-3'>
+                &nbsp;
+            </div>
+            <div class='col-md-5'>
+                <label for='motivo_afastamento_pk'>Motivo da Afastamento:&nbsp;</label>
+                <select  name="motivo_afastamento_pk" class="form-control form-control-sm" id="motivo_afastamento_pk">
+                    <option value=''></option>
+                    <option value='1'>Motivos Médicos</option>
+                    <option value='2'>Invalides</option>
+                    <option value='3'>Licença maternidade 120 dias</option>
+                    <option value='4'>Licença paternidade 5 dias</option>
+                    <option value='5'>Licença casamento 3 dias</option>
+                </select>
+                <div class='row' id="alert_motivo_afastamento_pk" style="display:none">
+                    <span aling="center" style="color: red">&nbsp;&nbsp;&nbsp;Por favor, informe o Motivo Afastamento!</span>
+                </div>
+            </div>
+            <br>
+            <div id="dt_afastamento" class="row" style="margin: 3px">
+                    <div class='col-md-3'>
+                        &nbsp;
+                    </div>
+                    <div class='col-md-5'>
+                        <label for='dt_ini_afastamento'> Início Afastamento: &nbsp; </label>
+                        <input maxlength="10" type='text' class='form-control form-control-sm'  id='dt_ini_afastamento' name='dt_ini_afastamento' />
+                        <div class='row' id="alert_dt_ini_afastamento" style="display:none">
+                            <span aling="center" style="color: red">Por favor, informe o Início Afastamento!</span>
+                        </div>
+                        <label for='dt_fim_afastamento'> Fim Afastamento: &nbsp; </label>
+                        <input maxlength="10" type='text' class='form-control form-control-sm'  id='dt_fim_afastamento' name='dt_fim_afastamento' />
+                        <div class='row' id="alert_dt_fim_afastamento" style="display:none">
+                            <span aling="center" style="color: red">Por favor, informe o Fim do Afastamento!</span>
+                        </div>
+                    </div>
+            </div>
+            <div class="row" style="margin: 5px">
+                <div class='col-md-3'>
+                    &nbsp;
+                </div>
+                <div class='col-md-5'>
+                    <label for='colaborador_cobertura_afastamento_pk'>Cobertura:&nbsp;</label>
+                    <select  name="colaborador_cobertura_afastamento_pk" class='form-control form-control-sm' id="colaborador_cobertura_afastamento_pk">
+                        <option value=''></option>
+                    </select>
+                </div>
+            </div>
+            <br>
+            <div class="row" style="margin: 5px">
+                <div class='col-md-3'>
+                    &nbsp;
+                </div>
+                <div class='col-md-5'>
+                    <label for='ds_obs_afastamento'>Observação:&nbsp;</label>
+                    <textarea cols="50"  id="ds_obs_afastamento" class='form-control form-control-sm' name="ds_obs_afastamento"></textarea>
+                    <div class='row' id="alert_ds_obs_afastamento" style="display:none">
+                        <span aling="center" style="color: red">&nbsp;&nbsp;&nbsp;Por favor, informe a observação!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

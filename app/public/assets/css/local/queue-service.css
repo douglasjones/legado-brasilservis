@@ -1,0 +1,213 @@
+#datatablesQueueGeneral.dataTable, #datatablesQueueAssumed.dataTable {
+    margin: 0 !important;
+}
+
+#datatablesQueueGeneral td,
+#datatablesQueueGeneral th,
+#datatablesQueueAssumed td,
+#datatablesQueueAssumed th {
+    padding: 0;
+}
+
+#datatablesQueueGeneral .user-list,
+#datatablesQueueAssumed .user-list {
+    border-radius: .25rem;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+#datatablesQueueGeneral .user-list-item,
+#datatablesQueueAssumed .user-list-item {
+    padding: 0;
+    display: flex;
+    display: -webkit-flex;
+    cursor: pointer;
+    margin-bottom: 3px;
+    border: 0;
+    box-shadow: none;
+    border-radius: 3px;
+    position: relative;
+    transition: ease all 0.5s;
+    -webkit-transition: ease all 0.5s;
+    -ms-transition: ease all 0.5s;
+}
+
+#datatablesQueueGeneral .user-list-item .users-list-body,
+#datatablesQueueAssumed .user-list-item .users-list-body {
+    flex: 1;
+    position: relative;
+    min-width: 0px;
+    display: flex;
+}
+
+#datatablesQueueGeneral .user-list-item .users-list-body div.box-message,
+#datatablesQueueAssumed .user-list-item .users-list-body div.box-message {
+    min-width: 0;
+    display: grid;
+    flex-direction: column;
+    flex: 1;
+}
+
+
+#datatablesQueueGeneral .user-list-item .users-list-body h5.subject,
+#datatablesQueueAssumed .user-list-item .users-list-body h5.subject {
+    font-family: "Poppins";
+    margin-bottom: 0px;
+    color: #333333;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+#datatablesQueueGeneral .user-list-item .users-list-body p,
+#datatablesQueueAssumed .user-list-item .users-list-body p {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-bottom: 0;
+    color: #232323;
+    font-size: 13px;
+}
+
+#datatablesQueueGeneral .user-list-item .users-list-body p.email,
+#datatablesQueueAssumed .user-list-item .users-list-body p.email {
+    margin-bottom: 0px;
+    color: #999;
+    font-size: 12px;
+    font-style: italic;
+}
+
+#datatablesQueueGeneral .user-list-item .users-list-body p.preview,
+#datatablesQueueAssumed .user-list-item .users-list-body p.preview {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    font-style: normal;
+    line-height: 18px;
+    color: #6c757d;
+}
+
+#datatablesQueueGeneral .user-list-item .users-list-body div.channels div,
+#datatablesQueueAssumed .user-list-item .users-list-body div.channels div {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    text-align: center;
+    display: inline-block;
+    float: left;
+}
+
+#datatablesQueueGeneral .user-list-item .users-list-body div.channels div.queue,
+#datatablesQueueAssumed .user-list-item .users-list-body div.channels div.queue {
+    background: rgba(134, 5, 185, 0.15) !important;
+    padding: 1px 4px;
+    border-radius: 4px;
+    margin-top: 1px;
+}
+
+#datatablesQueueGeneral .user-list-item .users-list-body div.channels div.channel,
+#datatablesQueueAssumed .user-list-item .users-list-body div.channels div.channel {
+    color: #8605B9;
+    font-weight: 700;
+    margin-right: 8px;
+}
+
+#datatablesQueueGeneral .user-list-item .users-list-body div.channels div.channel img,
+#datatablesQueueAssumed .user-list-item .users-list-body div.channels div.channel img {
+    float: left;
+    height: 12px;
+    margin: 4px 5px 0 4px;
+}
+
+#datatablesQueueGeneral .user-list-item .users-list-body div.channels div.channel p,
+#datatablesQueueAssumed .user-list-item .users-list-body div.channels div.channel p {
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-left: 4px;
+    display: block;
+    font-weight: 600;
+    color: #555;
+    line-height: 20px;
+}
+
+#datatablesQueueGeneral .user-list-item .users-list-body .last-chat-time,
+#datatablesQueueAssumed .user-list-item .users-list-body .last-chat-time {
+    padding-left: 15px;
+    position: relative;
+}
+
+#datatablesQueueGeneral .user-list-item .users-list-body .last-chat-time .text-muted,
+#datatablesQueueAssumed .user-list-item .users-list-body .last-chat-time .text-muted {
+    color: #9F9F9F !important;
+    font-weight: 500;
+}
+
+#datatablesQueueGeneral .user-list-item .users-list-body .last-chat-time .new-message-count,
+#datatablesQueueAssumed .user-list-item .users-list-body .last-chat-time .new-message-count {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    -webkit-align-items: center;
+    justify-content: center;
+    -webkit-justify-content: center;
+    line-height: 0;
+    font-size: 11px;
+    background-color: #0057FF;
+    color: #fff;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-top: 10px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+#datatablesQueueGeneral tbody tr[data-token]:hover,
+#datatablesQueueAssumed tbody tr[data-token]:hover {
+    background-color: #f4f4f4;
+    transition: ease all 0.5s;
+    -webkit-transition: ease all 0.5s;
+    -ms-transition: ease all 0.5s;
+}
+
+#datatablesQueueGeneral tbody tr.chat-list-active,
+#datatablesQueueAssumed tr.chat-list-active {
+    background-color: #E6F0FF;
+}
+
+#datatablesQueueGeneral tbody tr.chat-list-active td,
+#datatablesQueueAssumed tr.chat-list-active td {
+    border-top: 0px !important;
+    border-right: 0px !important;
+    border-bottom: 0px !important;
+    border-left: 4px solid #0d6efd !important;
+    border-color: #0d6efd !important;
+}
+
+#datatablesQueueGeneral_wrapper .bottom,
+#datatablesQueueAssumed_wrapper .bottom {
+    margin-top: 15px;
+
+}
+
+#datatablesQueueGeneral_filter,
+#datatablesQueueAssumed_filter {
+    text-align: left;
+}
+
+.nav-pills .nav-link {
+    border: 0;
+    border-radius: 0.25rem !important;
+    background-color: #efefef;
+    margin-right: 5px;
+    font-weight: bold;
+}

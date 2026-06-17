@@ -1,0 +1,96 @@
+{% set area = 'cpanel' %}
+{% extends "theme/base.twig" %}
+{% block JSfiles %}
+    {{ parent() }}
+    <script src="/assets/plugins/jquery/js/jquery.datatables1.10.19.js"></script>
+    <script src="/assets/plugins/jquery/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/js/local/modulo_cad.js?v=14"></script>
+    <script src="/assets/plugins/bootstrap-wizard/bootstrap.wizard.js" type="text/javascript"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js?v={{ JSversion }}"></script>
+
+    <script src="{{ base_url() }}/assets/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{ base_url() }}/assets/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+{% endblock %}
+{% block title %}
+    Módulo
+{% endblock %}
+{% block CSSfiles %}
+    {{ parent() }}
+    <link href='{{ base_url() }}/assets/plugins/datepicker/css/bootstrap-datepicker.min.css' rel='stylesheet'>
+    <link href='{{ base_url() }}/assets/plugins/bootstrap/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>
+    <link href="/assets/plugins/bootstrap-wizard/bootstrap.wizard.css" rel="stylesheet" type="text/css">
+    <link href='/assets/plugins/daterangepicker/daterangepicker.css?v={{ JSversion }}' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+{% block content %}
+    <BR>
+    <main class="main-content">
+        <div class="container col" >
+            <div class="container col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        &nbsp;
+                    </div>
+                </div>
+                
+                <div class="row ">
+                    <div>
+                        <div class="col-lg" style="max-width:1245px;margin-left: auto;margin-right: auto;background-color: #F7F7F7;">
+                            <div class="shadow-lg bg-white rounded mb-4" style="padding: 15px;">
+                            <form id="form">
+                                <div class='row'>
+                                    <div class="card-title col-sm-4">
+                                        <h5 style= "color:#FF5403"  >Módulo</h5>
+                                    </div>
+                                    <div class='col-sm-8' align="Right">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="cmdCancelar">Voltar</button>
+                                        &nbsp;
+                                        <input type="submit" class="btn btn-primary btn-sm" id="cmdEnviar" value='Salvar'>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <hr>
+                                    <input type="hidden" id='pk' name='pk' value='{{ pk }}'>
+                                    <div class="tab_content">
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='tipo_modulo_pk'>Módulo:&nbsp;</label>
+                                                <select class='form-control form-control-sm' id='tipo_modulo_pk' name='tipo_modulo_pk'>                            
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>                                        
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ds_dominio'>Permissão:&nbsp;</label>
+                                                <input type='text' class='form-control form-control-sm'  id='ds_dominio' name='ds_dominio' >
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                &nbsp;
+                                            </div>
+                                            <div class='col-md-4'>
+                                                <label for='ds_obs'>Observação:&nbsp;</label>
+                                                <textarea type='text' class='form-control form-control-sm'  id='ds_obs' name='ds_obs' ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

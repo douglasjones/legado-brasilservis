@@ -1,0 +1,295 @@
+<script>
+    function fcImprimirRelogio() {
+        var printContents = document.getElementById("printableAreaRelogio").innerHTML;
+        $("#text-colaborador").text($("#colaborador_consulta_folha_pk option:selected").text())
+        $("#text-posto").text($("#leads_consulta_folha_pk option:selected").text())
+        $("#text-mes").text($("#ic_consulta_folha_mes option:selected").text())
+        $("#text-ano").text($("#ic_consulta_folha_ano option:selected").text())
+        var printWindow = window.open('', '', 'height=800,width=600');
+        printWindow.document.write('<html><head><title>'+$("#colaborador_consulta_folha_pk option:selected").text()+' - '+$("#leads_consulta_folha_pk option:selected").text()+' - '+$("#ic_consulta_folha_mes option:selected").text()+' / '+$("#ic_consulta_folha_ano option:selected").text()+'</title>');
+        printWindow.document.write('<style>@page { size: A4; margin: 10mm; } #printableAreaRelogio { width: 100%; font-size: 12pt; overflow: hidden; } </style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(printContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>
+<style>
+    /* Estilo para a impressão */
+    @media print {
+        .noprint {
+            display: none;
+        }
+        @page {
+            size: A4;
+            margin: 10mm;
+        }
+        #printableAreaRelogio {
+            width: 100%;
+            font-size: 12pt;
+            overflow: hidden;
+            page-break-inside: avoid;
+        }
+        #printableAreaRelogio img {
+            max-width: 100%;
+            height: auto;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .col-md-4, .col-md-12 {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .modal-header div {
+            display: none;
+        }
+    }
+
+    /* Ajuste o modal para ocupar toda a largura da tela */
+    .modal-fullscreen {
+        width: 100vw;
+        max-width: 100%;
+        margin: 0;
+    }
+    .modal-fullscreen .modal-dialog {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+    .modal-fullscreen .modal-content {
+        width: 100%;
+        max-width: none;
+    }
+</style>
+
+
+
+<div >
+    <div class="modal fade modal-wide modal-fullscreen" tabindex="-1" role="dialog" aria-labelledby="meuModalLabel" aria-hidden="true" id="consulta_folha_ponto">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 style= "color:#FF5403"  >Acompanhamento de Ponto</h6>
+                    <div align="right">
+                        <button type="button" class="btn btn-outline-success btn-sm" style="" onclick="fcFinalizarFolha()">Folha Finalizada</button>
+                        <button type="button" class="btn btn-outline-warning btn-sm print_folha" style="" onclick="fcPrintFolha()">Imprimir Folha</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="fcFecharConsultaFolhaPonto()" data-dismiss="modal">Fechar</button>
+                        &nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+                <div class="modal-body" id="printableAreaRelogio">
+                    <div class='row'>
+                        <input type="hidden" id="agenda_consulta_folha_colaborador_pk">
+                        <input type="hidden" id="leads_consulta_folha_pk">
+                    </div>
+                    <div class='row'>
+                        
+                        <div class='col-md-4'>
+                            <label for="ds_colaborador">Colaborador:&nbsp;</label>
+                            <div class="noprint">
+                                <select class="form-control form-control-sm chzn-select" id="colaborador_consulta_folha_pk" >
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                            <span id="text-colaborador"></span>
+                    </div>
+                    <!--div class='row'>
+                        <div class='col-md-4'>
+                            <label for="ds_colaborador">Ano:&nbsp;</label>
+                            <div class="noprint">
+                                <select class="form-control form-control-sm chzn-select" id="ic_consulta_folha_ano" name="ic_consulta_folha_ano">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <span id="text-ano"></span>
+                        </div>
+                    </div>
+                    <div class='row'>
+                        
+                        <div class='col-md-4'>
+                            <label for="ds_colaborador">Mês:&nbsp;</label>
+                            <div class="noprint">
+                                <select class="form-control form-control-sm chzn-select" id="ic_consulta_folha_mes" >
+                                    <option value="01">Janeiro</option>
+                                    <option value="02">Fevereiro</option>
+                                    <option value="03">Março</option>
+                                    <option value="04">Abril</option>
+                                    <option value="05">Maio</option>
+                                    <option value="06">Junho</option>
+                                    <option value="07">Julho</option>
+                                    <option value="08">Agosto</option>
+                                    <option value="09">Setembro</option>
+                                    <option value="10">Outubro</option>
+                                    <option value="11">Novembro</option>
+                                    <option value="12">Dezembro</option>
+                                </select>
+                            </div>
+                            
+                            <span id="text-mes"></span>
+                        </div>
+                    </div-->
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="dt_ini_ronda">Data Inicio:&nbsp;</label>
+                            <input type='text' class='form-control form-control-sm' maxlength="10"  id='dt_ini_reloginho' name='dt_ini_reloginho' value="">                
+                        </div>
+                        <div class="col-md-2">
+                            <label for="dt_fim_ronda">Data Fim:&nbsp;</label>
+                            <input type='text' class='form-control form-control-sm' maxlength="10"  id='dt_fim_reloginho' name='dt_fim_reloginho' value="">         
+                        </div>
+                    </div>
+                    
+                    <div class='row'>
+                        <div class='col-md-4'>
+                            <label for="ds_colaborador">Turno:&nbsp;</label>
+                            <div class="noprint">
+                                <span id="ds_turno"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-4'>
+                            <label for="ds_colaborador">Período de trabalho:&nbsp;</label>
+                            <div class="noprint">
+                                <span id="periodo_trabalho"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            &nbsp;
+                        </div>
+                        <div class="col-md-4" align="center">
+                            <button type="button" class="btn btn-primary btn-sm" id="cmdCarregarReloginho">Pesquisar Ponto</button>                         
+                        </div>
+                    </div>
+                    <br>
+                     <div class="row">
+                        
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <h6 align="center">Legendas</h6>
+
+                            <div id='draggable-events' align="center">
+
+                                <div class="draggable-event btn btn-block" style="color:white;background-color:#ADD8E6;width: 200px; color:black">
+                                    <i class="fa fa-move"></i>Apontamento
+                                </div>
+                                <div class="draggable-event btn btn-block" style="color:white;background-color:#3F47CC;width: 200px; color:black">
+                                    <i class="fa fa-move"></i>HR Trabalhadas
+                                </div>
+                                <div class="draggable-event btn btn-block" style="color:white;background-color:#FF7F26;width: 200px; color:black">
+                                    <i class="fa fa-move"></i>HR Excedentes
+                                </div>
+                                <div class="draggable-event btn btn-block" style="color:white;background-color:#ED1B24;width: 200px; color:black">
+                                    <i class="fa fa-move"></i>HR Faltantes
+                                </div>
+                                <div class="draggable-event btn btn-block" style="color:black;background-color:Yellow;width: 200px; color:black">
+                                    <i class="fa fa-move"></i>Facial não válidada
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div id="text_folha_finalizada"></div>
+                    </div>
+                    
+                    <!--button type="button" class="btn btn-primary btn-sm" style="background-color:green" onclick="fcGerarFolhaPonto(true)"></button-->&nbsp;&nbsp;&nbsp;
+                    <input type="hidden" id="ponto_folha_pk">
+                    <input type="hidden" id="ic_status_ponto_folha_pk">
+                    <div>
+                        <div id="grid_consulta_folha_ponto"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="feriadosModal" tabindex="-1" aria-labelledby="feriadosModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feriadosModalLabel">Lista de Feriados</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Tabela do DataTable -->
+                <table id="tblFeriado" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nome</th>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th>Estado</th>
+                            <th>Cidade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="janela_historico">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h6 style= "color:#FF5403">
+                    Registro de Ponto <span id="date"></span>
+                </h6>
+            </div>
+            <form id="form_colaborador">
+                <div class="card-body py-3">
+                    <div class='col-md-3'> &nbsp; </div>        
+                    <div id="message" class="mt-6"></div>     
+                    <table class="table table-striped table-no-bordered display nowrap" style="width:100%" id="tblListarPontoDia">
+                        <thead>
+                            <th>#</th>
+                            <th>Data Cadastro</th>
+                            <th>Hora</th>
+                            <th>Tipo Apontamento</th>
+                            <th>Usuário de Cadastro</th>
+                            <th>Status</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>                 
+                    <br>
+                </div>	
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" id="cmdFecharPonto" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-wide modal-fullscreen" tabindex="-1" role="dialog" aria-labelledby="meuModalLabel" aria-hidden="true" id="janela_ponto_diario">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h6 style= "color:#FF5403">
+                    Ponto do dia <span id="date"></span>
+                </h6>
+            </div>
+            <form id="form_colaborador">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span id="grid_ponto_diario"></span>
+                    </div>
+                </div>	
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" id="cmdFecharPontoDiario" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>

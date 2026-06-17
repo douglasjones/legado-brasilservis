@@ -1,0 +1,162 @@
+{% block content %}
+    <div class="row">
+        <div class='col'>
+            <h6 class="font-weight">Novo apontamento - <b>Serviço Extra</b></h6>
+            <hr>
+        </div>
+        <div class="row" style="margin: 5px">
+            <div class='col-md-3'>
+                &nbsp;
+            </div>
+            <div class='col-md-6'>
+                <label for='leads_servico_extra_pk'>Leads:&nbsp;</label>
+                <select  name="leads_servico_extra_pk" class='form-control form-control-sm' id="leads_servico_extra_pk">
+                    <option value=''></option>
+                </select>
+                <div class='col' id="alert_lead_servico_extra" style="display:none">
+                    <span aling="center" style="color: red">&nbsp;&nbsp;&nbsp;Por favor, informe o Lead!</span>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin: 5px">
+            <div class='col-md-3'>
+                &nbsp;
+            </div>
+            <div class='col-md-6'>
+                <label for='leads_servico_extra_pk'>Qualificação:&nbsp;</label>
+                <select  name="pordutos_servicos_extra_pk" class='form-control form-control-sm' id="pordutos_servicos_extra_pk">
+                    <option value=''></option>
+                </select>
+                <div class='col' id="alert_produto_servico_extra" style="display:none">
+                    <span aling="center" style="color: red">&nbsp;&nbsp;&nbsp;Por favor, informe a Qualificação!</span>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin: 5px">
+            <div class='col-md-3'>
+                &nbsp;
+            </div>
+            <div class='col-md-3'>
+                <div class='col'>
+                    <label for='dt_ini_ferias'> Data Início: &nbsp; </label>
+                    <input type='text' maxlength="10" class='form-control form-control-sm'  id='dt_ini_servico_extra' name='dt_ini_servico_extra' />
+                </div>
+                <div class='col' id="alert_dt_ini_servico_extra" style="display:none">
+                    <span aling="center" style="color: red">&nbsp;&nbsp;&nbsp;Por favor, informe a Data inicio!</span>
+                </div>
+            </div>
+            <div class='col-md-3'>
+                <div class='col'>
+                    <label for='dt_ini_ferias'> Hora Início: &nbsp; </label>
+                    <input type='text' maxlength="10" class='form-control form-control-sm'  id='hr_ini_servico_extra' name='hr_ini_servico_extra' />
+                </div>
+                <div class='col' id="alert_hr_ini_servico_extra" style="display:none">
+                    <span aling="center" style="color: red">&nbsp;&nbsp;&nbsp;Por favor, informe a Data inicio!</span>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin: 5px">
+            <div class='col-md-3'>
+                &nbsp;
+            </div>
+            <div class='col-md-3'>
+                <div class='col'>
+                    <label for='dt_ini_ferias'> Data Fim: &nbsp; </label>
+                    <input type='text' maxlength="10" class='form-control form-control-sm'  id='dt_fim_servico_extra' name='dt_fim_servico_extra' />
+                </div>
+                <div class='col' id="alert_dt_fim_servico_extra" style="display:none">
+                    <span aling="center" style="color: red">&nbsp;&nbsp;&nbsp;Por favor, informe a Data inicio!</span>
+                </div>
+            </div>
+            <div class='col-md-3'>
+                <div class='col'>
+                    <label for='dt_ini_ferias'> Hora Fim: &nbsp; </label>
+                    <input type='text' maxlength="10" class='form-control form-control-sm'  id='hr_fim_servico_extra' name='hr_fim_servico_extra' />
+                </div>
+                <div class='col' id="alert_hr_fim_servico_extra" style="display:none">
+                    <span aling="center" style="color: red">&nbsp;&nbsp;&nbsp;Por favor, informe a Data inicio!</span>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin: 5px">
+            <div class='col-md-3'>
+                &nbsp;
+            </div>
+            <div class='col-md-3'>
+                <div class='col'>
+                    <label for='dt_ini_ferias'> Valor Serviço: &nbsp; </label>
+                    <input type='text' maxlength="10" class='form-control form-control-sm'  id='vl_servico_extra' name='vl_servico_extra' />
+                </div>
+                <div class='col' id="alert_vl_servico_extra" style="display:none">
+                    <span aling="center" style="color: red">&nbsp;&nbsp;&nbsp;Por favor, informe valor!</span>
+                </div>
+            </div>
+            <div class='col-md-3'>
+                <div class='col'>
+                    <label for='dt_ini_ferias'> Valor mão de obra: &nbsp; </label>
+                    <input type='text' maxlength="10" class='form-control form-control-sm'  id='vl_mao_obra_servico_extra' name='vl_mao_obra_servico_extra' />
+                </div>
+                <div class='col' id="alert_vl_mao_obra_servico_extra" style="display:none">
+                    <span aling="center" style="color: red">&nbsp;&nbsp;&nbsp;Por favor, informe valor!</span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row" style="margin: 5px">
+            <div class='col-md-3'>
+                &nbsp;
+            </div>
+            <div class='col-md-6'>
+                <label for='ds_obs_ferias'>Observação:&nbsp;</label>
+                <textarea cols="50"  id="obs_servico_extra" class='form-control form-control-sm' name="obs_servico_extra"></textarea>
+                <div class='col' id="alert_ds_obs_servico_extra" style="display:none">
+                    <span aling="center" style="color: red">&nbsp;&nbsp;&nbsp;Por favor, informe a Observação!</span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="row" >
+            <input type="hidden" name="ds_documento" id="ds_documento"/>
+            <input type="hidden" name="ds_nome_original" id="ds_nome_original"/>
+            <div class='col-md-3'>
+                &nbsp;
+            </div>
+            <div class='col-md-6'>
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Incluir Documento</span>
+
+                    <input id="fileupload"  type="file" name="FilesPic" multiple >
+                </span>
+                <br>
+                <div id="alert_documento" style="display:none" >
+                    <strong style="color: red">Selecione um arquivo</strong>
+                </div>
+                <br>
+                <div id="files" class="files"></div>
+                <!---->
+                <div class="row" id="rowFotos"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                &nbsp;
+            </div>
+            <div class="col-md-6">
+                <table class="table table-striped table-bordered nowrap" style="width:100%" id="tblArquivos">
+                    <thead>
+                    <tr>
+                        <th>Documento</th>
+                        <th>Nome Original</th>
+                        <th>Ação</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
