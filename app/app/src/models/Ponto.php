@@ -2309,6 +2309,7 @@ class Ponto {
     }
 
     public function getTurnoExpedienteApp($ds_cpf,$colaborador_pk){
+        $cpfNormalizado = preg_replace('/\D+/', '', (string)$ds_cpf);
 
         $sql="";
         $sql.="SELECT a.turnos_pk,
@@ -2321,8 +2322,8 @@ class Ponto {
         if($colaborador_pk!=""){
             $sql.=" and c.pk = ".$colaborador_pk;
         }
-        if($ds_cpf!=""){
-            $sql.=" and c.ds_cpf = '".$ds_cpf."'";
+        if($cpfNormalizado!=""){
+            $sql.=" and REPLACE(REPLACE(REPLACE(REPLACE(c.ds_cpf, '.', ''), '-', ''), '/', ''), ' ', '') = '".$cpfNormalizado."'";
         }
        
    
@@ -2473,6 +2474,7 @@ class Ponto {
         $retorno = new \StdClass;
         $retorno->status = false;
         $retorno->data = [];
+        $cpfNormalizado = preg_replace('/\D+/', '', (string)$ds_cpf);
 
         $dt_atual = date('Y-m-d');
 
@@ -2616,8 +2618,8 @@ class Ponto {
                 if ($colaborador_pk != "") {
                     $sql .= " AND c.pk = {$colaborador_pk}";
                 }
-                if ($ds_cpf != "") {
-                    $sql .= " AND c.ds_cpf = '{$ds_cpf}'";
+                if ($cpfNormalizado != "") {
+                    $sql .= " AND REPLACE(REPLACE(REPLACE(REPLACE(c.ds_cpf, '.', ''), '-', ''), '/', ''), ' ', '') = '{$cpfNormalizado}'";
                 }
 
                 $sql .= " GROUP BY l.pk ORDER BY l.ds_lead";
@@ -2735,6 +2737,7 @@ class Ponto {
         $retorno = new \StdClass; //Estrutura de retorno para controller
         $retorno->status = false; //Retorno setado status como false
         $retorno->data = []; //Retorno data setado como vazio
+        $cpfNormalizado = preg_replace('/\D+/', '', (string)$ds_cpf);
 
         
         if(!empty($dt_fim)){
@@ -2765,8 +2768,8 @@ class Ponto {
             $sql.=" left join turnos t on a.turnos_pk = t.pk";
             $sql.=" left join escala_dados_colaborador edc on edc.agenda_colaborador_padrao = a.pk and edc.dt_escala ='".($dt_ini)."' and edc.dt_escala <='".($data_fim)."' and edc.ic_escala =1 "; 
             $sql.=" where 1=1";
-            if($ds_cpf!=""){
-                $sql.=" and c.ds_cpf = '".$ds_cpf."'";
+            if($cpfNormalizado!=""){
+                $sql.=" and REPLACE(REPLACE(REPLACE(REPLACE(c.ds_cpf, '.', ''), '-', ''), '/', ''), ' ', '') = '".$cpfNormalizado."'";
             }
             $sql.=" and a.dt_cancelamento is null";
             $sql.=" group by l.pk";

@@ -2223,6 +2223,47 @@ class Colaborador {
 
     }
 
+    public function buscarColaboradorPorCpfApp($ds_cpf){
+        $retorno = new \StdClass;
+        $retorno->status = false;
+        $retorno->data = [];
+        $retorno->message = '';
+
+        try{
+            $cpfNormalizado = preg_replace('/\D+/', '', (string)$ds_cpf);
+
+            if ($cpfNormalizado === '') {
+                $retorno->message = 'CPF do colaborador não informado.';
+                return $retorno;
+            }
+
+            $sql ="";
+            $sql.=" SELECT c.pk, c.ds_colaborador, c.ds_cpf";
+            $sql.=" FROM colaboradores c";
+            $sql.=" WHERE REPLACE(REPLACE(REPLACE(REPLACE(c.ds_cpf, '.', ''), '-', ''), '/', ''), ' ', '') = :ds_cpf";
+            $sql.=" ORDER BY c.pk ASC";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(':ds_cpf', $cpfNormalizado);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            if (count($rows) > 0) {
+                $retorno->status = true;
+                $retorno->data = $rows;
+                $retorno->message = 'Dados carregados com sucesso';
+                return $retorno;
+            }
+
+            $retorno->message = 'Colaborador não encontrado para o CPF informado.';
+            return $retorno;
+        }
+        catch(\Throwable $e){
+            $retorno->message = $e->getMessage();
+            return $retorno;
+        }
+    }
+
 	public function RelatorioAcompanhamentoFerias($colaboradores_pk,$dt_inicio, $dt_fim){
         $retorno = new \StdClass; //Estrutura de retorno para controller
         $retorno->status = false; //Retorno setado status como false

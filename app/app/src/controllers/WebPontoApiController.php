@@ -35,18 +35,72 @@ final class WebPontoApiController extends BaseController {
         return [];
     }
 
+    private function resolveColaboradorPkPorCpf(array $data){
+        $colaboradorPk = isset($data['colaborador_pk']) ? trim((string)$data['colaborador_pk']) : '';
+        $dsCpf = isset($data['ds_cpf']) ? trim((string)$data['ds_cpf']) : '';
+
+        if ($colaboradorPk !== '') {
+            return [
+                'status' => true,
+                'colaborador_pk' => $colaboradorPk,
+                'ds_cpf' => $dsCpf
+            ];
+        }
+
+        if ($dsCpf === '') {
+            return [
+                'status' => false,
+                'message' => 'Informe o colaborador por ds_cpf ou colaborador_pk.'
+            ];
+        }
+
+        $retornoColaborador = (new Colaborador($this->pdo))->buscarColaboradorPorCpfApp($dsCpf);
+        if (!$retornoColaborador->status || empty($retornoColaborador->data[0]['pk'])) {
+            return [
+                'status' => false,
+                'message' => $retornoColaborador->message ?: 'Colaborador não encontrado para o CPF informado.'
+            ];
+        }
+
+        return [
+            'status' => true,
+            'colaborador_pk' => $retornoColaborador->data[0]['pk'],
+            'ds_cpf' => $retornoColaborador->data[0]['ds_cpf'] ?? $dsCpf
+        ];
+    }
+
 
     public function registraPontoApp(Request $request, Response $response, $args){
         try {
             $data = $this->getRequestData($request);
-        
-            // Validação básica
-            if (empty($data['colaborador_pk']) || empty($data['dt_hora_ponto']) || empty($data['tipo_ponto_pk'])) {
-                echo json_encode(["error" => "Dados insuficientes"], JSON_UNESCAPED_UNICODE);
-                die();
+
+            $dadosResolucao = $data;
+            if (isset($data['ds_cpf']) && trim((string)$data['ds_cpf']) !== '') {
+                unset($dadosResolucao['colaborador_pk']);
             }
-        
-            $colaborador_pk = $data['colaborador_pk'];
+
+            $colaboradorResolvido = $this->resolveColaboradorPkPorCpf($dadosResolucao);
+            if (!$colaboradorResolvido['status']) {
+                $response->getBody()->write(json_encode([
+                    "result" => "false",
+                    "ic_status" => "2",
+                    "message" => $colaboradorResolvido['message'],
+                    "data" => "",
+                ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK));
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+            }
+
+            if (empty($data['dt_hora_ponto']) || empty($data['tipo_ponto_pk'])) {
+                $response->getBody()->write(json_encode([
+                    "result" => "false",
+                    "ic_status" => "2",
+                    "message" => "Dados insuficientes",
+                    "data" => "",
+                ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK));
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+            }
+
+            $colaborador_pk = $colaboradorResolvido['colaborador_pk'];
             $dt_hora_ponto = $data['dt_hora_ponto'];
             $tipo_ponto_pk = $data['tipo_ponto_pk'];
             $ds_latitude = isset($data['ds_latitude']) ? $data['ds_latitude'] : null;
@@ -124,14 +178,29 @@ final class WebPontoApiController extends BaseController {
     public function sincronizarPontoApp(Request $request, Response $response, $args){
         try {
             $data = $this->getRequestData($request);
-        
-            // Validação básica
-            if (empty($data['colaborador_pk']) || empty($data['dt_hora_ponto']) || empty($data['tipo_ponto_pk'])) {
-                echo json_encode(["error" => "Dados insuficientes"], JSON_UNESCAPED_UNICODE);
-                die();
+
+            $colaboradorResolvido = $this->resolveColaboradorPkPorCpf($data);
+            if (!$colaboradorResolvido['status']) {
+                $response->getBody()->write(json_encode([
+                    "result" => "false",
+                    "ic_status" => "2",
+                    "message" => $colaboradorResolvido['message'],
+                    "data" => "",
+                ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK));
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
             }
-        
-            $colaborador_pk = $data['colaborador_pk'];
+
+            if (empty($data['dt_hora_ponto']) || empty($data['tipo_ponto_pk'])) {
+                $response->getBody()->write(json_encode([
+                    "result" => "false",
+                    "ic_status" => "2",
+                    "message" => "Dados insuficientes",
+                    "data" => "",
+                ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK));
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+            }
+
+            $colaborador_pk = $colaboradorResolvido['colaborador_pk'];
             $dt_hora_ponto = $data['dt_hora_ponto'];
             $tipo_ponto_pk = $data['tipo_ponto_pk'];
             $ds_latitude = isset($data['ds_latitude']) ? $data['ds_latitude'] : null;
@@ -208,16 +277,22 @@ final class WebPontoApiController extends BaseController {
     public function listarPostoTrabalhoApp(Request $request, Response $response, $args)
     {
         try {
-            // Captura os dados do GET
-            //$data = (object) $request->getParsedBody();
+            $data = $this->getRequestData($request);
+            $ds_cpf = $data['ds_cpf'] ?? "";
+            $colaborador_pk = $data['colaborador_pk'] ?? "";
 
-            // Captura os dados do POST
-            $data = (object)$request->getParsedBody();
+            $dadosResolucao = $data;
+            if (trim((string)$ds_cpf) !== '') {
+                unset($dadosResolucao['colaborador_pk']);
+            }
 
-            $ds_cpf = $data->ds_cpf ?? "";
-            $colaborador_pk = $data->colaborador_pk ?? "";
+            $resolucaoColaborador = $this->resolveColaboradorPkPorCpf($dadosResolucao);
+
+            if ($resolucaoColaborador['status']) {
+                $colaborador_pk = $resolucaoColaborador['colaborador_pk'];
+                $ds_cpf = $resolucaoColaborador['ds_cpf'];
+            }
             
-            // Criando o objeto de modelo e buscando os dados
             $pontoModel = new Ponto($this->pdo);
             $return = $pontoModel->listarPostoTrabalhoApp($ds_cpf, $colaborador_pk);
 
@@ -244,17 +319,17 @@ final class WebPontoApiController extends BaseController {
     public function pesquisarPonto(Request $request, Response $response, $args)
     {
         try {
-            // Captura os dados do GET
-            //$data = (object) $request->getParsedBody();
+            $data = $this->getRequestData($request);
+            $resolucaoColaborador = $this->resolveColaboradorPkPorCpf($data);
 
-            // Captura os dados do POST
-            $data = (object)$request->getParsedBody();
+            $ds_cpf = $data['ds_cpf'] ?? "";
+            if ($resolucaoColaborador['status']) {
+                $ds_cpf = $resolucaoColaborador['ds_cpf'];
+            }
 
-            $ds_cpf = $data->ds_cpf ?? "";
-            $dt_ini = $data->dt_ini ?? "";
-            $dt_fim = $data->dt_fim ?? "";
+            $dt_ini = $data['dt_ini'] ?? "";
+            $dt_fim = $data['dt_fim'] ?? "";
             
-            // Criando o objeto de modelo e buscando os dados
             $pontoModel = new Ponto($this->pdo);
             $return = $pontoModel->pesquisarPontoApp($ds_cpf, $dt_ini,$dt_fim);
 
