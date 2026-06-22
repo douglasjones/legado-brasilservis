@@ -227,7 +227,9 @@ class Colaborador {
         $fields["dt_ult_atualizacao"] = "sysdate()";
         $fields["usuario_ult_atualizacao_pk"] = $_SESSION['session_user']['par1'];
 
-        if($colaborador['pk']  == ""){
+        $isNovoColaborador = ($colaborador['pk'] == "");
+
+        if($isNovoColaborador){
 
             $fields["dt_cadastro"] = "sysdate()";
             $fields["usuario_cadastro_pk"]   = $_SESSION['session_user']['par1'];
@@ -249,7 +251,7 @@ class Colaborador {
             $retorno->message = 'Dados atualizado com sucesso';
             $retorno->data = $pk;
         }
-        $this->salvarColaboradorServidor($pk);
+        $this->salvarColaboradorServidor($pk, $isNovoColaborador);
         return $retorno;
 
     }
@@ -2370,14 +2372,19 @@ class Colaborador {
     } 
 
 
-    public function salvarColaboradorServidor($pk){
+    public function salvarColaboradorServidor($pk, $isNovoColaborador = false){
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         // Obter o nome do host (ex: www.example.com)
         $host = $_SERVER['HTTP_HOST'];
         // Montar a URL completa
         $currentUrl = $protocol . $host;
-        $url = "https://webservice.gepros6.com.br/work/action.php?action=registraColaboradorApp";
-        $action = "registraColaboradorApp";
+        if ($isNovoColaborador) {
+            $url = "https://webservice.gepros6.com.br/work/action.php?action=registraColaboradorApp";
+            $action = "registraColaboradorApp";
+        } else {
+            $url = "https://webservice.gepros6.com.br/work/action.php?action=atualizarColaboradorApp";
+            $action = "atualizarColaboradorApp";
+        }
 
         $sql = "";
         $sql .= "select c.pk, c.ds_colaborador, c.ds_cel, c.ds_cpf, c.ds_rg, c.ds_email, ";
